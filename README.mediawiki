@@ -1,0 +1,16 @@
+== April Project ==
+
+=== What is April ===
+
+April is the 4th month of the year, of course.
+
+It is also the name of my [http://en.wikipedia.org/wiki/Constructive_solid_geometry CSG] project for Computer Grapics course.
+
+=== Why April ===
+
+I intended to name this project with a female's name starting with 'A'.
+
+'A' is the first letter in alphabet, suggesting a new start (although I won't tell what start it is).
+
+Later projects might start will 'B' and 'C'...
+
