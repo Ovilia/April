@@ -27,34 +27,14 @@ HEADERS += \
     ModelManager.h \
     AGLWidget.h \
     ViewManager.h \
-    ViewWidget.h
+    ViewWidget.h \
+    Solid/APrimitive.h \
+    Solid/ASolid.h
 
 SOURCES += \
     ModelManager.cpp \
     AGLWidget.cpp \
     ViewManager.cpp \
-    ViewWidget.cpp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ViewWidget.cpp \
+    Solid/ASolid.cpp \
+    Solid/APrimitive.cpp

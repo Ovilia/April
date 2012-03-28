@@ -4,7 +4,8 @@
 
 AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     QGLWidget(parent),
-    modelManager(modelManager)
+    modelManager(modelManager),
+    drawStyle(DS_WIRE)
 {
     setMinimumSize(100, 100);
 }
