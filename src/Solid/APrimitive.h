@@ -1,6 +1,8 @@
 #ifndef APRILPRIMITIVE_H
 #define APRILPRIMITIVE_H
 
+#include "AOctree.h"
+
 class APrimitive
 {
 public:
@@ -49,6 +51,9 @@ public:
     bool getSelected();
     void setSelected(bool value);
 
+    int getRenderDepth();
+    void setRenderDepth(int depth);
+
 protected:
     double xRotate;
     double yRotate;
@@ -62,6 +67,10 @@ protected:
     double yTransform;
     double zTransform;
 
+    AOctree* octree;
+    // set octree according to current renderDepth and primitive type
+    virtual void setOctree() = 0;
+
     bool isSelected;
 
     // rgba color within [0, 1], with index of RGB_INDEX
@@ -70,6 +79,10 @@ protected:
     // random color to be used when init
     static const int RANDOM_COLOR_COUNT = 12;
     static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH];
+
+    // defines max depth of AOctree when rendering
+    static const int DEFAULT_REANDER_DEPTH = 4;
+    int renderDepth;
 };
 
 #endif // APRILPRIMITIVE_H

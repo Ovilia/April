@@ -1,4 +1,7 @@
+#ifdef _DEBUG
 #include <assert.h>
+#endif
+
 #include <ctime>
 #include <cstdlib>
 
@@ -30,8 +33,12 @@ APrimitive::APrimitive() :
     xTransform(0.0),
     yTransform(0.0),
     zTransform(0.0),
-    isSelected(false)
+    isSelected(false),
+    renderDepth(DEFAULT_REANDER_DEPTH)
 {
+    // set octree
+    octree = new AOctree();
+
     // set random color
     srand((unsigned)time(0));
     int index = rand() % RANDOM_COLOR_COUNT;
@@ -42,7 +49,9 @@ APrimitive::APrimitive() :
 
 APrimitive::~APrimitive()
 {
-
+    if (octree) {
+        delete octree;
+    }
 }
 
 double APrimitive::getXRotate()
@@ -92,37 +101,49 @@ double APrimitive::getZTransform()
 
 void APrimitive::setXRotate(double rotate)
 {
+#ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
+#endif
     xRotate = rotate;
 }
 
 void APrimitive::setYRotate(double rotate)
 {
+#ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
+#endif
     yRotate = rotate;
 }
 
 void APrimitive::setZRotate(double rotate)
 {
+#ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
+#endif
     zRotate = rotate;
 }
 
 void APrimitive::setXScale(double scale)
 {
+#ifdef _DEBUG
     assert(scale > 0);
+#endif
     xScale = scale;
 }
 
 void APrimitive::setYScale(double scale)
 {
+#ifdef _DEBUG
     assert(scale > 0);
+#endif
     yScale = scale;
 }
 
 void APrimitive::setZScale(double scale)
 {
+#ifdef _DEBUG
     assert(scale > 0);
+#endif
     yScale = scale;
 }
 
@@ -149,4 +170,14 @@ bool APrimitive::getSelected()
 void APrimitive::setSelected(bool value)
 {
     isSelected = value;
+}
+
+int APrimitive::getRenderDepth()
+{
+    return renderDepth;
+}
+
+void APrimitive::setRenderDepth(int depth)
+{
+    renderDepth = depth;
 }

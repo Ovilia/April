@@ -33,7 +33,7 @@ ASolid* ASolid::getRightChild()
     return rightChild;
 }
 
-BoolOperation ASolid::getOperation()
+ASolid::BoolOperation ASolid::getOperation()
 {
     return operation;
 }

@@ -29,7 +29,8 @@ HEADERS += \
     ViewManager.h \
     ViewWidget.h \
     Solid/APrimitive.h \
-    Solid/ASolid.h
+    Solid/ASolid.h \
+    Solid/AOctree.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -37,4 +38,7 @@ SOURCES += \
     ViewManager.cpp \
     ViewWidget.cpp \
     Solid/ASolid.cpp \
-    Solid/APrimitive.cpp
+    Solid/APrimitive.cpp \
+    Solid/AOctree.cpp
+
+
