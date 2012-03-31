@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>images/model_move.png</file>
+        <file>images/model_rotate.png</file>
+        <file>images/model_scale.png</file>
+        <file>images/scene_minus.png</file>
+        <file>images/scene_move.png</file>
+        <file>images/scene_plus.png</file>
+        <file>images/scene_rotate.png</file>
+        <file>images/scene_fit.png</file>
+    </qresource>
+</RCC>

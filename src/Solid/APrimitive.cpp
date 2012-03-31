@@ -23,22 +23,19 @@ const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH] =
     {1.00, 0.75, 1.00, 1.0}
 };
 
-APrimitive::APrimitive() :
+APrimitive::APrimitive(double xScale, double yScale, double zScale) :
     xRotate(0.0),
     yRotate(0.0),
     zRotate(0.0),
-    xScale(1.0),
-    yScale(1.0),
-    zScale(1.0),
+    xScale(xScale),
+    yScale(yScale),
+    zScale(zScale),
     xTransform(0.0),
     yTransform(0.0),
     zTransform(0.0),
     isSelected(false),
     renderDepth(DEFAULT_REANDER_DEPTH)
 {
-    // set octree
-    octree = new AOctree();
-
     // set random color
     srand((unsigned)time(0));
     int index = rand() % RANDOM_COLOR_COUNT;
@@ -49,9 +46,6 @@ APrimitive::APrimitive() :
 
 APrimitive::~APrimitive()
 {
-    if (octree) {
-        delete octree;
-    }
 }
 
 double APrimitive::getXRotate()

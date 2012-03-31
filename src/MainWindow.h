@@ -19,6 +19,17 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_actionMove_triggered(bool checked);
+
+    void on_actionZoom_in_triggered(bool checked);
+
+    void on_actionZoom_out_triggered(bool checked);
+
+    void on_actionRotate_triggered(bool checked);
+
+    void on_actionBest_fit_triggered();
+
 private:
     Ui::MainWindow *ui;
 

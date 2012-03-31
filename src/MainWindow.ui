@@ -67,8 +67,28 @@
      <addaction name="actionPrism"/>
     </widget>
     <addaction name="menuNew"/>
+    <addaction name="actionModelMove"/>
+    <addaction name="actionModelRotate"/>
+    <addaction name="actionModelScale"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuZoom">
+     <property name="title">
+      <string>Zoom</string>
+     </property>
+     <addaction name="actionZoom_in"/>
+     <addaction name="actionZoom_out"/>
+    </widget>
+    <addaction name="actionMove"/>
+    <addaction name="menuZoom"/>
+    <addaction name="actionRotate"/>
+    <addaction name="actionBest_fit"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuModel"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -78,6 +98,15 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionMove"/>
+   <addaction name="actionZoom_in"/>
+   <addaction name="actionZoom_out"/>
+   <addaction name="actionRotate"/>
+   <addaction name="actionBest_fit"/>
+   <addaction name="separator"/>
+   <addaction name="actionModelMove"/>
+   <addaction name="actionModelRotate"/>
+   <addaction name="actionModelScale"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
@@ -123,8 +152,112 @@
     <string>Prism</string>
    </property>
   </action>
+  <action name="actionMove">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/scene_move.png</normaloff>:/image/images/scene_move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionZoom_in">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/scene_plus.png</normaloff>:/image/images/scene_plus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom in</string>
+   </property>
+  </action>
+  <action name="actionZoom_out">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/scene_minus.png</normaloff>:/image/images/scene_minus.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom out</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/scene_rotate.png</normaloff>:/image/images/scene_rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate</string>
+   </property>
+  </action>
+  <action name="actionBest_fit">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/scene_fit.png</normaloff>:/image/images/scene_fit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Best fit</string>
+   </property>
+  </action>
+  <action name="actionModelMove">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/model_move.png</normaloff>:/image/images/model_move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionModelRotate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/model_rotate.png</normaloff>:/image/images/model_rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotate</string>
+   </property>
+  </action>
+  <action name="actionModelScale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/model_scale.png</normaloff>:/image/images/model_scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>Scale</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

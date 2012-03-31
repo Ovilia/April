@@ -6,7 +6,7 @@
 class APrimitive
 {
 public:
-    APrimitive();
+    APrimitive(double xScale = 1.0, double yScale = 1.0, double zScale = 1.0);
     virtual ~APrimitive();
 
     enum RGB_Index {
@@ -66,10 +66,6 @@ protected:
     double xTransform;
     double yTransform;
     double zTransform;
-
-    AOctree* octree;
-    // set octree according to current renderDepth and primitive type
-    virtual void setOctree() = 0;
 
     bool isSelected;
 

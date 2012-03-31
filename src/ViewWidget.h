@@ -12,6 +12,8 @@ public:
     ViewWidget(ModelManager* modelManager);
     ~ViewWidget();
 
+    AGLWidget* getAglWidget();
+
 private:
     AGLWidget* aglWidget;
 };

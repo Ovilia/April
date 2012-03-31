@@ -12,3 +12,8 @@ ViewWidget::~ViewWidget()
 {
 
 }
+
+AGLWidget* ViewWidget::getAglWidget()
+{
+    return aglWidget;
+}

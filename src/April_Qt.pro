@@ -30,7 +30,14 @@ HEADERS += \
     ViewWidget.h \
     Solid/APrimitive.h \
     Solid/ASolid.h \
-    Solid/AOctree.h
+    Solid/ACube.h \
+    Solid/ASphere.h \
+    Solid/ACylinder.h \
+    Solid/ACone.h \
+    Solid/APipe.h \
+    Solid/APyramid.h \
+    Solid/APrism.h \
+    Vector3d.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -39,6 +46,21 @@ SOURCES += \
     ViewWidget.cpp \
     Solid/ASolid.cpp \
     Solid/APrimitive.cpp \
-    Solid/AOctree.cpp
+    Solid/ACube.cpp \
+    Solid/ASphere.cpp \
+    Solid/ACylinder.cpp \
+    Solid/ACone.cpp \
+    Solid/APipe.cpp \
+    Solid/APyramid.cpp \
+    Solid/APrism.cpp \
+    Vector3d.cpp
+
+RESOURCES += \
+    resource.qrc
+
+
+
+
+
 
 

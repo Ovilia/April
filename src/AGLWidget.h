@@ -5,6 +5,7 @@
 #include <QMdiSubWindow>
 
 #include "ModelManager.h"
+#include "Vector3d.h"
 
 class AGLWidget : public QGLWidget
 {
@@ -13,17 +14,22 @@ public:
     explicit AGLWidget(ModelManager* modelManager, QWidget *parent = 0);
     ~AGLWidget();
 
-    enum DrawStyle {
-        DS_NONE = 0x0,
-        DS_WIRE = 0x1,
-        DS_SOLID = 0x2
-    };
-
     enum DrawColor {
         // RGB color, used only when it is in special state (e.g.: selected)
         DS_DEFAULT = 0x000000,
         DS_SELECTED = 0xFFFFFF
     };
+
+    enum ViewMode {
+        VM_NONE = 0,
+        VM_MOVE,
+        VM_ZOOM_IN,
+        VM_ZOOM_OUT,
+        VM_ROTATE
+    };
+
+    void setViewMode(ViewMode mode);
+    ViewMode getViewMode();
 
 protected:
     // opengl related
@@ -31,10 +37,36 @@ protected:
     void paintGL();
     void resizeGL(int width, int height);
 
+    void enterEvent(QEvent *);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+
 private:
     ModelManager* modelManager;
 
-    DrawStyle drawStyle;
+    ViewMode viewMode;
+
+    // value of width / height
+    double widthHeightRatio;
+
+    Vector3d lookEye;
+    Vector3d lookCenter;
+    Vector3d lookUp;
+
+    double orthoLeft;
+    double orthoRight;
+    double orthoTop;
+    double orthoBottom;
+    double orthoNear;
+    double orthoFar;
+
+    double viewPortX;
+    double viewPortY;
+
+    bool isMousePressed;
+    short mousePressX, mousePressY;
+    short mouseLastX, mouseLastY;
 };
 
 #endif // AGLWIDGET_H

@@ -20,7 +20,6 @@ void ASolid::drawWire()
 
 void ASolid::drawSolid()
 {
-
 }
 
 ASolid* ASolid::getLeftChild()
