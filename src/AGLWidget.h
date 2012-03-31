@@ -50,6 +50,11 @@ private:
     // value of width / height
     double widthHeightRatio;
 
+    // if drag mouse from left top corner to right top corner,
+    // the view will scale twice as the former one.
+    // drag distance is calculated by x+y
+    double scaleOnceRatio;
+
     Vector3d lookEye;
     Vector3d lookCenter;
     Vector3d lookUp;

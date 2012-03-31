@@ -10,6 +10,7 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     viewMode(VM_NONE),
 
     widthHeightRatio(1.0),
+    scaleOnceRatio(5.0),
 
     lookEye(0.0, 0.0, 0.5),
     lookCenter(0.0, 0.0, 0.0),
@@ -115,10 +116,10 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (isMousePressed)
     {
-        // move
         switch (viewMode) {
         case VM_MOVE:
         {
+            // scene moves with cursor
             double moveRight = (event->x() - mouseLastX) *
                     (orthoRight - orthoLeft) / width();
             orthoLeft -= moveRight;
@@ -128,6 +129,33 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
                     (orthoTop - orthoBottom) / height();
             orthoTop += moveUp;
             orthoBottom += moveUp;
+            break;
+        }
+
+        case VM_ZOOM_IN:
+        {
+            // center position doesn't change
+            int w = width();
+            int h = height();
+            double oldLeft = orthoLeft;
+            double oldRight = orthoRight;
+            double oldTop = orthoTop;
+            double oldBottom = orthoBottom;
+            double xyChange = (event->x() - mouseLastX) +
+                    (event->y() - mouseLastY);
+
+            // this one is just a partial product that doesn't
+            // have some particular meaning, just used for simplify
+            double tmpX = w / xyChange / scaleOnceRatio;
+            double tmpY = h / xyChange / scaleOnceRatio;
+            orthoRight = 0.5 * (tmpX + 1) * oldRight +
+                    0.5 * (1 - tmpX) * oldLeft;
+            orthoLeft = 0.5 * (1 - tmpX) * oldRight +
+                    0.5 * (1 + tmpX) * oldLeft;
+            orthoTop = 0.5 * (tmpY + 1) * oldTop +
+                    0.5 * (1 - tmpY) * oldBottom;
+            orthoBottom = 0.5 * (1 - tmpY) * oldTop +
+                    0.5 * (1 + tmpY) * oldBottom;
             break;
         }
 
