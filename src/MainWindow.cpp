@@ -39,30 +39,12 @@ void MainWindow::on_actionMove_triggered(bool checked)
 
 void MainWindow::on_actionZoom_in_triggered(bool checked)
 {
-    if (checked) {
-        viewManager->setViewMode(AGLWidget::VM_ZOOM_IN);
-        // uncheck other buttons
-        ui->actionBest_fit->setChecked(false);
-        ui->actionMove->setChecked(false);
-        ui->actionRotate->setChecked(false);
-        ui->actionZoom_out->setChecked(false);
-    } else {
-        viewManager->setViewMode(AGLWidget::VM_NONE);
-    }
+    viewManager->getSelectedWidget()->getAglWidget()->zoomIn();
 }
 
 void MainWindow::on_actionZoom_out_triggered(bool checked)
 {
-    if (checked) {
-        viewManager->setViewMode(AGLWidget::VM_ZOOM_OUT);
-        // uncheck other buttons
-        ui->actionBest_fit->setChecked(false);
-        ui->actionMove->setChecked(false);
-        ui->actionRotate->setChecked(false);
-        ui->actionZoom_in->setChecked(false);
-    } else {
-        viewManager->setViewMode(AGLWidget::VM_NONE);
-    }
+    viewManager->getSelectedWidget()->getAglWidget()->zoomOut();
 }
 
 void MainWindow::on_actionRotate_triggered(bool checked)

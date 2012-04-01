@@ -35,6 +35,12 @@ void ViewManager::showWidget(const int count)
     }
 }
 
+ViewWidget* ViewManager::getSelectedWidget()
+{
+    // TODO: get selected index
+    return viewWidget[0];
+}
+
 void ViewManager::setViewMode(AGLWidget::ViewMode mode)
 {
     for (int i = 0; i < MAX_VIEWER_AMT; ++i) {

@@ -41,7 +41,7 @@
      <x>0</x>
      <y>0</y>
      <width>552</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -165,9 +165,6 @@
    </property>
   </action>
   <action name="actionZoom_in">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/image/images/scene_plus.png</normaloff>:/image/images/scene_plus.png</iconset>
@@ -178,7 +175,7 @@
   </action>
   <action name="actionZoom_out">
    <property name="checkable">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="resource.qrc">

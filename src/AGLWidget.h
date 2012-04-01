@@ -31,6 +31,9 @@ public:
     void setViewMode(ViewMode mode);
     ViewMode getViewMode();
 
+    void zoomIn();
+    void zoomOut();
+
 protected:
     // opengl related
     void initializeGL();
@@ -50,19 +53,22 @@ private:
     // value of width / height
     double widthHeightRatio;
 
+    Vector3d clearColor;
+
     // if drag mouse from left top corner to right top corner,
     // the view will scale twice as the former one.
     // drag distance is calculated by x+y
-    double scaleOnceRatio;
+    // double scaleOnceRatio;
 
-    Vector3d lookEye;
-    Vector3d lookCenter;
-    Vector3d lookUp;
+    // previous / new ortho size if zoom in once
+    double zoomInRatio;
+    // previous / new ortho size if zoom out once
+    double zoomOutRatio;
 
     double orthoLeft;
     double orthoRight;
-    double orthoTop;
     double orthoBottom;
+    double orthoTop;
     double orthoNear;
     double orthoFar;
 

@@ -1,6 +1,5 @@
 #include <QMouseEvent>
 #include <QtOpenGL/qgl.h>
-#include <Glut>
 
 #include "AGLWidget.h"
 
@@ -10,16 +9,17 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     viewMode(VM_NONE),
 
     widthHeightRatio(1.0),
-    scaleOnceRatio(5.0),
 
-    lookEye(0.0, 0.0, 0.5),
-    lookCenter(0.0, 0.0, 0.0),
-    lookUp(0.0, 1.0, 0.0),
+    clearColor(0.8, 0.8, 0.8),
+
+    //scaleOnceRatio(5.0),
+    zoomInRatio(0.9),
+    zoomOutRatio(1.5),
 
     orthoLeft(-1.0),
     orthoRight(1.0),
-    orthoTop(1.0),
     orthoBottom(-1.0),
+    orthoTop(1.0),
     orthoNear(0.0),
     orthoFar(100.0),
 
@@ -50,14 +50,28 @@ AGLWidget::ViewMode AGLWidget::getViewMode()
     return viewMode;
 }
 
+void AGLWidget::zoomIn()
+{
+    orthoLeft *= zoomInRatio;
+    orthoRight *= zoomInRatio;
+    orthoBottom *= zoomInRatio;
+    orthoTop *= zoomInRatio;
+    paintGL();
+}
+
+void AGLWidget::zoomOut()
+{
+    orthoLeft *= zoomOutRatio;
+    orthoRight *= zoomOutRatio;
+    orthoBottom *= zoomOutRatio;
+    orthoTop *= zoomOutRatio;
+    paintGL();
+}
+
 void AGLWidget::initializeGL()
 {
-    glClearColor(0.0, 1.0, 0.0, 1.0);
+    glClearColor(clearColor.getX(), clearColor.getY(), clearColor.getZ(), 1.0);
     glEnable(GL_DEPTH_TEST);
-
-    gluLookAt(lookEye.getX(), lookEye.getY(), lookEye.getZ(),
-              lookCenter.getX(), lookCenter.getY(), lookCenter.getZ(),
-              lookUp.getX(), lookUp.getY(), lookUp.getZ());
 }
 
 void AGLWidget::paintGL()
@@ -77,8 +91,16 @@ void AGLWidget::paintGL()
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glutSolidSphere(0.5, 20, 16);
-    glFlush();
+
+    glColor3d(0.0, 0.0, 0.3);
+    glBegin(GL_LINES);
+    glVertex3d(1.0, 0.0, 0.0);
+    glVertex3d(0.0, 1.0, 0.0);
+    glVertex3d(1.0, 0.0, 0.0);
+    glVertex3d(0.0, -1.0, 0.0);
+    glEnd();
+
+    repaint();
 }
 
 void AGLWidget::resizeGL(int width, int height)
@@ -134,28 +156,7 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
 
         case VM_ZOOM_IN:
         {
-            // center position doesn't change
-            int w = width();
-            int h = height();
-            double oldLeft = orthoLeft;
-            double oldRight = orthoRight;
-            double oldTop = orthoTop;
-            double oldBottom = orthoBottom;
-            double xyChange = (event->x() - mouseLastX) +
-                    (event->y() - mouseLastY);
-
-            // this one is just a partial product that doesn't
-            // have some particular meaning, just used for simplify
-            double tmpX = w / xyChange / scaleOnceRatio;
-            double tmpY = h / xyChange / scaleOnceRatio;
-            orthoRight = 0.5 * (tmpX + 1) * oldRight +
-                    0.5 * (1 - tmpX) * oldLeft;
-            orthoLeft = 0.5 * (1 - tmpX) * oldRight +
-                    0.5 * (1 + tmpX) * oldLeft;
-            orthoTop = 0.5 * (tmpY + 1) * oldTop +
-                    0.5 * (1 - tmpY) * oldBottom;
-            orthoBottom = 0.5 * (1 - tmpY) * oldTop +
-                    0.5 * (1 + tmpY) * oldBottom;
+            // currently zoom in with mouse dragging is not implemented
             break;
         }
 
@@ -167,7 +168,6 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
         mouseLastX = event->x();
         mouseLastY = event->y();
         paintGL();
-        repaint();
     }
 }
 

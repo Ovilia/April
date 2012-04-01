@@ -15,6 +15,8 @@ public:
     ~ViewManager();
 
     void showWidget(const int count);
+    // return selected widget
+    ViewWidget* getSelectedWidget();
 
     void setViewMode(AGLWidget::ViewMode mode);
     AGLWidget::ViewMode getViewMode();
