@@ -35,16 +35,21 @@ public:
     void zoomIn();
     void zoomOut();
 
+    void rotateX();
+    void rotateY();
+    void rotateZ();
+
 protected:
     // opengl related
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
 
-    void enterEvent(QEvent *);
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *);
 
 private:
     ModelManager* modelManager;
@@ -72,6 +77,12 @@ private:
     double orthoTop;
     double orthoNear;
     double orthoFar;
+    // view rotate, within [0, 360)
+    double orthoXRotate;
+    double orthoYRotate;
+    double orthoZRotate;
+    // angle of each rotate
+    double rotateRatio;
 
     double viewPortX;
     double viewPortY;
@@ -79,6 +90,13 @@ private:
     bool isMousePressed;
     short mousePressX, mousePressY;
     short mouseLastX, mouseLastY;
+
+    // main xOz plain, used to draw scene center location
+    double mainPlainSize;
+    int mainGridCount;
+    Vector3d mainPlainColor;
+    Vector3d mainGridColor;
+    void drawMainPlain();
 };
 
 #endif // AGLWIDGET_H
