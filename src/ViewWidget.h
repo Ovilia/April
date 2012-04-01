@@ -16,6 +16,8 @@ public:
 
 private:
     AGLWidget* aglWidget;
+
+    ModelManager* modelManager;
 };
 
 #endif // VIEWWIDGET_H

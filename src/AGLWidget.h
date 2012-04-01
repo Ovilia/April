@@ -23,9 +23,10 @@ public:
     enum ViewMode {
         VM_NONE = 0,
         VM_MOVE,
-        VM_ZOOM_IN,
-        VM_ZOOM_OUT,
-        VM_ROTATE
+//        VM_ZOOM_IN,
+//        VM_ZOOM_OUT,
+        VM_ROTATE,
+        VM_CREATE
     };
 
     void setViewMode(ViewMode mode);

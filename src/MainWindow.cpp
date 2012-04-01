@@ -37,12 +37,12 @@ void MainWindow::on_actionMove_triggered(bool checked)
     }
 }
 
-void MainWindow::on_actionZoom_in_triggered(bool checked)
+void MainWindow::on_actionZoom_in_triggered(bool)
 {
     viewManager->getSelectedWidget()->getAglWidget()->zoomIn();
 }
 
-void MainWindow::on_actionZoom_out_triggered(bool checked)
+void MainWindow::on_actionZoom_out_triggered(bool)
 {
     viewManager->getSelectedWidget()->getAglWidget()->zoomOut();
 }

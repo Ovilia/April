@@ -27,7 +27,6 @@ HEADERS += \
     ModelManager.h \
     AGLWidget.h \
     ViewManager.h \
-    ViewWidget.h \
     Solid/APrimitive.h \
     Solid/ASolid.h \
     Solid/ACube.h \
@@ -37,13 +36,13 @@ HEADERS += \
     Solid/APipe.h \
     Solid/APyramid.h \
     Solid/APrism.h \
-    Vector3d.h
+    Vector3d.h \
+    ViewWidget.h \
+    ToolWidget.h
 
 SOURCES += \
     ModelManager.cpp \
     AGLWidget.cpp \
-    ViewManager.cpp \
-    ViewWidget.cpp \
     Solid/ASolid.cpp \
     Solid/APrimitive.cpp \
     Solid/ACube.cpp \
@@ -53,10 +52,16 @@ SOURCES += \
     Solid/APipe.cpp \
     Solid/APyramid.cpp \
     Solid/APrism.cpp \
-    Vector3d.cpp
+    Vector3d.cpp \
+    ViewManager.cpp \
+    ViewWidget.cpp \
+    ToolWidget.cpp
 
 RESOURCES += \
     resource.qrc
+
+FORMS += \
+    ToolWidget.ui
 
 
 

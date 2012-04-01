@@ -10,7 +10,7 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
 
     widthHeightRatio(1.0),
 
-    clearColor(0.8, 0.8, 0.8),
+    clearColor(0.7, 0.7, 0.7),
 
     //scaleOnceRatio(5.0),
     zoomInRatio(0.9),
@@ -33,6 +33,7 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     mouseLastY(0)
 {
     setMinimumSize(100, 100);
+    resize(600, 800);
 }
 
 AGLWidget::~AGLWidget()
@@ -154,11 +155,11 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
             break;
         }
 
-        case VM_ZOOM_IN:
-        {
-            // currently zoom in with mouse dragging is not implemented
-            break;
-        }
+//        case VM_ZOOM_IN:
+//        {
+//            // currently zoom in with mouse dragging is not implemented
+//            break;
+//        }
 
         default:
             break;

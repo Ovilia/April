@@ -4,11 +4,17 @@ ViewManager::ViewManager(ModelManager* modelManager, QWidget *parent) :
     QMdiArea(parent),
     preferedViewerAmt(1)
 {
+    // tool widget
+    toolWidget = new ToolWidget(this);
+    addSubWindow(toolWidget);
+    toolWidget->move(0, 0);
+
     // init viewWidget widgets
     for (int i = 0; i < MAX_VIEWER_AMT; ++i) {
         viewWidget[i] = new ViewWidget(modelManager);
         addSubWindow(viewWidget[i]);
-        viewWidget[i]->setWindowState(Qt::WindowMaximized);
+        viewWidget[i]->move(DEFAULT_AGL_X, DEFAULT_AGL_Y);
+        viewWidget[i]->resize(DEFAULT_AGL_WIDTH, DEFAULT_AGL_HEIGHT);
     }
     showWidget(preferedViewerAmt);
 }
@@ -20,6 +26,8 @@ ViewManager::~ViewManager()
             delete viewWidget[i];
         }
     }
+
+    delete toolWidget;
 }
 
 void ViewManager::showWidget(const int count)
@@ -37,7 +45,8 @@ void ViewManager::showWidget(const int count)
 
 ViewWidget* ViewManager::getSelectedWidget()
 {
-    // TODO: get selected index
+    // TODO: get selected index, remember not to use activeSubWindow
+    // since it may not be AGLWidget, consider a member variable here
     return viewWidget[0];
 }
 

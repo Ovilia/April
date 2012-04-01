@@ -5,7 +5,10 @@
 
 #include "AGLWidget.h"
 #include "ModelManager.h"
+#include "ToolWidget.h"
 #include "ViewWidget.h"
+
+class ToolWidget;
 
 class ViewManager : public QMdiArea
 {
@@ -30,6 +33,13 @@ private:
     ViewWidget* viewWidget[MAX_VIEWER_AMT];
 
     AGLWidget::ViewMode viewMode;
+
+    static const int DEFAULT_AGL_X = 260;
+    static const int DEFAULT_AGL_Y = 0;
+    static const int DEFAULT_AGL_WIDTH = 700;
+    static const int DEFAULT_AGL_HEIGHT = 500;
+
+    ToolWidget* toolWidget;
 };
 
 #endif // ViewManager_H

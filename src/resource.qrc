@@ -8,5 +8,11 @@
         <file>images/scene_plus.png</file>
         <file>images/scene_rotate.png</file>
         <file>images/scene_fit.png</file>
+        <file>images/cube.png</file>
+        <file>images/sphere.png</file>
+        <file>images/pyramid.png</file>
+        <file>images/prism.png</file>
+        <file>images/cylinder.png</file>
+        <file>images/cone.png</file>
     </qresource>
 </RCC>

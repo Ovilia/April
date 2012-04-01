@@ -9,6 +9,16 @@ public:
     APrimitive(double xScale = 1.0, double yScale = 1.0, double zScale = 1.0);
     virtual ~APrimitive();
 
+    enum PrimitiveType {
+        PT_NONE = 0,
+        PT_CUBE,
+        PT_SPHERE,
+        PT_CYLINDER,
+        PT_CONE,
+        PT_PRISM,
+        PT_PYRAMID
+    };
+
     enum RGB_Index {
         INDEX_RED = 0,
         INDEX_GREEN,
