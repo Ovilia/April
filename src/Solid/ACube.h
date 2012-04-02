@@ -9,12 +9,7 @@ public:
     ACube(double width, double depth, double height);
     ~ACube();
 
-    virtual void drawWire();
-    virtual void drawSolid();
-
 protected:
-    virtual void setOctree();
-
     double width;
     double depth;
     double height;

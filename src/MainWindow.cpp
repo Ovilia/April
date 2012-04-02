@@ -118,3 +118,23 @@ void MainWindow::on_actionSelect_triggered(bool checked)
         viewManager->setViewMode(StateEnum::VM_NONE);
     }
 }
+
+void MainWindow::on_actionSolid_triggered(bool checked)
+{
+    if (!checked) {
+        ui->actionWire->setChecked(true);
+    }
+    modelManager->setDrawSolid(checked);
+    modelManager->setDrawWire(ui->actionWire->isChecked());
+    viewManager->repaintAll();
+}
+
+void MainWindow::on_actionWire_triggered(bool checked)
+{
+    if (!checked) {
+        ui->actionSolid->setChecked(true);
+    }
+    modelManager->setDrawSolid(ui->actionSolid->isChecked());
+    modelManager->setDrawWire(checked);
+    viewManager->repaintAll();
+}

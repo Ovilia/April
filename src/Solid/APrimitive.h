@@ -4,12 +4,14 @@
 #include <QString>
 
 #include "Vector3d.h"
+#include "Vector3i.h"
 
 class APrimitive
 {
 public:
     APrimitive(const QString& name = "Primitive");
-    virtual ~APrimitive();
+    // virtual destructor to make this class abstract
+    virtual ~APrimitive() = 0;
 
     enum PrimitiveType {
         PT_NONE = 0,
@@ -22,9 +24,9 @@ public:
     };
 
     // draw model with certain style
-    virtual void drawWire() = 0;
-    virtual void drawSolid() = 0;
-    // draw help functions dealing with color, rotate and so on
+    void drawWire();
+    void drawSolid();
+    // draw help functions dealing with rotate and so on
     // to be called before and after drawWire and drawSolid
     void drawBefore();
     void drawAfter();
@@ -71,10 +73,19 @@ protected:
     // rgba color within [0, 1], with index of RGB_INDEX
     // it is originally set to be random
     Vector3d color;
+    // color used when drawWire
+    Vector3d wireColor;
     // random color to be used when init
     static const int RANDOM_COLOR_COUNT = 12;
     static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][3];
 
+    // vertex position
+    int vertexCount;
+    Vector3d* vertexArray;
+
+    // vertex pair to make triangle faces, not the real face count
+    int faceCount;
+    Vector3i* faceArray;
 };
 
 #endif // APRILPRIMITIVE_H

@@ -3,18 +3,13 @@
 
 #include "APrimitive.h"
 
-class ACylinder : APrimitive
+class ACylinder : public APrimitive
 {
 public:
     ACylinder(double radius, int slices, double height);
     ~ACylinder();
 
-    virtual void drawWire();
-    virtual void drawSolid();
-
 protected:
-    virtual void setOctree();
-
     double radius;
     int slices;
     double height;

@@ -9,9 +9,6 @@ public:
     APyramid(double sideLength, int sideCount = 3);
     ~APyramid();
 
-    virtual void drawWire();
-    virtual void drawSolid();
-
 protected:
     double sideLength;
     int sideCount;

@@ -78,3 +78,8 @@ void ViewManager::repaintAll()
         }
     }
 }
+
+ToolWidget* ViewManager::getToolWidget()
+{
+    return toolWidget;
+}

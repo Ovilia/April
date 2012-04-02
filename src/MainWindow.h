@@ -45,6 +45,10 @@ private slots:
 
     void on_actionSelect_triggered(bool checked);
 
+    void on_actionSolid_triggered(bool checked);
+
+    void on_actionWire_triggered(bool checked);
+
 private:
     Ui::MainWindow *ui;
 

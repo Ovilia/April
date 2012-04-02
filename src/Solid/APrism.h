@@ -9,9 +9,6 @@ public:
     APrism(double length, double sideLength, int sideCount = 3);
     ~APrism();
 
-    virtual void drawWire();
-    virtual void drawSolid();
-
 protected:
     double length;
     double sideLength;

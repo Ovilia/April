@@ -11,7 +11,7 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
 
     widthHeightRatio(1.0),
 
-    clearColor(0.7, 0.7, 0.7),
+    clearColor(0.9, 0.9, 0.9),
 
     //scaleOnceRatio(5.0),
     zoomInRatio(0.9),
@@ -38,8 +38,8 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     mouseLastY(0),
 
     mainPlainSize(1.0),
-    mainPlainColor(0.3, 0.3, 0.3),
-    axisLength(0.5),
+    mainPlainColor(0.7, 0.7, 0.7),
+    axisLength(0.8),
     arrowLength(0.05)
 {
     setMinimumSize(100, 100);
@@ -132,17 +132,15 @@ void AGLWidget::paintGL()
     glRotated(orthoZRotate, 0.0, 0.0, 1.0);
 
     drawMainPlain();
+
+    if (modelManager->getIsDrawSolid()) {
+        modelManager->drawSolid();
+    }
+    if (modelManager->getIsDrawWire()) {
+        modelManager->drawWire();
+    }
+
     drawAxis();
-
-    modelManager->drawSolid();
-
-    glColor3d(0.0, 0.0, 0.3);
-    glBegin(GL_LINES);
-    glVertex3d(1.0, 0.0, 0.0);
-    glVertex3d(0.0, 1.0, 0.0);
-    glVertex3d(1.0, 0.0, 0.0);
-    glVertex3d(0.0, -1.0, 0.0);
-    glEnd();
 
     // pop rotate ortho view
     glPopMatrix();
@@ -150,24 +148,21 @@ void AGLWidget::paintGL()
 
 void AGLWidget::drawMainPlain()
 {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDisable(GL_DEPTH_TEST);
-
     // plain
-    glColor4d(mainPlainColor.x, mainPlainColor.y,
-              mainPlainColor.z, 0.5);
+    glColor3d(mainPlainColor.x, mainPlainColor.y, mainPlainColor.z);
     glBegin(GL_QUADS);
     glVertex3d(-mainPlainSize, 0, -mainPlainSize);
     glVertex3d(mainPlainSize, 0, -mainPlainSize);
     glVertex3d(mainPlainSize, 0, mainPlainSize);
     glVertex3d(-mainPlainSize, 0, mainPlainSize);
     glEnd();
-    glDisable(GL_BLEND);
 }
 
 void AGLWidget::drawAxis()
 {
+    // disable depth test to always draw axis
+    glDisable(GL_DEPTH_TEST);
+
     // x axis
     glColor3d(1.0, 0.0, 0.0);
     glBegin(GL_LINES);
@@ -200,6 +195,8 @@ void AGLWidget::drawAxis()
     glVertex3d(0.0, 0.0, axisLength);
     glVertex3d(arrowLength, 0.0, axisLength - arrowLength);
     glEnd();
+
+    glEnable(GL_DEPTH_TEST);
 }
 
 void AGLWidget::resizeGL(int width, int height)
@@ -243,12 +240,6 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
             orthoBottom += moveUp;
             break;
         }
-
-//        case VM_ZOOM_IN:
-//        {
-//            // currently zoom in with mouse dragging is not implemented
-//            break;
-//        }
 
         default:
             break;

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
+    <width>670</width>
     <height>430</height>
    </rect>
   </property>
@@ -44,7 +44,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>552</width>
+     <width>670</width>
      <height>22</height>
     </rect>
    </property>
@@ -74,6 +74,8 @@
     <addaction name="actionModelMove"/>
     <addaction name="actionModelRotate"/>
     <addaction name="actionModelScale"/>
+    <addaction name="actionSolid"/>
+    <addaction name="actionWire"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -115,6 +117,9 @@
    <addaction name="actionRotate_Y"/>
    <addaction name="actionRotate_Z"/>
    <addaction name="actionSelect"/>
+   <addaction name="separator"/>
+   <addaction name="actionSolid"/>
+   <addaction name="actionWire"/>
    <addaction name="separator"/>
    <addaction name="actionModelMove"/>
    <addaction name="actionModelRotate"/>
@@ -300,6 +305,33 @@
    </property>
    <property name="text">
     <string>Select</string>
+   </property>
+  </action>
+  <action name="actionSolid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/solid.png</normaloff>:/image/images/solid.png</iconset>
+   </property>
+   <property name="text">
+    <string>View as solid</string>
+   </property>
+  </action>
+  <action name="actionWire">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/wire.png</normaloff>:/image/images/wire.png</iconset>
+   </property>
+   <property name="text">
+    <string>View as wire</string>
    </property>
   </action>
  </widget>

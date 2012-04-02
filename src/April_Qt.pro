@@ -39,7 +39,8 @@ HEADERS += \
     ToolWidget.h \
     Solid/APrimitive.h \
     StateEnum.h \
-    ACreateDialog.h
+    ACreateDialog.h \
+    Vector3i.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -56,7 +57,8 @@ SOURCES += \
     ViewManager.cpp \
     ViewWidget.cpp \
     ToolWidget.cpp \
-    ACreateDialog.cpp
+    ACreateDialog.cpp \
+    Vector3i.cpp
 
 RESOURCES += \
     resource.qrc

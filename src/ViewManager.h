@@ -28,6 +28,8 @@ public:
     void setViewMode(StateEnum::ViewMode mode);
     StateEnum::ViewMode getViewMode();
 
+    ToolWidget* getToolWidget();
+
     void setBestFit();
 
     void repaintAll();

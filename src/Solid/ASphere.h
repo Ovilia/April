@@ -9,9 +9,6 @@ public:
     ASphere(double radius, int slices, int stacks);
     ~ASphere();
 
-    virtual void drawWire();
-    virtual void drawSolid();
-
 protected:
     double radius;
     int slices;

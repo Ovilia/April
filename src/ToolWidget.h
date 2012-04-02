@@ -22,6 +22,8 @@ class ToolWidget : public QWidget
 public:
     explicit ToolWidget(MainWindow* mainWindow, QWidget *parent = 0);
     ~ToolWidget();
+
+    void updateModelBox();
     
 private slots:
     void on_cubeButton_clicked(bool checked);

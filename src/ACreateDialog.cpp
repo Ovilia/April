@@ -47,6 +47,33 @@ void ACreateDialog::on_okButton_clicked()
                                  ui->cubeHeightSpin->value());
         break;
 
+    case APrimitive::PT_CONE:
+        modelManager->insertCone(ui->coneRadiusSpin->value(),
+                                 ui->coneSlicesSpin->value(),
+                                 ui->coneHeightSpin->value());
+        break;
+
+    case APrimitive::PT_CYLINDER:
+        modelManager->insertCylinder(ui->cylinderRadiusSpin->value(),
+                                     ui->cylinderSlicesSpin->value(),
+                                     ui->cylinderHeightSpin->value());
+        break;
+
+    case APrimitive::PT_PRISM:
+        modelManager->insertPrism(ui->prismLengthSpin->value(),
+                                  ui->prismSideSpin->value());
+        break;
+
+    case APrimitive::PT_PYRAMID:
+        modelManager->insertPyramid(ui->pyramidSideSpin->value());
+        break;
+
+    case APrimitive::PT_SPHERE:
+        modelManager->insertSphere(ui->sphereRadiusSpin->value(),
+                                   ui->sphereSlicesSpin->value(),
+                                   ui->sphereStacksSpin->value());
+        break;
+
     default:
         break;
     }

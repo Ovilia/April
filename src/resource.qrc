@@ -19,5 +19,7 @@
         <file>images/scene_rotate_x.png</file>
         <file>images/select.png</file>
         <file>images/logo.png</file>
+        <file>images/wire.png</file>
+        <file>images/solid.png</file>
     </qresource>
 </RCC>

@@ -1,5 +1,12 @@
+#include <map>
+
+#include <QString>
+
 #include "ToolWidget.h"
 #include "ui_ToolWidget.h"
+
+#include "ModelManager.h"
+#include "Solid/ASolid.h"
 
 ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     QWidget(parent),
@@ -127,4 +134,15 @@ void ToolWidget::on_pyramidButton_clicked(bool checked)
 //        createPrmType = APrimitive::PT_NONE;
 //    }
     showCreateDialog();
+}
+
+void ToolWidget::updateModelBox()
+{
+    ui->modelBox->clear();
+    ModelManager* modelManager = mainWindow->getModelManager();
+    map<QString, ASolid*>* solid = modelManager->getSolidMap();
+    map<QString, ASolid*>::iterator iter;
+    for (iter = solid->begin(); iter != solid->end(); ++iter) {
+        ui->modelBox->addItem(iter->first);
+    }
 }

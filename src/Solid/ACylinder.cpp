@@ -13,18 +13,3 @@ ACylinder::~ACylinder()
 {
 
 }
-
-void ACylinder::drawWire()
-{
-
-}
-
-void ACylinder::drawSolid()
-{
-
-}
-
-void ACylinder::setOctree()
-{
-
-}

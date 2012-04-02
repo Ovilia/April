@@ -15,13 +15,3 @@ APyramid::~APyramid()
 {
 
 }
-
-void APyramid::drawWire()
-{
-
-}
-
-void APyramid::drawSolid()
-{
-
-}

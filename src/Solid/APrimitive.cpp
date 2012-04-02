@@ -26,7 +26,12 @@ APrimitive::APrimitive(const QString& name) :
     rotate(0.0, 0.0, 0.0),
     scale(1.0, 1.0, 1.0),
     translate(0.0, 0.0, 0.0),
-    isSelected(false)
+    isSelected(false),
+    wireColor(Vector3d(0.3, 0.3, 0.3)),
+    vertexCount(0),
+    vertexArray(0),
+    faceCount(0),
+    faceArray(0)
 {
     // set random color
     srand((unsigned)time(0));
@@ -38,6 +43,12 @@ APrimitive::APrimitive(const QString& name) :
 
 APrimitive::~APrimitive()
 {
+    if (vertexArray) {
+        delete []vertexArray;
+    }
+    if (faceArray) {
+        delete []faceArray;
+    }
 }
 
 void APrimitive::drawBefore()
@@ -49,12 +60,58 @@ void APrimitive::drawBefore()
     glRotated(rotate.z, 0.0, 0.0, 1.0);
     glScaled(scale.x, scale.y, scale.z);
     glTranslated(translate.x, translate.y, translate.z);
+}
 
-    glColor3d(color.x, color.y, color.z);
+void APrimitive::drawSolid()
+{
+    drawBefore();
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
+    glColor4d(color.x, color.y, color.z, 0.75);
+
+    drawAfter();
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+}
+
+void APrimitive::drawWire()
+{
+    drawBefore();
+
+    glColor3d(wireColor.x, wireColor.y, wireColor.z);
+
+    // draw as line
+    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_BACK, GL_LINE);
+
+    drawAfter();
+
+    // resolve drawing as fill
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glPolygonMode(GL_BACK, GL_FILL);
 }
 
 void APrimitive::drawAfter()
 {
+    glBegin(GL_TRIANGLES);
+    for (int face = 0; face < faceCount; ++face) {
+        int vertex = faceArray[face].x;
+        glVertex3d(vertexArray[vertex].x,
+                   vertexArray[vertex].y,
+                   vertexArray[vertex].z);
+        vertex = faceArray[face].y;
+        glVertex3d(vertexArray[vertex].x,
+                   vertexArray[vertex].y,
+                   vertexArray[vertex].z);
+        vertex = faceArray[face].z;
+        glVertex3d(vertexArray[vertex].x,
+                   vertexArray[vertex].y,
+                   vertexArray[vertex].z);
+    }
+    glEnd();
+
     glPopMatrix();
 }
 

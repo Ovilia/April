@@ -17,12 +17,6 @@ public:
     explicit AGLWidget(ModelManager* modelManager, QWidget *parent = 0);
     ~AGLWidget();
 
-    enum DrawColor {
-        // RGB color, used only when it is in special state (e.g.: selected)
-        DS_DEFAULT = 0x000000,
-        DS_SELECTED = 0xFFFFFF
-    };
-
     void setViewMode(StateEnum::ViewMode mode);
     StateEnum::ViewMode getViewMode();
 

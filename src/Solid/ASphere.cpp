@@ -13,13 +13,3 @@ ASphere::~ASphere()
 {
 
 }
-
-void ASphere::drawWire()
-{
-
-}
-
-void ASphere::drawSolid()
-{
-
-}
