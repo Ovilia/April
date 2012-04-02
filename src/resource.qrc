@@ -14,5 +14,8 @@
         <file>images/prism.png</file>
         <file>images/cylinder.png</file>
         <file>images/cone.png</file>
+        <file>images/scene_rotate_z.png</file>
+        <file>images/scene_rotate_y.png</file>
+        <file>images/scene_rotate_x.png</file>
     </qresource>
 </RCC>

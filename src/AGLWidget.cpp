@@ -2,6 +2,8 @@
 #include <QMouseEvent>
 #include <QtOpenGL/qgl.h>
 
+#include <QDebug>
+
 #include "AGLWidget.h"
 
 AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
@@ -21,12 +23,12 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     orthoRight(1.0),
     orthoBottom(-1.0),
     orthoTop(1.0),
-    orthoNear(0.0),
+    orthoNear(-100.0),
     orthoFar(100.0),
-    orthoXRotate(0.0),
-    orthoYRotate(0.0),
+    orthoXRotate(45.0),
+    orthoYRotate(45.0),
     orthoZRotate(0.0),
-    rotateRatio(5),
+    rotateRatio(10.0),
 
     viewPortX(0),
     viewPortY(0),
@@ -37,10 +39,10 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     mouseLastX(0),
     mouseLastY(0),
 
-    mainPlainSize(0.5),
-    mainGridCount(10),
+    mainPlainSize(1.0),
     mainPlainColor(0.3, 0.3, 0.3),
-    mainGridColor(0.9, 0.9, 0.9)
+    axisLength(0.5),
+    arrowLength(0.05)
 {
     setMinimumSize(100, 100);
     resize(600, 800);
@@ -127,13 +129,15 @@ void AGLWidget::paintGL()
     glLoadIdentity();
     // rotate ortho view
     glPushMatrix();
-    if (orthoXRotate) {
-        glRotated(orthoXRotate, 1.0, 0.0, 0.0);
-        glRotated(orthoYRotate, 0.0, 1.0, 0.0);
-        glRotated(orthoZRotate, 0.0, 0.0, 1.0);
-    }
+    glRotated(orthoXRotate, 1.0, 0.0, 0.0);
+    glRotated(orthoYRotate, 0.0, 1.0, 0.0);
+    glRotated(orthoZRotate, 0.0, 0.0, 1.0);
+    //glRotated(orthoAngle, orthoXRotate, orthoYRotate, orthoZRotate);
+    qDebug() << orthoXRotate << "\t" <<
+                orthoYRotate << "\t" << orthoZRotate;
 
     drawMainPlain();
+    drawAxis();
 
     glColor3d(0.0, 0.0, 0.3);
     glBegin(GL_LINES);
@@ -151,28 +155,55 @@ void AGLWidget::paintGL()
 
 void AGLWidget::drawMainPlain()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_DEPTH_TEST);
+
     // plain
-    glColor3d(mainPlainColor.getX(), mainPlainColor.getY(),
-              mainPlainColor.getZ());
+    glColor4d(mainPlainColor.getX(), mainPlainColor.getY(),
+              mainPlainColor.getZ(), 0.5);
     glBegin(GL_QUADS);
     glVertex3d(-mainPlainSize, 0, -mainPlainSize);
     glVertex3d(mainPlainSize, 0, -mainPlainSize);
     glVertex3d(mainPlainSize, 0, mainPlainSize);
     glVertex3d(-mainPlainSize, 0, mainPlainSize);
     glEnd();
+    glDisable(GL_BLEND);
+}
 
-    // grid
-    glColor4d(mainGridColor.getX(), mainGridColor.getY(),
-              mainGridColor.getZ(), 0.5);
+void AGLWidget::drawAxis()
+{
+    // x axis
+    glColor3d(1.0, 0.0, 0.0);
     glBegin(GL_LINES);
-    double sum = 0;
-    for (int i = 0; i <= mainGridCount; ++i) {
-        glVertex3d(-mainPlainSize, 0, -mainPlainSize + sum);
-        glVertex3d(mainPlainSize, 0, -mainPlainSize + sum);
-        glVertex3d(-mainPlainSize + sum, 0, -mainPlainSize);
-        glVertex3d(-mainPlainSize + sum, 0, mainPlainSize);
-        sum += mainPlainSize / mainGridCount;
-    }
+    glVertex3d(0.0, 0.0, 0.0);
+    glVertex3d(axisLength, 0.0, 0.0);
+    glVertex3d(axisLength, 0.0, 0.0);
+    glVertex3d(axisLength - arrowLength, 0.0, -arrowLength);
+    glVertex3d(axisLength, 0.0, 0.0);
+    glVertex3d(axisLength - arrowLength, 0.0, arrowLength);
+    glEnd();
+
+    // y axis
+    glColor3d(0.0, 1.0, 0.0);
+    glBegin(GL_LINES);
+    glVertex3d(0.0, 0.0, 0.0);
+    glVertex3d(0.0, axisLength, 0.0);
+    glVertex3d(0.0, axisLength, 0.0);
+    glVertex3d(0.0, axisLength - arrowLength, -arrowLength);
+    glVertex3d(0.0, axisLength, 0.0);
+    glVertex3d(0.0, axisLength - arrowLength, arrowLength);
+    glEnd();
+
+    // z axis
+    glColor3d(0.0, 0.0, 1.0);
+    glBegin(GL_LINES);
+    glVertex3d(0.0, 0.0, 0.0);
+    glVertex3d(0.0, 0.0, axisLength);
+    glVertex3d(0.0, 0.0, axisLength);
+    glVertex3d(-arrowLength, 0.0, axisLength - arrowLength);
+    glVertex3d(0.0, 0.0, axisLength);
+    glVertex3d(arrowLength, 0.0, axisLength - arrowLength);
     glEnd();
 }
 
@@ -278,9 +309,4 @@ void AGLWidget::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
-}
-
-void AGLWidget::mouseDoubleClickEvent(QMouseEvent *)
-{
-    rotateX();
 }

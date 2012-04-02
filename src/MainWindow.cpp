@@ -13,6 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
     viewManager = new ViewManager(modelManager, this);
 
     ui->centerLayout->addWidget(viewManager);
+
+    // TODO: this is the buttons not implemented
+    ui->actionBest_fit->setVisible(false);
+    ui->actionModelMove->setVisible(false);
+    ui->actionModelScale->setVisible(false);
+    ui->actionModelRotate->setVisible(false);
+    ui->actionRotate->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -69,4 +76,19 @@ void MainWindow::on_actionBest_fit_triggered()
     ui->actionZoom_in->setChecked(false);
     ui->actionZoom_out->setChecked(false);
     ui->actionRotate->setChecked(false);
+}
+
+void MainWindow::on_actionRotate_X_triggered()
+{
+    viewManager->getSelectedWidget()->getAglWidget()->rotateX();
+}
+
+void MainWindow::on_actionRotate_Y_triggered()
+{
+    viewManager->getSelectedWidget()->getAglWidget()->rotateY();
+}
+
+void MainWindow::on_actionRotate_Z_triggered()
+{
+    viewManager->getSelectedWidget()->getAglWidget()->rotateZ();
 }

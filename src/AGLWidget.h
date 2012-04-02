@@ -49,7 +49,6 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent *);
 
 private:
     ModelManager* modelManager;
@@ -93,10 +92,13 @@ private:
 
     // main xOz plain, used to draw scene center location
     double mainPlainSize;
-    int mainGridCount;
     Vector3d mainPlainColor;
-    Vector3d mainGridColor;
     void drawMainPlain();
+
+    // x y z axis
+    double axisLength;
+    double arrowLength;
+    void drawAxis();
 };
 
 #endif // AGLWIDGET_H
