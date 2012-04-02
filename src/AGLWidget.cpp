@@ -52,11 +52,6 @@ AGLWidget::~AGLWidget()
 
 }
 
-void AGLWidget::repaint()
-{
-    paintGL();
-}
-
 void AGLWidget::setViewMode(StateEnum::ViewMode mode)
 {
     viewMode = mode;
@@ -73,7 +68,7 @@ void AGLWidget::zoomIn()
     orthoRight *= zoomInRatio;
     orthoBottom *= zoomInRatio;
     orthoTop *= zoomInRatio;
-    paintGL();
+    repaint();
 }
 
 void AGLWidget::zoomOut()
@@ -82,7 +77,7 @@ void AGLWidget::zoomOut()
     orthoRight *= zoomOutRatio;
     orthoBottom *= zoomOutRatio;
     orthoTop *= zoomOutRatio;
-    paintGL();
+    repaint();
 }
 
 void AGLWidget::rotateX()
@@ -91,7 +86,7 @@ void AGLWidget::rotateX()
     if (orthoXRotate > 360.0) {
         orthoXRotate -= 360.0;
     }
-    paintGL();
+    repaint();
 }
 
 void AGLWidget::rotateY()
@@ -100,7 +95,7 @@ void AGLWidget::rotateY()
     if (orthoYRotate > 360.0) {
         orthoYRotate -= 360.0;
     }
-    paintGL();
+    repaint();
 }
 
 void AGLWidget::rotateZ()
@@ -109,7 +104,7 @@ void AGLWidget::rotateZ()
     if (orthoZRotate > 360.0) {
         orthoZRotate -= 360.0;
     }
-    paintGL();
+    repaint();
 }
 
 void AGLWidget::initializeGL()
@@ -151,8 +146,6 @@ void AGLWidget::paintGL()
 
     // pop rotate ortho view
     glPopMatrix();
-
-    repaint();
 }
 
 void AGLWidget::drawMainPlain()
@@ -264,7 +257,7 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
         // set current position to be last position
         mouseLastX = event->x();
         mouseLastY = event->y();
-        paintGL();
+        repaint();
     }
 }
 

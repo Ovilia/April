@@ -50,4 +50,5 @@ void ACreateDialog::on_okButton_clicked()
     default:
         break;
     }
+    close();
 }

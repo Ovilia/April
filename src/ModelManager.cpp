@@ -38,6 +38,8 @@ void ModelManager::insertToMap(APrimitive* primitive)
     ASolid* solid = new ASolid(nextPrimiID, primitive, solidName);
     solidMap.insert(pair<QString, ASolid*>(solidName, solid));
 
+    mainWindow->getViewManager()->repaintAll();
+
     ++nextPrimiID;
     ++nextSolidID;
 }
