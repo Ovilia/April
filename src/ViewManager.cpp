@@ -1,17 +1,17 @@
 #include "ViewManager.h"
 
-ViewManager::ViewManager(ModelManager* modelManager, QWidget *parent) :
+ViewManager::ViewManager(MainWindow* mainWindow, QWidget *parent) :
     QMdiArea(parent),
     preferedViewerAmt(1)
 {
     // tool widget
-    toolWidget = new ToolWidget(this);
+    toolWidget = new ToolWidget(mainWindow);
     addSubWindow(toolWidget);
     toolWidget->move(0, 0);
 
     // init viewWidget widgets
     for (int i = 0; i < MAX_VIEWER_AMT; ++i) {
-        viewWidget[i] = new ViewWidget(modelManager);
+        viewWidget[i] = new ViewWidget(mainWindow->getModelManager());
         addSubWindow(viewWidget[i]);
         viewWidget[i]->move(DEFAULT_AGL_X, DEFAULT_AGL_Y);
         viewWidget[i]->resize(DEFAULT_AGL_WIDTH, DEFAULT_AGL_HEIGHT);

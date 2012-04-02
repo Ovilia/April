@@ -26,7 +26,8 @@ public:
 //        VM_ZOOM_IN,
 //        VM_ZOOM_OUT,
         VM_ROTATE,
-        VM_CREATE
+        VM_CREATE,
+        VM_SELECT
     };
 
     void setViewMode(ViewMode mode);

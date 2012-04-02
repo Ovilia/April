@@ -4,17 +4,18 @@
 #include <QMdiArea>
 
 #include "AGLWidget.h"
-#include "ModelManager.h"
+#include "MainWindow.h"
 #include "ToolWidget.h"
 #include "ViewWidget.h"
 
+class MainWindow;
 class ToolWidget;
 
 class ViewManager : public QMdiArea
 {
     Q_OBJECT
 public:
-    explicit ViewManager(ModelManager* modelManager, QWidget *parent = 0);
+    explicit ViewManager(MainWindow* mainWindow, QWidget *parent = 0);
     ~ViewManager();
 
     void showWidget(const int count);
@@ -27,6 +28,8 @@ public:
     void setBestFit();
 
 private:
+    MainWindow* mainWindow;
+
     // widget to show model under different views
     static const int MAX_VIEWER_AMT = 6;
     int preferedViewerAmt;

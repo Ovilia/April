@@ -1,24 +1,31 @@
 #ifndef APRILSOLID_H
 #define APRILSOLID_H
 
+#include <QString>
+
 #include "APrimitive.h"
 
-class ASolid : public APrimitive
+class ASolid
 {
 public:
     enum BoolOperation {
-        BO_NONE,
+        BO_PRIMITIVE = 0,
         BO_INTERSECTION,
         BO_UNION,
         BO_DIFFERENCE
     };
 
-    ASolid(ASolid* leftChild, ASolid* rightChild = 0,
-           BoolOperation operation = BO_NONE);
+    ASolid(int primitiveID, APrimitive* primitive,
+           const QString& name = "Solid");
+    ASolid(ASolid* leftChild, ASolid* rightChild,
+           BoolOperation operation, const QString& name = "Solid");
     ~ASolid();
 
-    virtual void drawWire();
-    virtual void drawSolid();
+    QString getName() const;
+    void setName(const QString& name);
+
+    void drawWire();
+    void drawSolid();
 
     ASolid* getLeftChild();
     ASolid* getRightChild();
@@ -29,9 +36,17 @@ public:
     void setOperation(BoolOperation operation);
 
 private:
+    QString name;
+
     ASolid* leftChild;
     ASolid* rightChild;
     BoolOperation operation;
+
+    // used if is leaf
+    APrimitive* primitive;
+    // unique! used to identify different primitive, allocated by ModelManager
+    // should not be changed within ASolid
+    int primitiveID;
 };
 
 #endif // APRILSOLID_H

@@ -3,21 +3,22 @@
 
 #include <QWidget>
 
+#include "CreateDialog.h"
 #include "Solid/APrimitive.h"
-#include "ViewManager.h"
+#include "MainWindow.h"
 
 namespace Ui {
 class ToolWidget;
 }
 
-class ViewManager;
+class MainWindow;
 
 class ToolWidget : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit ToolWidget(ViewManager* viewManager, QWidget *parent = 0);
+    explicit ToolWidget(MainWindow* mainWindow, QWidget *parent = 0);
     ~ToolWidget();
     
 private slots:
@@ -36,7 +37,11 @@ private slots:
 private:
     Ui::ToolWidget *ui;
 
-    ViewManager* viewManager;
+    MainWindow* mainWindow;
+
+    // currently used for create primitives
+    CreateDialog* createDialog;
+    void showCreateDialog();
 
     // used when create primitive
     APrimitive::PrimitiveType createPrmType;

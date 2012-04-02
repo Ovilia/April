@@ -1,7 +1,7 @@
 #include "ASphere.h"
 
 ASphere::ASphere(double radius, int slices, int stacks) :
-    APrimitive(radius, radius, radius),
+    APrimitive(),
     radius(radius),
     slices(slices),
     stacks(stacks)

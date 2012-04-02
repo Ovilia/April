@@ -6,7 +6,7 @@
 class APrism : public APrimitive
 {
 public:
-    APrism(double length, double sideLength, int sideCount);
+    APrism(double length, double sideLength, int sideCount = 3);
     ~APrism();
 
     virtual void drawWire();

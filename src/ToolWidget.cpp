@@ -1,10 +1,10 @@
 #include "ToolWidget.h"
 #include "ui_ToolWidget.h"
 
-ToolWidget::ToolWidget(ViewManager* viewManager, QWidget *parent) :
+ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolWidget),
-    viewManager(viewManager),
+    mainWindow(mainWindow),
     createPrmType(APrimitive::PT_NONE)
 {
     ui->setupUi(this);
@@ -13,12 +13,27 @@ ToolWidget::ToolWidget(ViewManager* viewManager, QWidget *parent) :
 ToolWidget::~ToolWidget()
 {
     delete ui;
+    if (createDialog) {
+        delete createDialog;
+    }
+}
+
+void ToolWidget::showCreateDialog()
+{
+    // TODO: currently use CreateDialog to create primitives,
+    // improve later with dragging
+    if (!createDialog) {
+        createDialog = new CreateDialog(createPrmType, this);
+    } else {
+        createDialog->changePrimitive(createPrmType);
+    }
+    createDialog->exec();
 }
 
 void ToolWidget::on_cubeButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_CUBE;
     if (checked) {
-        createPrmType = APrimitive::PT_CUBE;
         // uncheck other buttons
         ui->sphereButton->setChecked(false);
         ui->cylinderButton->setChecked(false);
@@ -28,12 +43,13 @@ void ToolWidget::on_cubeButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }
 
 void ToolWidget::on_sphereButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_SPHERE;
     if (checked) {
-        createPrmType = APrimitive::PT_SPHERE;
         // uncheck other buttons
         ui->cubeButton->setChecked(false);
         ui->cylinderButton->setChecked(false);
@@ -43,12 +59,13 @@ void ToolWidget::on_sphereButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }
 
 void ToolWidget::on_cylinderButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_CYLINDER;
     if (checked) {
-        createPrmType = APrimitive::PT_CYLINDER;
         // uncheck other buttons
         ui->sphereButton->setChecked(false);
         ui->cubeButton->setChecked(false);
@@ -58,12 +75,13 @@ void ToolWidget::on_cylinderButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }
 
 void ToolWidget::on_coneButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_CONE;
     if (checked) {
-        createPrmType = APrimitive::PT_CONE;
         // uncheck other buttons
         ui->sphereButton->setChecked(false);
         ui->cylinderButton->setChecked(false);
@@ -73,12 +91,13 @@ void ToolWidget::on_coneButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }
 
 void ToolWidget::on_prismButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_PRISM;
     if (checked) {
-        createPrmType = APrimitive::PT_PRISM;
         // uncheck other buttons
         ui->sphereButton->setChecked(false);
         ui->cylinderButton->setChecked(false);
@@ -88,12 +107,13 @@ void ToolWidget::on_prismButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }
 
 void ToolWidget::on_pyramidButton_clicked(bool checked)
 {
+    createPrmType = APrimitive::PT_PYRAMID;
     if (checked) {
-        createPrmType = APrimitive::PT_PYRAMID;
         // uncheck other buttons
         ui->sphereButton->setChecked(false);
         ui->cylinderButton->setChecked(false);
@@ -103,4 +123,5 @@ void ToolWidget::on_pyramidButton_clicked(bool checked)
     } else {
         createPrmType = APrimitive::PT_NONE;
     }
+    showCreateDialog();
 }

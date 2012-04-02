@@ -45,7 +45,7 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="basicPage">
           <property name="geometry">
@@ -53,7 +53,7 @@
             <x>0</x>
             <y>0</y>
             <width>180</width>
-            <height>183</height>
+            <height>195</height>
            </rect>
           </property>
           <attribute name="label">
@@ -102,7 +102,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -137,7 +137,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -169,7 +169,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -201,7 +201,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -233,7 +233,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -265,7 +265,7 @@
                 </size>
                </property>
                <property name="checkable">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
               </widget>
              </item>

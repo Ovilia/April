@@ -1,7 +1,7 @@
 #include "APyramid.h"
 
 APyramid::APyramid(double sideLength, int sideCount) :
-    APrimitive(sideLength, sideLength),
+    APrimitive(),
     sideLength(sideLength),
     sideCount(sideCount)
 {

@@ -6,7 +6,7 @@
 class APyramid : public APrimitive
 {
 public:
-    APyramid(double sideLength, int sideCount);
+    APyramid(double sideLength, int sideCount = 3);
     ~APyramid();
 
     virtual void drawWire();

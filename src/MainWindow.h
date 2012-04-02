@@ -7,6 +7,9 @@
 #include "ModelManager.h"
 #include "ViewManager.h"
 
+class ToolWidget;
+class ViewManager;
+
 namespace Ui {
     class MainWindow;
 }
@@ -18,6 +21,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    ModelManager* getModelManager();
+    ViewManager* getViewManager();
 
 private slots:
     void on_actionMove_triggered(bool checked);
@@ -35,6 +41,8 @@ private slots:
     void on_actionRotate_Y_triggered();
 
     void on_actionRotate_Z_triggered();
+
+    void on_actionSelect_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/image/images/logo.png</normaloff>:/image/images/logo.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
@@ -89,6 +93,7 @@
     <addaction name="actionRotate_Y"/>
     <addaction name="actionRotate_Z"/>
     <addaction name="actionBest_fit"/>
+    <addaction name="actionSelect"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -101,6 +106,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionBest_fit"/>
    <addaction name="actionMove"/>
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
@@ -108,7 +114,7 @@
    <addaction name="actionRotate_X"/>
    <addaction name="actionRotate_Y"/>
    <addaction name="actionRotate_Z"/>
-   <addaction name="actionBest_fit"/>
+   <addaction name="actionSelect"/>
    <addaction name="separator"/>
    <addaction name="actionModelMove"/>
    <addaction name="actionModelRotate"/>
@@ -282,6 +288,18 @@
    </property>
    <property name="text">
     <string>Rotate Z</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/image/images/select.png</normaloff>:/image/images/select.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select</string>
    </property>
   </action>
  </widget>

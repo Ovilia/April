@@ -23,18 +23,18 @@ const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH] =
     {1.00, 0.75, 1.00, 1.0}
 };
 
-APrimitive::APrimitive(double xScale, double yScale, double zScale) :
+APrimitive::APrimitive(const QString& name) :
+    name(name),
     xRotate(0.0),
     yRotate(0.0),
     zRotate(0.0),
-    xScale(xScale),
-    yScale(yScale),
-    zScale(zScale),
+    xScale(1.0),
+    yScale(1.0),
+    zScale(1.0),
     xTransform(0.0),
     yTransform(0.0),
     zTransform(0.0),
-    isSelected(false),
-    renderDepth(DEFAULT_REANDER_DEPTH)
+    isSelected(false)
 {
     // set random color
     srand((unsigned)time(0));
@@ -48,52 +48,62 @@ APrimitive::~APrimitive()
 {
 }
 
-double APrimitive::getXRotate()
+QString APrimitive::getName() const
+{
+    return name;
+}
+
+void APrimitive::setName(const QString& name)
+{
+    this->name = name;
+}
+
+double APrimitive::getXRotate() const
 {
     return xRotate;
 }
 
-double APrimitive::getYRotate()
+double APrimitive::getYRotate() const
 {
     return yRotate;
 }
 
-double APrimitive::getZRotate()
+double APrimitive::getZRotate() const
 {
     return zRotate;
 }
 
-double APrimitive::getXScale()
+double APrimitive::getXScale() const
 {
     return xScale;
 }
 
-double APrimitive::getYScale()
+double APrimitive::getYScale() const
 {
     return yScale;
 }
 
-double APrimitive::getZScale()
+double APrimitive::getZScale() const
 {
     return zScale;
 }
 
-double APrimitive::getXTransform()
+double APrimitive::getXTransform() const
 {
     return xTransform;
 }
 
-double APrimitive::getYTransform()
+double APrimitive::getYTransform() const
 {
     return yTransform;
 }
 
-double APrimitive::getZTransform()
+double APrimitive::getZTransform() const
 {
     return zTransform;
 }
 
-void APrimitive::setXRotate(double rotate)
+void APrimitive::setXRotate(const double rotate)
 {
 #ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
@@ -101,7 +111,7 @@ void APrimitive::setXRotate(double rotate)
     xRotate = rotate;
 }
 
-void APrimitive::setYRotate(double rotate)
+void APrimitive::setYRotate(const double rotate)
 {
 #ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
@@ -109,7 +119,7 @@ void APrimitive::setYRotate(double rotate)
     yRotate = rotate;
 }
 
-void APrimitive::setZRotate(double rotate)
+void APrimitive::setZRotate(const double rotate)
 {
 #ifdef _DEBUG
     assert(rotate >= 0 && rotate < 360);
@@ -117,7 +127,7 @@ void APrimitive::setZRotate(double rotate)
     zRotate = rotate;
 }
 
-void APrimitive::setXScale(double scale)
+void APrimitive::setXScale(const double scale)
 {
 #ifdef _DEBUG
     assert(scale > 0);
@@ -125,7 +135,7 @@ void APrimitive::setXScale(double scale)
     xScale = scale;
 }
 
-void APrimitive::setYScale(double scale)
+void APrimitive::setYScale(const double scale)
 {
 #ifdef _DEBUG
     assert(scale > 0);
@@ -133,7 +143,7 @@ void APrimitive::setYScale(double scale)
     yScale = scale;
 }
 
-void APrimitive::setZScale(double scale)
+void APrimitive::setZScale(const double scale)
 {
 #ifdef _DEBUG
     assert(scale > 0);
@@ -141,37 +151,27 @@ void APrimitive::setZScale(double scale)
     yScale = scale;
 }
 
-void APrimitive::setXTransform(double transform)
+void APrimitive::setXTransform(const double transform)
 {
     xTransform = transform;
 }
 
-void APrimitive::setYTransform(double transform)
+void APrimitive::setYTransform(const double transform)
 {
     yTransform = transform;
 }
 
-void APrimitive::setZTransform(double transform)
+void APrimitive::setZTransform(const double transform)
 {
     zTransform = transform;
 }
 
-bool APrimitive::getSelected()
+bool APrimitive::getSelected() const
 {
     return isSelected;
 }
 
-void APrimitive::setSelected(bool value)
+void APrimitive::setSelected(const bool value)
 {
     isSelected = value;
-}
-
-int APrimitive::getRenderDepth()
-{
-    return renderDepth;
-}
-
-void APrimitive::setRenderDepth(int depth)
-{
-    renderDepth = depth;
 }

@@ -17,5 +17,7 @@
         <file>images/scene_rotate_z.png</file>
         <file>images/scene_rotate_y.png</file>
         <file>images/scene_rotate_x.png</file>
+        <file>images/select.png</file>
+        <file>images/logo.png</file>
     </qresource>
 </RCC>

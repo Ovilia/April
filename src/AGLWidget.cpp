@@ -2,8 +2,6 @@
 #include <QMouseEvent>
 #include <QtOpenGL/qgl.h>
 
-#include <QDebug>
-
 #include "AGLWidget.h"
 
 AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
@@ -132,12 +130,11 @@ void AGLWidget::paintGL()
     glRotated(orthoXRotate, 1.0, 0.0, 0.0);
     glRotated(orthoYRotate, 0.0, 1.0, 0.0);
     glRotated(orthoZRotate, 0.0, 0.0, 1.0);
-    //glRotated(orthoAngle, orthoXRotate, orthoYRotate, orthoZRotate);
-    qDebug() << orthoXRotate << "\t" <<
-                orthoYRotate << "\t" << orthoZRotate;
 
     drawMainPlain();
     drawAxis();
+
+    modelManager->draw();
 
     glColor3d(0.0, 0.0, 0.3);
     glBegin(GL_LINES);

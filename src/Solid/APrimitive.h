@@ -1,12 +1,12 @@
 #ifndef APRILPRIMITIVE_H
 #define APRILPRIMITIVE_H
 
-#include "AOctree.h"
+#include <QString>
 
 class APrimitive
 {
 public:
-    APrimitive(double xScale = 1.0, double yScale = 1.0, double zScale = 1.0);
+    APrimitive(const QString& name = "Primitive");
     virtual ~APrimitive();
 
     enum PrimitiveType {
@@ -31,40 +31,42 @@ public:
     virtual void drawWire() = 0;
     virtual void drawSolid() = 0;
 
-    double getXRotate();
-    double getYRotate();
-    double getZRotate();
+    QString getName() const;
+    void setName(const QString& name);
 
-    double getXScale();
-    double getYScale();
-    double getZScale();
+    double getXRotate() const;
+    double getYRotate() const;
+    double getZRotate() const;
 
-    double getXTransform();
-    double getYTransform();
-    double getZTransform();
+    double getXScale() const;
+    double getYScale() const;
+    double getZScale() const;
+
+    double getXTransform() const;
+    double getYTransform() const;
+    double getZTransform() const;
 
     // rotate within [0, 360)
-    void setXRotate(double rotate);
-    void setYRotate(double rotate);
-    void setZRotate(double rotate);
+    void setXRotate(const double rotate);
+    void setYRotate(const double rotate);
+    void setZRotate(const double rotate);
 
     // scale within (0, infinity)
-    void setXScale(double scale);
-    void setYScale(double scale);
-    void setZScale(double scale);
+    void setXScale(const double scale);
+    void setYScale(const double scale);
+    void setZScale(const double scale);
 
     // transform within (-infinity, infinity)
-    void setXTransform(double transform);
-    void setYTransform(double transform);
-    void setZTransform(double transform);
+    void setXTransform(const double transform);
+    void setYTransform(const double transform);
+    void setZTransform(const double transform);
 
-    bool getSelected();
-    void setSelected(bool value);
-
-    int getRenderDepth();
-    void setRenderDepth(int depth);
+    bool getSelected() const;
+    void setSelected(const bool value);
 
 protected:
+    QString name;
+
     double xRotate;
     double yRotate;
     double zRotate;
@@ -86,9 +88,6 @@ protected:
     static const int RANDOM_COLOR_COUNT = 12;
     static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH];
 
-    // defines max depth of AOctree when rendering
-    static const int DEFAULT_REANDER_DEPTH = 4;
-    int renderDepth;
 };
 
 #endif // APRILPRIMITIVE_H

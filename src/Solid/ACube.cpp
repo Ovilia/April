@@ -1,7 +1,7 @@
 #include "ACube.h"
 
 ACube::ACube(double width, double depth, double height) :
-    APrimitive(width, height, depth),
+    APrimitive(),
     width(width),
     depth(depth),
     height(height)

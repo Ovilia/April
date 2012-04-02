@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     modelManager = new ModelManager();
-    viewManager = new ViewManager(modelManager, this);
+    viewManager = new ViewManager(this, this);
 
     ui->centerLayout->addWidget(viewManager);
 
@@ -29,6 +29,15 @@ MainWindow::~MainWindow()
     delete modelManager;
 }
 
+ModelManager* MainWindow::getModelManager()
+{
+    return modelManager;
+}
+
+ViewManager* MainWindow::getViewManager()
+{
+    return viewManager;
+}
 
 void MainWindow::on_actionMove_triggered(bool checked)
 {
@@ -39,6 +48,7 @@ void MainWindow::on_actionMove_triggered(bool checked)
         ui->actionRotate->setChecked(false);
         ui->actionZoom_in->setChecked(false);
         ui->actionZoom_out->setChecked(false);
+        ui->actionSelect->setChecked(false);
     } else {
         viewManager->setViewMode(AGLWidget::VM_NONE);
     }
@@ -63,6 +73,7 @@ void MainWindow::on_actionRotate_triggered(bool checked)
         ui->actionMove->setChecked(false);
         ui->actionZoom_in->setChecked(false);
         ui->actionZoom_out->setChecked(false);
+        ui->actionSelect->setChecked(false);
     } else {
         viewManager->setViewMode(AGLWidget::VM_NONE);
     }
@@ -71,11 +82,11 @@ void MainWindow::on_actionRotate_triggered(bool checked)
 void MainWindow::on_actionBest_fit_triggered()
 {
     // uncheck other buttons
-    ui->actionBest_fit->setChecked(false);
     ui->actionMove->setChecked(false);
     ui->actionZoom_in->setChecked(false);
     ui->actionZoom_out->setChecked(false);
     ui->actionRotate->setChecked(false);
+    ui->actionSelect->setChecked(false);
 }
 
 void MainWindow::on_actionRotate_X_triggered()
@@ -91,4 +102,19 @@ void MainWindow::on_actionRotate_Y_triggered()
 void MainWindow::on_actionRotate_Z_triggered()
 {
     viewManager->getSelectedWidget()->getAglWidget()->rotateZ();
+}
+
+void MainWindow::on_actionSelect_triggered(bool checked)
+{
+    if (checked) {
+        viewManager->setViewMode(AGLWidget::VM_SELECT);
+        // uncheck other buttons
+        ui->actionBest_fit->setChecked(false);
+        ui->actionMove->setChecked(false);
+        ui->actionZoom_in->setChecked(false);
+        ui->actionZoom_out->setChecked(false);
+        ui->actionRotate->setChecked(false);
+    } else {
+        viewManager->setViewMode(AGLWidget::VM_NONE);
+    }
 }
