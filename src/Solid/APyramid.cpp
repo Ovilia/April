@@ -1,3 +1,5 @@
+#include <qmath.h>
+
 #include "APyramid.h"
 
 APyramid::APyramid(double sideLength, int sideCount) :
@@ -5,7 +7,8 @@ APyramid::APyramid(double sideLength, int sideCount) :
     sideLength(sideLength),
     sideCount(sideCount)
 {
-    // TODO: calculate and set height according to sideCount here
+    // TODO: only calculated when sideCount is 4 now
+    boundingBox = Vector3d(sideLength, sideLength * 0.5 * qSqrt(2), sideLength);
 }
 
 APyramid::~APyramid()

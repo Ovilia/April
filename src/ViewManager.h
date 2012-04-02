@@ -5,11 +5,14 @@
 
 #include "AGLWidget.h"
 #include "MainWindow.h"
+#include "StateEnum.h"
 #include "ToolWidget.h"
 #include "ViewWidget.h"
 
+class AGLWidget;
 class MainWindow;
 class ToolWidget;
+class ViewWidget;
 
 class ViewManager : public QMdiArea
 {
@@ -22,10 +25,12 @@ public:
     // return selected widget
     ViewWidget* getSelectedWidget();
 
-    void setViewMode(AGLWidget::ViewMode mode);
-    AGLWidget::ViewMode getViewMode();
+    void setViewMode(StateEnum::ViewMode mode);
+    StateEnum::ViewMode getViewMode();
 
     void setBestFit();
+
+    void repaintAll();
 
 private:
     MainWindow* mainWindow;
@@ -35,7 +40,7 @@ private:
     int preferedViewerAmt;
     ViewWidget* viewWidget[MAX_VIEWER_AMT];
 
-    AGLWidget::ViewMode viewMode;
+    StateEnum::ViewMode viewMode;
 
     static const int DEFAULT_AGL_X = 260;
     static const int DEFAULT_AGL_Y = 0;

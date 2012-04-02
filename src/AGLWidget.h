@@ -5,7 +5,10 @@
 #include <QMdiSubWindow>
 
 #include "ModelManager.h"
+#include "StateEnum.h"
 #include "Vector3d.h"
+
+class ModelManager;
 
 class AGLWidget : public QGLWidget
 {
@@ -14,24 +17,16 @@ public:
     explicit AGLWidget(ModelManager* modelManager, QWidget *parent = 0);
     ~AGLWidget();
 
+    void repaint();
+
     enum DrawColor {
         // RGB color, used only when it is in special state (e.g.: selected)
         DS_DEFAULT = 0x000000,
         DS_SELECTED = 0xFFFFFF
     };
 
-    enum ViewMode {
-        VM_NONE = 0,
-        VM_MOVE,
-//        VM_ZOOM_IN,
-//        VM_ZOOM_OUT,
-        VM_ROTATE,
-        VM_CREATE,
-        VM_SELECT
-    };
-
-    void setViewMode(ViewMode mode);
-    ViewMode getViewMode();
+    void setViewMode(StateEnum::ViewMode mode);
+    StateEnum::ViewMode getViewMode();
 
     void zoomIn();
     void zoomOut();
@@ -54,7 +49,7 @@ protected:
 private:
     ModelManager* modelManager;
 
-    ViewMode viewMode;
+    StateEnum::ViewMode viewMode;
 
     // value of width / height
     double widthHeightRatio;

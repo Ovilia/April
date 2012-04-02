@@ -1,13 +1,13 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
-#include <QtOpenGL/qgl.h>
+#include <QtOpenGL>
 
 #include "AGLWidget.h"
 
 AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     QGLWidget(parent),
     modelManager(modelManager),
-    viewMode(VM_NONE),
+    viewMode(StateEnum::VM_NONE),
 
     widthHeightRatio(1.0),
 
@@ -52,12 +52,17 @@ AGLWidget::~AGLWidget()
 
 }
 
-void AGLWidget::setViewMode(ViewMode mode)
+void AGLWidget::repaint()
+{
+    paintGL();
+}
+
+void AGLWidget::setViewMode(StateEnum::ViewMode mode)
 {
     viewMode = mode;
 }
 
-AGLWidget::ViewMode AGLWidget::getViewMode()
+StateEnum::ViewMode AGLWidget::getViewMode()
 {
     return viewMode;
 }
@@ -109,7 +114,7 @@ void AGLWidget::rotateZ()
 
 void AGLWidget::initializeGL()
 {
-    glClearColor(clearColor.getX(), clearColor.getY(), clearColor.getZ(), 1.0);
+    glClearColor(clearColor.x, clearColor.y, clearColor.z, 1.0);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -134,7 +139,7 @@ void AGLWidget::paintGL()
     drawMainPlain();
     drawAxis();
 
-    modelManager->draw();
+    modelManager->drawSolid();
 
     glColor3d(0.0, 0.0, 0.3);
     glBegin(GL_LINES);
@@ -157,8 +162,8 @@ void AGLWidget::drawMainPlain()
     glDisable(GL_DEPTH_TEST);
 
     // plain
-    glColor4d(mainPlainColor.getX(), mainPlainColor.getY(),
-              mainPlainColor.getZ(), 0.5);
+    glColor4d(mainPlainColor.x, mainPlainColor.y,
+              mainPlainColor.z, 0.5);
     glBegin(GL_QUADS);
     glVertex3d(-mainPlainSize, 0, -mainPlainSize);
     glVertex3d(mainPlainSize, 0, -mainPlainSize);
@@ -231,7 +236,7 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
     if (isMousePressed)
     {
         switch (viewMode) {
-        case VM_MOVE:
+        case StateEnum::VM_MOVE:
         {
             // scene moves with cursor
             double moveRight = (event->x() - mouseLastX) *
@@ -273,7 +278,7 @@ void AGLWidget::mousePressEvent(QMouseEvent *event)
 
     // set mouse cursor
     switch (viewMode) {
-    case VM_MOVE:
+    case StateEnum::VM_MOVE:
         setCursor(Qt::SizeAllCursor);
         break;
     default:

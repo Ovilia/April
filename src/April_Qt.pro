@@ -24,8 +24,8 @@ contains(QT_CONFIG, opengl) {
 }
 
 HEADERS += \
-    ModelManager.h \
     AGLWidget.h \
+    ModelManager.h \
     ViewManager.h \
     Solid/ASolid.h \
     Solid/ACube.h \
@@ -37,8 +37,9 @@ HEADERS += \
     Vector3d.h \
     ViewWidget.h \
     ToolWidget.h \
-    CreateDialog.h \
-    Solid/APrimitive.h
+    Solid/APrimitive.h \
+    StateEnum.h \
+    ACreateDialog.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -55,11 +56,21 @@ SOURCES += \
     ViewManager.cpp \
     ViewWidget.cpp \
     ToolWidget.cpp \
-    CreateDialog.cpp
+    ACreateDialog.cpp
 
 RESOURCES += \
     resource.qrc
 
 FORMS += \
     ToolWidget.ui \
-    CreateDialog.ui
+    ACreateDialog.ui
+
+
+
+
+
+
+
+
+
+

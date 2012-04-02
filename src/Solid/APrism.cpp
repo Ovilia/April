@@ -1,3 +1,5 @@
+#include <qmath.h>
+
 #include "APrism.h"
 
 APrism::APrism(double length, double sideLength, int sideCount) :
@@ -6,7 +8,7 @@ APrism::APrism(double length, double sideLength, int sideCount) :
     sideLength(sideLength),
     sideCount(sideCount)
 {
-    // TODO: init size in APrimitive
+    boundingBox = Vector3d(sideLength, length, sideLength * 0.5 * qSqrt(3));
 }
 
 APrism::~APrism()

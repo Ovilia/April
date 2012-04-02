@@ -3,9 +3,11 @@
 
 #include <QWidget>
 
-#include "CreateDialog.h"
+#include "ACreateDialog.h"
 #include "Solid/APrimitive.h"
 #include "MainWindow.h"
+
+class ACreateDialog;
 
 namespace Ui {
 class ToolWidget;
@@ -40,7 +42,7 @@ private:
     MainWindow* mainWindow;
 
     // currently used for create primitives
-    CreateDialog* createDialog;
+    ACreateDialog* createDialog;
     void showCreateDialog();
 
     // used when create primitive

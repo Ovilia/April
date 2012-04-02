@@ -15,7 +15,7 @@ public:
         BO_DIFFERENCE
     };
 
-    ASolid(int primitiveID, APrimitive* primitive,
+    ASolid(unsigned int primitiveID, APrimitive* primitive,
            const QString& name = "Solid");
     ASolid(ASolid* leftChild, ASolid* rightChild,
            BoolOperation operation, const QString& name = "Solid");
@@ -46,7 +46,7 @@ private:
     APrimitive* primitive;
     // unique! used to identify different primitive, allocated by ModelManager
     // should not be changed within ASolid
-    int primitiveID;
+    unsigned int primitiveID;
 };
 
 #endif // APRILSOLID_H

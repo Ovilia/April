@@ -6,6 +6,7 @@ ACone::ACone(double radius, int slices, double height) :
     slices(slices),
     height(height)
 {
+    boundingBox = Vector3d(2 * radius, height, 2 * radius);
 }
 
 ACone::~ACone()

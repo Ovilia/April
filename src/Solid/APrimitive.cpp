@@ -1,51 +1,61 @@
-#ifdef _DEBUG
-#include <assert.h>
-#endif
-
 #include <ctime>
 #include <cstdlib>
 
+#include <QtOpenGL/qgl.h>
+
 #include "APrimitive.h"
 
-const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH] =
+const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
 {
-    {0.00, 1.00, 1.00, 1.0},
-    {1.00, 0.00, 1.00, 1.0},
-    {1.00, 1.00, 0.00, 1.0},
-    {0.25, 0.75, 0.75, 1.0},
-    {0.75, 0.25, 0.75, 1.0},
-    {0.75, 0.75, 0.25, 1.0},
-    {0.00, 0.75, 1.00, 1.0},
-    {0.75, 1.00, 0.00, 1.0},
-    {1.00, 0.00, 0.75, 1.0},
-    {0.00, 1.00, 0.75, 1.0},
-    {0.75, 0.00, 1.00, 1.0},
-    {1.00, 0.75, 1.00, 1.0}
+    {0.00, 1.00, 1.00},
+    {1.00, 0.00, 1.00},
+    {1.00, 1.00, 0.00},
+    {0.25, 0.75, 0.75},
+    {0.75, 0.25, 0.75},
+    {0.75, 0.75, 0.25},
+    {0.00, 0.75, 1.00},
+    {0.75, 1.00, 0.00},
+    {1.00, 0.00, 0.75},
+    {0.00, 1.00, 0.75},
+    {0.75, 0.00, 1.00},
+    {1.00, 0.75, 1.00}
 };
 
 APrimitive::APrimitive(const QString& name) :
     name(name),
-    xRotate(0.0),
-    yRotate(0.0),
-    zRotate(0.0),
-    xScale(1.0),
-    yScale(1.0),
-    zScale(1.0),
-    xTransform(0.0),
-    yTransform(0.0),
-    zTransform(0.0),
+    rotate(0.0, 0.0, 0.0),
+    scale(1.0, 1.0, 1.0),
+    translate(0.0, 0.0, 0.0),
     isSelected(false)
 {
     // set random color
     srand((unsigned)time(0));
     int index = rand() % RANDOM_COLOR_COUNT;
-    for (int rgba = 0; rgba < RGBA_LENGTH; ++rgba) {
-        color[rgba] = RANDOM_COLOR[index][rgba];
-    }
+    color.x = RANDOM_COLOR[index][0];
+    color.y = RANDOM_COLOR[index][1];
+    color.z = RANDOM_COLOR[index][2];
 }
 
 APrimitive::~APrimitive()
 {
+}
+
+void APrimitive::drawBefore()
+{
+    glPushMatrix();
+
+    glRotated(rotate.x, 1.0, 0.0, 0.0);
+    glRotated(rotate.y, 0.0, 1.0, 0.0);
+    glRotated(rotate.z, 0.0, 0.0, 1.0);
+    glScaled(scale.x, scale.y, scale.z);
+    glTranslated(translate.x, translate.y, translate.z);
+
+    glColor3d(color.x, color.y, color.z);
+}
+
+void APrimitive::drawAfter()
+{
+    glPopMatrix();
 }
 
 QString APrimitive::getName() const
@@ -58,112 +68,69 @@ void APrimitive::setName(const QString& name)
     this->name = name;
 }
 
-double APrimitive::getXRotate() const
+Vector3d APrimitive::getBoundingBox()
 {
-    return xRotate;
+    return boundingBox;
 }
 
-double APrimitive::getYRotate() const
+Vector3d APrimitive::getRotate() const
 {
-    return yRotate;
+    return rotate;
 }
 
-double APrimitive::getZRotate() const
+Vector3d APrimitive::getScale() const
 {
-    return zRotate;
+    return scale;
 }
 
-double APrimitive::getXScale() const
+Vector3d APrimitive::getTranslate() const
 {
-    return xScale;
-}
-
-double APrimitive::getYScale() const
-{
-    return yScale;
-}
-
-double APrimitive::getZScale() const
-{
-    return zScale;
-}
-
-double APrimitive::getXTransform() const
-{
-    return xTransform;
-}
-
-double APrimitive::getYTransform() const
-{
-    return yTransform;
-}
-
-double APrimitive::getZTransform() const
-{
-    return zTransform;
+    return translate;
 }
 
 void APrimitive::setXRotate(const double rotate)
 {
-#ifdef _DEBUG
-    assert(rotate >= 0 && rotate < 360);
-#endif
-    xRotate = rotate;
+    this->rotate.x = rotate;
 }
 
 void APrimitive::setYRotate(const double rotate)
 {
-#ifdef _DEBUG
-    assert(rotate >= 0 && rotate < 360);
-#endif
-    yRotate = rotate;
+    this->rotate.y = rotate;
 }
 
 void APrimitive::setZRotate(const double rotate)
 {
-#ifdef _DEBUG
-    assert(rotate >= 0 && rotate < 360);
-#endif
-    zRotate = rotate;
+    this->rotate.z = rotate;
 }
 
 void APrimitive::setXScale(const double scale)
 {
-#ifdef _DEBUG
-    assert(scale > 0);
-#endif
-    xScale = scale;
+    this->scale.x = scale;
 }
 
 void APrimitive::setYScale(const double scale)
 {
-#ifdef _DEBUG
-    assert(scale > 0);
-#endif
-    yScale = scale;
+    this->scale.y = scale;
 }
 
 void APrimitive::setZScale(const double scale)
 {
-#ifdef _DEBUG
-    assert(scale > 0);
-#endif
-    yScale = scale;
+    this->scale.z = scale;
 }
 
-void APrimitive::setXTransform(const double transform)
+void APrimitive::setXTranslate(const double translate)
 {
-    xTransform = transform;
+    this->translate.x = translate;
 }
 
-void APrimitive::setYTransform(const double transform)
+void APrimitive::setYTranslate(const double translate)
 {
-    yTransform = transform;
+    this->translate.y = translate;
 }
 
-void APrimitive::setZTransform(const double transform)
+void APrimitive::setZTranslate(const double translate)
 {
-    zTransform = transform;
+    this->translate.z = translate;
 }
 
 bool APrimitive::getSelected() const

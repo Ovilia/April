@@ -7,6 +7,7 @@
 #include "ModelManager.h"
 #include "ViewManager.h"
 
+class ModelManager;
 class ToolWidget;
 class ViewManager;
 

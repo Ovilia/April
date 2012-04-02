@@ -5,6 +5,7 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolWidget),
     mainWindow(mainWindow),
+    createDialog(0),
     createPrmType(APrimitive::PT_NONE)
 {
     ui->setupUi(this);
@@ -23,7 +24,9 @@ void ToolWidget::showCreateDialog()
     // TODO: currently use CreateDialog to create primitives,
     // improve later with dragging
     if (!createDialog) {
-        createDialog = new CreateDialog(createPrmType, this);
+        createDialog = new ACreateDialog(createPrmType,
+                                        mainWindow->getModelManager(),
+                                        this);
     } else {
         createDialog->changePrimitive(createPrmType);
     }

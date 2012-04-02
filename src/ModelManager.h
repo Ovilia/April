@@ -1,16 +1,33 @@
 #ifndef MODELMANAGER_H
 #define MODELMANAGER_H
 
+#include <map>
+using namespace std;
+
+#include <QString>
+
+#include "MainWindow.h"
+
+#include "Solid/APrimitive.h"
 #include "Solid/ASolid.h"
+
+#include "Solid/ACone.h"
+#include "Solid/ACube.h"
+#include "Solid/ACylinder.h"
+#include "Solid/APrism.h"
+#include "Solid/ASphere.h"
+
+class MainWindow;
 
 class ModelManager
 {
 public:
-    ModelManager();
+    ModelManager(MainWindow* mainWindow);
     ~ModelManager();
 
     // draw all objects
-    void draw();
+    void drawSolid();
+    void drawWire();
 
     void insertCube(double width, double depth, double height);
     void insertSphere(double radius, int slices, int stacks);
@@ -20,7 +37,20 @@ public:
     void insertPyramid(double sideLength, int sideCount = 3);
 
 private:
+    MainWindow* mainWindow;
 
+    // unique name and solid
+    map<QString, ASolid*> solidMap;
+    // used as a hint of next id
+    unsigned int nextSolidID;
+
+    // unique name and primitive
+    map<QString, APrimitive*> primitiveMap;
+    // used as a hint of next id
+    unsigned int nextPrimiID;
+
+    // called by insertCude ..., insert to solidMap and primitiveMap
+    void insertToMap(APrimitive* primitive);
 };
 
 #endif // MODELMANAGER_H

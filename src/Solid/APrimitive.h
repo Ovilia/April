@@ -3,6 +3,8 @@
 
 #include <QString>
 
+#include "Vector3d.h"
+
 class APrimitive
 {
 public:
@@ -19,32 +21,22 @@ public:
         PT_PYRAMID
     };
 
-    enum RGB_Index {
-        INDEX_RED = 0,
-        INDEX_GREEN,
-        INDEX_BLUE,
-        INDEX_ALPHA
-    };
-    static const int RGBA_LENGTH = 4;
-
     // draw model with certain style
     virtual void drawWire() = 0;
     virtual void drawSolid() = 0;
+    // draw help functions dealing with color, rotate and so on
+    // to be called before and after drawWire and drawSolid
+    void drawBefore();
+    void drawAfter();
 
     QString getName() const;
     void setName(const QString& name);
 
-    double getXRotate() const;
-    double getYRotate() const;
-    double getZRotate() const;
+    Vector3d getBoundingBox();
 
-    double getXScale() const;
-    double getYScale() const;
-    double getZScale() const;
-
-    double getXTransform() const;
-    double getYTransform() const;
-    double getZTransform() const;
+    Vector3d getRotate() const;
+    Vector3d getScale() const;
+    Vector3d getTranslate() const;
 
     // rotate within [0, 360)
     void setXRotate(const double rotate);
@@ -56,10 +48,10 @@ public:
     void setYScale(const double scale);
     void setZScale(const double scale);
 
-    // transform within (-infinity, infinity)
-    void setXTransform(const double transform);
-    void setYTransform(const double transform);
-    void setZTransform(const double transform);
+    // translate within (-infinity, infinity)
+    void setXTranslate(const double translate);
+    void setYTranslate(const double translate);
+    void setZTranslate(const double translate);
 
     bool getSelected() const;
     void setSelected(const bool value);
@@ -67,26 +59,21 @@ public:
 protected:
     QString name;
 
-    double xRotate;
-    double yRotate;
-    double zRotate;
+    // min box to hold it
+    Vector3d boundingBox;
 
-    double xScale;
-    double yScale;
-    double zScale;
-
-    double xTransform;
-    double yTransform;
-    double zTransform;
+    Vector3d rotate;
+    Vector3d scale;
+    Vector3d translate;
 
     bool isSelected;
 
     // rgba color within [0, 1], with index of RGB_INDEX
     // it is originally set to be random
-    double color[RGBA_LENGTH];
+    Vector3d color;
     // random color to be used when init
     static const int RANDOM_COLOR_COUNT = 12;
-    static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][RGBA_LENGTH];
+    static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][3];
 
 };
 

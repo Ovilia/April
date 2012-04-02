@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    modelManager = new ModelManager();
+    modelManager = new ModelManager(this);
     viewManager = new ViewManager(this, this);
 
     ui->centerLayout->addWidget(viewManager);
@@ -42,7 +42,7 @@ ViewManager* MainWindow::getViewManager()
 void MainWindow::on_actionMove_triggered(bool checked)
 {
     if (checked) {
-        viewManager->setViewMode(AGLWidget::VM_MOVE);
+        viewManager->setViewMode(StateEnum::VM_MOVE);
         // uncheck other buttons
         ui->actionBest_fit->setChecked(false);
         ui->actionRotate->setChecked(false);
@@ -50,7 +50,7 @@ void MainWindow::on_actionMove_triggered(bool checked)
         ui->actionZoom_out->setChecked(false);
         ui->actionSelect->setChecked(false);
     } else {
-        viewManager->setViewMode(AGLWidget::VM_NONE);
+        viewManager->setViewMode(StateEnum::VM_NONE);
     }
 }
 
@@ -67,7 +67,7 @@ void MainWindow::on_actionZoom_out_triggered(bool)
 void MainWindow::on_actionRotate_triggered(bool checked)
 {
     if (checked) {
-        viewManager->setViewMode(AGLWidget::VM_ROTATE);
+        viewManager->setViewMode(StateEnum::VM_ROTATE);
         // uncheck other buttons
         ui->actionBest_fit->setChecked(false);
         ui->actionMove->setChecked(false);
@@ -75,7 +75,7 @@ void MainWindow::on_actionRotate_triggered(bool checked)
         ui->actionZoom_out->setChecked(false);
         ui->actionSelect->setChecked(false);
     } else {
-        viewManager->setViewMode(AGLWidget::VM_NONE);
+        viewManager->setViewMode(StateEnum::VM_NONE);
     }
 }
 
@@ -107,7 +107,7 @@ void MainWindow::on_actionRotate_Z_triggered()
 void MainWindow::on_actionSelect_triggered(bool checked)
 {
     if (checked) {
-        viewManager->setViewMode(AGLWidget::VM_SELECT);
+        viewManager->setViewMode(StateEnum::VM_SELECT);
         // uncheck other buttons
         ui->actionBest_fit->setChecked(false);
         ui->actionMove->setChecked(false);
@@ -115,6 +115,6 @@ void MainWindow::on_actionSelect_triggered(bool checked)
         ui->actionZoom_out->setChecked(false);
         ui->actionRotate->setChecked(false);
     } else {
-        viewManager->setViewMode(AGLWidget::VM_NONE);
+        viewManager->setViewMode(StateEnum::VM_NONE);
     }
 }

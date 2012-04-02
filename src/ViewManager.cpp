@@ -27,7 +27,9 @@ ViewManager::~ViewManager()
         }
     }
 
-    delete toolWidget;
+    if (toolWidget) {
+        delete toolWidget;
+    }
 }
 
 void ViewManager::showWidget(const int count)
@@ -50,7 +52,7 @@ ViewWidget* ViewManager::getSelectedWidget()
     return viewWidget[0];
 }
 
-void ViewManager::setViewMode(AGLWidget::ViewMode mode)
+void ViewManager::setViewMode(StateEnum::ViewMode mode)
 {
     for (int i = 0; i < MAX_VIEWER_AMT; ++i) {
         viewWidget[i]->getAglWidget()->setViewMode(mode);
@@ -58,7 +60,7 @@ void ViewManager::setViewMode(AGLWidget::ViewMode mode)
     viewMode = mode;
 }
 
-AGLWidget::ViewMode ViewManager::getViewMode()
+StateEnum::ViewMode ViewManager::getViewMode()
 {
     return viewMode;
 }
@@ -66,4 +68,13 @@ AGLWidget::ViewMode ViewManager::getViewMode()
 void ViewManager::setBestFit()
 {
 
+}
+
+void ViewManager::repaintAll()
+{
+    for (int i = 0; i < MAX_VIEWER_AMT; ++i) {
+        if (viewWidget[i]->isVisible()) {
+            viewWidget[i]->getAglWidget()->repaint();
+        }
+    }
 }

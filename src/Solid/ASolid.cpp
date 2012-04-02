@@ -2,6 +2,7 @@
 
 ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
                BoolOperation operation, const QString& name) :
+    name(name),
     leftChild(leftChild),
     rightChild(rightChild),
     operation(operation),
@@ -9,7 +10,9 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
 {
 }
 
-ASolid::ASolid(int primitiveID, APrimitive* primitive, const QString& name) :
+ASolid::ASolid(unsigned int primitiveID, APrimitive* primitive,
+               const QString& name) :
+    name(name),
     leftChild(0),
     rightChild(0),
     operation(BO_PRIMITIVE),
@@ -37,14 +40,14 @@ void ASolid::setName(const QString& name)
 void ASolid::drawWire()
 {
     if (operation == BO_PRIMITIVE) {
-        leftChild->drawWire();
+        primitive->drawWire();
     }
 }
 
 void ASolid::drawSolid()
 {
     if (operation == BO_PRIMITIVE) {
-        leftChild->drawSolid();
+        primitive->drawSolid();
     }
 }
 
