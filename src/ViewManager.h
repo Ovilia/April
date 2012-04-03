@@ -44,7 +44,7 @@ private:
 
     StateEnum::ViewMode viewMode;
 
-    static const int DEFAULT_AGL_X = 260;
+    static const int DEFAULT_AGL_X = 320;
     static const int DEFAULT_AGL_Y = 0;
     static const int DEFAULT_AGL_WIDTH = 700;
     static const int DEFAULT_AGL_HEIGHT = 500;

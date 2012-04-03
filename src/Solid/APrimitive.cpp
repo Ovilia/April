@@ -72,14 +72,9 @@ void APrimitive::drawSolid()
 {
     drawBefore();
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDisable(GL_DEPTH_TEST);
-    glColor4d(color.x, color.y, color.z, 0.75);
+    glColor3d(color.x, color.y, color.z);
 
     drawAfter();
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
 }
 
 void APrimitive::drawWire()

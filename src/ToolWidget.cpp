@@ -7,6 +7,7 @@
 
 #include "ModelManager.h"
 #include "Solid/ASolid.h"
+#include "Vector3d.h"
 
 ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     QWidget(parent),
@@ -18,6 +19,7 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->paraWidget->setVisible(false);
+    ui->positionWidget->setVisible(false);
 
     solidMap = mainWindow->getModelManager()->getSolidMap();
     primitiveMap = mainWindow->getModelManager()->getPrimitiveMap();
@@ -149,6 +151,7 @@ void ToolWidget::updateModelBox()
         ui->modelBox->addItem(iter->first);
     }
     ui->paraWidget->setVisible(true);
+    ui->positionWidget->setVisible(true);
 }
 
 void ToolWidget::on_modelBox_currentIndexChanged(const QString &arg1)
@@ -159,6 +162,20 @@ void ToolWidget::on_modelBox_currentIndexChanged(const QString &arg1)
     }
 
     selectedPrimitive = iter->second;
+
+    Vector3d scale = selectedPrimitive->getScale();
+    ui->xScaleSpin->setValue(scale.x);
+    ui->yScaleSpin->setValue(scale.y);
+    ui->zScaleSpin->setValue(scale.z);
+    Vector3d rotate = selectedPrimitive->getRotate();
+    ui->xRotateSpin->setValue(rotate.x);
+    ui->yRotateSpin->setValue(rotate.y);
+    ui->zRotateSpin->setValue(rotate.z);
+    Vector3d trans = selectedPrimitive->getTranslate();
+    ui->xTransSpin->setValue(trans.x);
+    ui->yTransSpin->setValue(trans.y);
+    ui->zTransSpin->setValue(trans.z);
+
     switch (selectedPrimitive->getType()) {
     case APrimitive::PT_CONE:
     {
@@ -378,5 +395,22 @@ void ToolWidget::on_okButton_clicked()
     default:
         break;
     }
+    mainWindow->getViewManager()->repaintAll();
+}
+
+void ToolWidget::on_positionBtn_clicked()
+{
+    if (!selectedPrimitive) {
+        return;
+    }
+    selectedPrimitive->setXScale(ui->xScaleSpin->value());
+    selectedPrimitive->setYScale(ui->yScaleSpin->value());
+    selectedPrimitive->setZScale(ui->zScaleSpin->value());
+    selectedPrimitive->setXRotate(ui->xRotateSpin->value());
+    selectedPrimitive->setYRotate(ui->yRotateSpin->value());
+    selectedPrimitive->setZRotate(ui->zRotateSpin->value());
+    selectedPrimitive->setXTranslate(ui->xTransSpin->value());
+    selectedPrimitive->setYTranslate(ui->yTransSpin->value());
+    selectedPrimitive->setZTranslate(ui->zTransSpin->value());
     mainWindow->getViewManager()->repaintAll();
 }

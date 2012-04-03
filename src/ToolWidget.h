@@ -46,6 +46,8 @@ private slots:
 
     void on_okButton_clicked();
 
+    void on_positionBtn_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
