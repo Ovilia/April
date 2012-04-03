@@ -9,12 +9,9 @@ public:
     ACone(double radius, int slices, double height);
     ~ACone();
 
-    virtual void drawWire();
-    virtual void drawSolid();
+    void reset(double radius, int slices, double height);
 
 protected:
-    virtual void setOctree();
-
     double radius;
     int slices;
     double height;

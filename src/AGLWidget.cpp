@@ -24,7 +24,7 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     orthoNear(-100.0),
     orthoFar(100.0),
     orthoXRotate(45.0),
-    orthoYRotate(45.0),
+    orthoYRotate(-45.0),
     orthoZRotate(0.0),
     rotateRatio(10.0),
 

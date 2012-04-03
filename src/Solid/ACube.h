@@ -9,6 +9,8 @@ public:
     ACube(double width, double depth, double height);
     ~ACube();
 
+    void reset(double width, double depth, double height);
+
 protected:
     double width;
     double depth;

@@ -9,6 +9,8 @@ public:
     ACylinder(double radius, int slices, double height);
     ~ACylinder();
 
+    void reset(double radius, int slices, double height);
+
 protected:
     double radius;
     int slices;

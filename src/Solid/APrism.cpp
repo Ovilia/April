@@ -8,10 +8,23 @@ APrism::APrism(double length, double sideLength, int sideCount) :
     sideLength(sideLength),
     sideCount(sideCount)
 {
+    reset(length, sideLength, sideCount);
+}
+
+APrism::~APrism()
+{
+
+}
+
+void APrism::reset(double length, double sideLength, int sideCount)
+{
     double zLength = sideLength * 0.5 * qSqrt(3);
     boundingBox = Vector3d(sideLength, length, zLength);
 
     vertexCount = 6;
+    if (vertexArray) {
+        delete []vertexArray;
+    }
     vertexArray = new Vector3d[vertexCount];
     vertexArray[0] = Vector3d(sideLength / 2.0, length, 0.0);
     vertexArray[1] = Vector3d(0, length, zLength);
@@ -21,6 +34,9 @@ APrism::APrism(double length, double sideLength, int sideCount) :
     vertexArray[5] = Vector3d(-sideLength / 2.0, 0.0, 0.0);
 
     faceCount = 8;
+    if (faceArray) {
+        delete []faceArray;
+    }
     faceArray = new Vector3i[faceCount];
     faceArray[0] = Vector3i(0, 1, 3);
     faceArray[1] = Vector3i(1, 4, 3);
@@ -30,9 +46,4 @@ APrism::APrism(double length, double sideLength, int sideCount) :
     faceArray[5] = Vector3i(0, 5, 3);
     faceArray[6] = Vector3i(0, 2, 1);
     faceArray[7] = Vector3i(3, 4, 5);
-}
-
-APrism::~APrism()
-{
-
 }

@@ -9,6 +9,8 @@ public:
     APrism(double length, double sideLength, int sideCount = 3);
     ~APrism();
 
+    void reset(double length, double sideLength, int sideCount = 3);
+
 protected:
     double length;
     double sideLength;

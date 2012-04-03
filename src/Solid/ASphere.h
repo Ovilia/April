@@ -9,6 +9,8 @@ public:
     ASphere(double radius, int slices, int stacks);
     ~ASphere();
 
+    void reset(double radius, int slices, int stacks);
+
 protected:
     double radius;
     int slices;

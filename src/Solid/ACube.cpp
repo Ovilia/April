@@ -10,10 +10,23 @@ ACube::ACube(double width, double depth, double height) :
     depth(depth),
     height(height)
 {
+    reset(width, depth, height);
+}
+
+ACube::~ACube()
+{
+
+}
+
+void ACube::reset(double width, double depth, double height)
+{
     boundingBox = Vector3d(width, height, depth);
 
     // vertex position
     vertexCount = 8;
+    if (vertexArray) {
+        delete []vertexArray;
+    }
     vertexArray = new Vector3d[vertexCount];
     double right = width / 2;
     double left = -right;
@@ -32,6 +45,9 @@ ACube::ACube(double width, double depth, double height) :
 
     // face
     faceCount = 12;
+    if (faceArray) {
+        delete []faceArray;
+    }
     faceArray = new Vector3i[faceCount];
     faceArray[0] = Vector3i(0, 4, 5);
     faceArray[1] = Vector3i(0, 5, 1);
@@ -45,9 +61,4 @@ ACube::ACube(double width, double depth, double height) :
     faceArray[9] = Vector3i(0, 2, 3);
     faceArray[10] = Vector3i(4, 5, 7);
     faceArray[11] = Vector3i(5, 6, 7);
-}
-
-ACube::~ACube()
-{
-
 }
