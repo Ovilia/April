@@ -8,6 +8,7 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
     operation(operation),
     primitive(0)
 {
+    // TODO: set bounding box here
 }
 
 ASolid::ASolid(unsigned int primitiveID, APrimitive* primitive,
@@ -19,7 +20,7 @@ ASolid::ASolid(unsigned int primitiveID, APrimitive* primitive,
     primitive(primitive),
     primitiveID(primitiveID)
 {
-
+    boundingBox = primitive->getBoundingBox();
 }
 
 ASolid::~ASolid()
@@ -79,4 +80,84 @@ void ASolid::setRightChild(ASolid* rightChild)
 void ASolid::setOperation(BoolOperation operation)
 {
     this->operation = operation;
+}
+
+APrimitive* ASolid::getPrimitive()
+{
+    return primitive;
+}
+
+Vector3d ASolid::getBoundingBox()
+{
+    return boundingBox;
+}
+
+Vector3d ASolid::getRotate() const
+{
+    return rotate;
+}
+
+Vector3d ASolid::getScale() const
+{
+    return scale;
+}
+
+Vector3d ASolid::getTranslate() const
+{
+    return translate;
+}
+
+void ASolid::setXRotate(const double rotate)
+{
+    this->rotate.x = rotate;
+}
+
+void ASolid::setYRotate(const double rotate)
+{
+    this->rotate.y = rotate;
+}
+
+void ASolid::setZRotate(const double rotate)
+{
+    this->rotate.z = rotate;
+}
+
+void ASolid::setXScale(const double scale)
+{
+    this->scale.x = scale;
+}
+
+void ASolid::setYScale(const double scale)
+{
+    this->scale.y = scale;
+}
+
+void ASolid::setZScale(const double scale)
+{
+    this->scale.z = scale;
+}
+
+void ASolid::setXTranslate(const double translate)
+{
+    this->translate.x = translate;
+}
+
+void ASolid::setYTranslate(const double translate)
+{
+    this->translate.y = translate;
+}
+
+void ASolid::setZTranslate(const double translate)
+{
+    this->translate.z = translate;
+}
+
+bool ASolid::getSelected() const
+{
+    return isSelected;
+}
+
+void ASolid::setSelected(const bool value)
+{
+    isSelected = value;
 }

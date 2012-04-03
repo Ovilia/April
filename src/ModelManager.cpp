@@ -22,6 +22,11 @@ map<QString, ASolid*>* ModelManager::getSolidMap()
     return &solidMap;
 }
 
+map<QString, APrimitive*>* ModelManager::getPrimitiveMap()
+{
+    return &primitiveMap;
+}
+
 void ModelManager::drawSolid()
 {
     map<QString, ASolid*>::iterator iter;

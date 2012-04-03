@@ -16,10 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // TODO: this is the buttons not implemented
     ui->actionBest_fit->setVisible(false);
-    ui->actionModelMove->setVisible(false);
-    ui->actionModelScale->setVisible(false);
-    ui->actionModelRotate->setVisible(false);
     ui->actionRotate->setVisible(false);
+    ui->actionSelect->setVisible(false);
+    ui->actionModelRotate->setVisible(false);
 }
 
 MainWindow::~MainWindow()

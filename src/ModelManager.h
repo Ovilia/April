@@ -31,6 +31,7 @@ public:
     void drawWire();
 
     map<QString, ASolid*>* getSolidMap();
+    map<QString, APrimitive*>* getPrimitiveMap();
 
     void insertCube(double width, double depth, double height);
     void insertSphere(double radius, int slices, int stacks);

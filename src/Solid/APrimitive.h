@@ -9,10 +9,6 @@
 class APrimitive
 {
 public:
-    APrimitive(const QString& name = "Primitive");
-    // virtual destructor to make this class abstract
-    virtual ~APrimitive() = 0;
-
     enum PrimitiveType {
         PT_NONE = 0,
         PT_CUBE,
@@ -22,6 +18,12 @@ public:
         PT_PRISM,
         PT_PYRAMID
     };
+
+    APrimitive(PrimitiveType type, const QString& name = "Primitive");
+    // virtual destructor to make this class abstract
+    virtual ~APrimitive() = 0;
+
+    PrimitiveType getType();
 
     // draw model with certain style
     void drawWire();
@@ -60,6 +62,7 @@ public:
 
 protected:
     QString name;
+    PrimitiveType primitiveType;
 
     // min box to hold it
     Vector3d boundingBox;

@@ -1,9 +1,13 @@
 #ifndef TOOLWIDGET_H
 #define TOOLWIDGET_H
 
+#include <map>
+
+#include <QString>
 #include <QWidget>
 
 #include "ACreateDialog.h"
+#include "Solid/ASolid.h"
 #include "Solid/APrimitive.h"
 #include "MainWindow.h"
 
@@ -38,6 +42,10 @@ private slots:
 
     void on_pyramidButton_clicked(bool checked);
 
+    void on_modelBox_currentIndexChanged(const QString &arg1);
+
+    void on_okButton_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -49,6 +57,11 @@ private:
 
     // used when create primitive
     APrimitive::PrimitiveType createPrmType;
+
+    map<QString, ASolid*>* solidMap;
+    map<QString, APrimitive*>* primitiveMap;
+
+    APrimitive* selectedPrimitive;
 };
 
 #endif // TOOLWIDGET_H

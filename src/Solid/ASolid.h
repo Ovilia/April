@@ -35,6 +35,32 @@ public:
     void setRightChild(ASolid* rightChild);
     void setOperation(BoolOperation operation);
 
+    APrimitive* getPrimitive();
+
+    Vector3d getBoundingBox();
+
+    Vector3d getRotate() const;
+    Vector3d getScale() const;
+    Vector3d getTranslate() const;
+
+    // rotate within [0, 360)
+    void setXRotate(const double rotate);
+    void setYRotate(const double rotate);
+    void setZRotate(const double rotate);
+
+    // scale within (0, infinity)
+    void setXScale(const double scale);
+    void setYScale(const double scale);
+    void setZScale(const double scale);
+
+    // translate within (-infinity, infinity)
+    void setXTranslate(const double translate);
+    void setYTranslate(const double translate);
+    void setZTranslate(const double translate);
+
+    bool getSelected() const;
+    void setSelected(const bool value);
+
 private:
     QString name;
 
@@ -47,6 +73,15 @@ private:
     // unique! used to identify different primitive, allocated by ModelManager
     // should not be changed within ASolid
     unsigned int primitiveID;
+
+    // min box to hold it
+    Vector3d boundingBox;
+
+    Vector3d rotate;
+    Vector3d scale;
+    Vector3d translate;
+
+    bool isSelected;
 };
 
 #endif // APRILSOLID_H

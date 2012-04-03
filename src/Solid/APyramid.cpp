@@ -3,7 +3,7 @@
 #include "APyramid.h"
 
 APyramid::APyramid(double sideLength, int sideCount) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_PYRAMID),
     sideLength(sideLength),
     sideCount(sideCount)
 {
@@ -15,8 +15,21 @@ APyramid::~APyramid()
 
 }
 
+double APyramid::getSideLength()
+{
+    return sideLength;
+}
+
+int APyramid::getSideCount()
+{
+    return sideCount;
+}
+
 void APyramid::reset(double sideLength, int sideCount)
 {
+    this->sideLength = sideLength;
+    this->sideCount = sideCount;
+
     // TODO: only calculated when sideCount is 4 now
     double height = sideLength * 0.5 * qSqrt(2);
     boundingBox = Vector3d(sideLength, height, sideLength);

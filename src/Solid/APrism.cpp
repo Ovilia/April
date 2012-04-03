@@ -3,7 +3,7 @@
 #include "APrism.h"
 
 APrism::APrism(double length, double sideLength, int sideCount) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_PRISM),
     length(length),
     sideLength(sideLength),
     sideCount(sideCount)
@@ -16,8 +16,27 @@ APrism::~APrism()
 
 }
 
+double APrism::getLength()
+{
+    return length;
+}
+
+double APrism::getSideLength()
+{
+    return sideLength;
+}
+
+int APrism::getSideCount()
+{
+    return sideCount;
+}
+
 void APrism::reset(double length, double sideLength, int sideCount)
 {
+    this->length = length;
+    this->sideLength = sideLength;
+    this->sideCount = sideCount;
+
     double zLength = sideLength * 0.5 * qSqrt(3);
     boundingBox = Vector3d(sideLength, length, zLength);
 

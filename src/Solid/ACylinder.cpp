@@ -3,7 +3,7 @@
 #include "ACylinder.h"
 
 ACylinder::ACylinder(double radius, int slices, double height) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_CYLINDER),
     radius(radius),
     slices(slices),
     height(height)
@@ -16,8 +16,27 @@ ACylinder::~ACylinder()
 
 }
 
+double ACylinder::getRadius()
+{
+    return radius;
+}
+
+int ACylinder::getSlices()
+{
+    return slices;
+}
+
+double ACylinder::getHeight()
+{
+    return height;
+}
+
 void ACylinder::reset(double radius, int slices, double height)
 {
+    this->radius = radius;
+    this->slices = slices;
+    this->height = height;
+
     boundingBox = Vector3d(2 * radius, height, 2 * radius);
 
     vertexCount = 2 * slices + 2;

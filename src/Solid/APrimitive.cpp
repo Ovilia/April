@@ -21,8 +21,9 @@ const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
     {1.00, 0.75, 1.00}
 };
 
-APrimitive::APrimitive(const QString& name) :
+APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     name(name),
+    primitiveType(type),
     rotate(0.0, 0.0, 0.0),
     scale(1.0, 1.0, 1.0),
     translate(0.0, 0.0, 0.0),
@@ -49,6 +50,11 @@ APrimitive::~APrimitive()
     if (faceArray) {
         delete []faceArray;
     }
+}
+
+APrimitive::PrimitiveType APrimitive::getType()
+{
+    return primitiveType;
 }
 
 void APrimitive::drawBefore()

@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>342</height>
+    <height>507</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -53,7 +53,7 @@
             <x>0</x>
             <y>0</y>
             <width>180</width>
-            <height>195</height>
+            <height>360</height>
            </rect>
           </property>
           <attribute name="label">
@@ -324,7 +324,7 @@
         <widget class="QComboBox" name="modelBox"/>
        </item>
        <item>
-        <widget class="QWidget" name="widget" native="true">
+        <widget class="QWidget" name="paraWidget" native="true">
          <layout class="QGridLayout" name="gridLayout_3">
           <property name="leftMargin">
            <number>0</number>
@@ -333,7 +333,7 @@
            <number>0</number>
           </property>
           <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="widthLabel">
             <property name="text">
              <string>Width:</string>
             </property>
@@ -353,7 +353,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="heightLabel">
             <property name="text">
              <string>Height: </string>
             </property>
@@ -373,7 +373,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="depthLabel">
             <property name="text">
              <string>Depth: </string>
             </property>
@@ -392,10 +392,110 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="8" column="1">
            <widget class="QPushButton" name="okButton">
             <property name="text">
              <string>OK</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="radiusLabel">
+            <property name="text">
+             <string>Radius:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QDoubleSpinBox" name="radiusSpin">
+            <property name="minimum">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.500000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lengthLabel">
+            <property name="text">
+             <string>Length: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QDoubleSpinBox" name="lengthSpin">
+            <property name="minimum">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="sideLabel">
+            <property name="text">
+             <string>Side length:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QDoubleSpinBox" name="sideSpin">
+            <property name="minimum">
+             <double>0.100000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>100.000000000000000</double>
+            </property>
+            <property name="value">
+             <double>1.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="slicesLabel">
+            <property name="text">
+             <string>Slices: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QSpinBox" name="slicesSpin">
+            <property name="minimum">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <number>256</number>
+            </property>
+            <property name="value">
+             <number>16</number>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="stacksLabel">
+            <property name="text">
+             <string>Stacks: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QSpinBox" name="stacksSpin">
+            <property name="minimum">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <number>256</number>
+            </property>
+            <property name="value">
+             <number>8</number>
             </property>
            </widget>
           </item>

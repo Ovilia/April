@@ -9,6 +9,9 @@ public:
     APyramid(double sideLength, int sideCount = 3);
     ~APyramid();
 
+    double getSideLength();
+    int getSideCount();
+
     void reset(double sideLength, int sideCount = 3);
 
 protected:

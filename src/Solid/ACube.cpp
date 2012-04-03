@@ -5,7 +5,7 @@
 #include "Vector3i.h"
 
 ACube::ACube(double width, double depth, double height) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_CUBE),
     width(width),
     depth(depth),
     height(height)
@@ -18,8 +18,27 @@ ACube::~ACube()
 
 }
 
+double ACube::getWidth()
+{
+    return width;
+}
+
+double ACube::getDepth()
+{
+    return depth;
+}
+
+double ACube::getHeight()
+{
+    return height;
+}
+
 void ACube::reset(double width, double depth, double height)
 {
+    this->width = width;
+    this->depth = depth;
+    this->height = height;
+
     boundingBox = Vector3d(width, height, depth);
 
     // vertex position

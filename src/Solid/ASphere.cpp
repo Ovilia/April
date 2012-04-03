@@ -3,7 +3,7 @@
 #include "ASphere.h"
 
 ASphere::ASphere(double radius, int slices, int stacks) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_SPHERE),
     radius(radius),
     slices(slices),
     stacks(stacks)
@@ -16,8 +16,27 @@ ASphere::~ASphere()
 
 }
 
+double ASphere::getRadius()
+{
+    return radius;
+}
+
+int ASphere::getSlices()
+{
+    return slices;
+}
+
+int ASphere::getStacks()
+{
+    return stacks;
+}
+
 void ASphere::reset(double radius, int slices, int stacks)
 {
+    this->radius = radius;
+    this->slices = slices;
+    this->stacks = stacks;
+
     boundingBox = Vector3d(2 * radius, 2 * radius, 2 * radius);
 
     vertexCount = (stacks - 1) * slices + 2;

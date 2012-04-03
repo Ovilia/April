@@ -9,6 +9,10 @@ public:
     ACone(double radius, int slices, double height);
     ~ACone();
 
+    double getRadius();
+    int getSlices();
+    double getHeight();
+
     void reset(double radius, int slices, double height);
 
 protected:

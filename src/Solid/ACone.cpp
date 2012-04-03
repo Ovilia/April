@@ -3,7 +3,7 @@
 #include "ACone.h"
 
 ACone::ACone(double radius, int slices, double height) :
-    APrimitive(),
+    APrimitive(APrimitive::PT_CONE),
     radius(radius),
     slices(slices),
     height(height)
@@ -16,8 +16,27 @@ ACone::~ACone()
 
 }
 
+double ACone::getRadius()
+{
+    return radius;
+}
+
+int ACone::getSlices()
+{
+    return slices;
+}
+
+double ACone::getHeight()
+{
+    return height;
+}
+
 void ACone::reset(double radius, int slices, double height)
 {
+    this->radius = radius;
+    this->slices = slices;
+    this->height = height;
+
     boundingBox = Vector3d(2 * radius, height, 2 * radius);
 
     vertexCount = slices + 2;

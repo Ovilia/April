@@ -9,6 +9,10 @@ public:
     ACylinder(double radius, int slices, double height);
     ~ACylinder();
 
+    double getRadius();
+    int getSlices();
+    double getHeight();
+
     void reset(double radius, int slices, double height);
 
 protected:
