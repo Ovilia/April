@@ -24,8 +24,13 @@ public:
     QString getName() const;
     void setName(const QString& name);
 
+    ASolid* getParent();
+    void setParenet(ASolid* parent);
+
     void drawWire();
     void drawSolid();
+    void drawBefore();
+    void drawAfter();
 
     ASolid* getLeftChild();
     ASolid* getRightChild();
@@ -67,6 +72,7 @@ private:
     ASolid* leftChild;
     ASolid* rightChild;
     BoolOperation operation;
+    ASolid* parent;
 
     // used if is leaf
     APrimitive* primitive;

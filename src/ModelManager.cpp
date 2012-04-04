@@ -31,7 +31,10 @@ void ModelManager::drawSolid()
 {
     map<QString, ASolid*>::iterator iter;
     for (iter = solidMap.begin(); iter != solidMap.end(); ++iter) {
-        iter->second->drawSolid();
+        // only draw leaves
+        if (iter->second->getParent() == 0) {
+            iter->second->drawSolid();
+        }
     }
 }
 
@@ -39,7 +42,10 @@ void ModelManager::drawWire()
 {
     map<QString, ASolid*>::iterator iter;
     for (iter = solidMap.begin(); iter != solidMap.end(); ++iter) {
-        iter->second->drawWire();
+        // only draw leaves
+        if (iter->second->getParent() == 0) {
+            iter->second->drawWire();
+        }
     }
 }
 
@@ -86,6 +92,18 @@ void ModelManager::insertPrism(double length, double sideLength, int sideCount)
 void ModelManager::insertPyramid(double sideLength, int sideCount)
 {
     insertToMap(new APyramid(sideLength, sideCount));
+}
+
+void ModelManager::insertSolid(ASolid* left, ASolid* right,
+                               ASolid::BoolOperation operation)
+{
+    QString solidName = "Solid " + QString::number(nextSolidID);
+    ASolid* solid = new ASolid(left, right, operation, solidName);
+    left->setParenet(solid);
+    right->setParenet(solid);
+    solidMap.insert(pair<QString, ASolid*>(solidName, solid));
+
+    ++nextSolidID;
 }
 
 bool ModelManager::getIsDrawSolid() const

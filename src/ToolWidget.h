@@ -48,6 +48,12 @@ private slots:
 
     void on_positionBtn_clicked();
 
+    void on_solidBox_currentIndexChanged(const QString &arg1);
+
+    void on_solidBtn_clicked();
+
+    void on_boolBtn_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -63,6 +69,7 @@ private:
     map<QString, ASolid*>* solidMap;
     map<QString, APrimitive*>* primitiveMap;
 
+    ASolid* selectedSolid;
     APrimitive* selectedPrimitive;
 };
 

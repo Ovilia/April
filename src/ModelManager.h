@@ -40,6 +40,9 @@ public:
     void insertPrism(double length, double sideLength, int sideCount = 3);
     void insertPyramid(double sideLength, int sideCount = 3);
 
+    void insertSolid(ASolid* left, ASolid* right,
+                     ASolid::BoolOperation operation);
+
     bool getIsDrawSolid() const;
     bool getIsDrawWire() const;
     void setDrawWire(const bool enabled);

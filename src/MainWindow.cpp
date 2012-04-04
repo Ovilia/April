@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->actionRotate->setVisible(false);
     ui->actionSelect->setVisible(false);
     ui->actionModelRotate->setVisible(false);
+    ui->actionModelMove->setVisible(false);
+    ui->actionModelScale->setVisible(false);
 }
 
 MainWindow::~MainWindow()

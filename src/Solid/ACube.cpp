@@ -1,4 +1,4 @@
-#include <QtOpenGL>
+#include <QtopenGL>
 
 #include "ACube.h"
 #include "Vector3d.h"
@@ -47,20 +47,20 @@ void ACube::reset(double width, double depth, double height)
         delete []vertexArray;
     }
     vertexArray = new Vector3d[vertexCount];
-    double right = width / 2;
-    double left = -right;
-    double top = height;
-    double bottom = 0;
-    double near = depth / 2;
-    double far = -near;
-    vertexArray[0] = Vector3d(right, top, near);
-    vertexArray[1] = Vector3d(right, top, far);
-    vertexArray[2] = Vector3d(left, top, far);
-    vertexArray[3] = Vector3d(left, top, near);
-    vertexArray[4] = Vector3d(right, bottom, near);
-    vertexArray[5] = Vector3d(right, bottom, far);
-    vertexArray[6] = Vector3d(left, bottom, far);
-    vertexArray[7] = Vector3d(left, bottom, near);
+    double rightPos = width / 2;
+    double leftPos = -rightPos;
+    double topPos = height;
+    double bottomPos = 0;
+    double nearPos = depth / 2;
+    double farPos = -nearPos;
+    vertexArray[0] = Vector3d(rightPos, topPos, nearPos);
+    vertexArray[1] = Vector3d(rightPos, topPos, farPos);
+    vertexArray[2] = Vector3d(leftPos, topPos, farPos);
+    vertexArray[3] = Vector3d(leftPos, topPos, nearPos);
+    vertexArray[4] = Vector3d(rightPos, bottomPos, nearPos);
+    vertexArray[5] = Vector3d(rightPos, bottomPos, farPos);
+    vertexArray[6] = Vector3d(leftPos, bottomPos, farPos);
+    vertexArray[7] = Vector3d(leftPos, bottomPos, nearPos);
 
     // face
     faceCount = 12;

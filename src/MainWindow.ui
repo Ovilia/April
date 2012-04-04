@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>670</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -58,19 +58,6 @@
     <property name="title">
      <string>Model</string>
     </property>
-    <widget class="QMenu" name="menuNew">
-     <property name="title">
-      <string>New primitive</string>
-     </property>
-     <addaction name="actionCube"/>
-     <addaction name="actionSphere"/>
-     <addaction name="actionCylinder"/>
-     <addaction name="actionCone"/>
-     <addaction name="actionPipe"/>
-     <addaction name="actionPyramid"/>
-     <addaction name="actionPrism"/>
-    </widget>
-    <addaction name="menuNew"/>
     <addaction name="actionModelMove"/>
     <addaction name="actionModelRotate"/>
     <addaction name="actionModelScale"/>
@@ -135,41 +122,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
-   </property>
-  </action>
-  <action name="actionCube">
-   <property name="text">
-    <string>Cube</string>
-   </property>
-  </action>
-  <action name="actionSphere">
-   <property name="text">
-    <string>Sphere</string>
-   </property>
-  </action>
-  <action name="actionCylinder">
-   <property name="text">
-    <string>Cylinder</string>
-   </property>
-  </action>
-  <action name="actionCone">
-   <property name="text">
-    <string>Cone</string>
-   </property>
-  </action>
-  <action name="actionPipe">
-   <property name="text">
-    <string>Pipe</string>
-   </property>
-  </action>
-  <action name="actionPyramid">
-   <property name="text">
-    <string>Pyramid</string>
-   </property>
-  </action>
-  <action name="actionPrism">
-   <property name="text">
-    <string>Prism</string>
    </property>
   </action>
   <action name="actionMove">

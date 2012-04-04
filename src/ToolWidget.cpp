@@ -1,6 +1,7 @@
 #include <map>
 
 #include <QString>
+#include <QDebug>
 
 #include "ToolWidget.h"
 #include "ui_ToolWidget.h"
@@ -15,11 +16,13 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     mainWindow(mainWindow),
     createDialog(0),
     createPrmType(APrimitive::PT_NONE),
+    selectedSolid(0),
     selectedPrimitive(0)
 {
     ui->setupUi(this);
     ui->paraWidget->setVisible(false);
     ui->positionWidget->setVisible(false);
+    ui->solidParaWidget->setVisible(false);
 
     solidMap = mainWindow->getModelManager()->getSolidMap();
     primitiveMap = mainWindow->getModelManager()->getPrimitiveMap();
@@ -150,8 +153,25 @@ void ToolWidget::updateModelBox()
     for (iter = primitiveMap->begin(); iter != primitiveMap->end(); ++iter) {
         ui->modelBox->addItem(iter->first);
     }
+
+    ui->solidBox->clear();
+    ui->boolBox1->clear();
+    ui->boolBox2->clear();
+    map<QString, ASolid*>::iterator iter2;
+    for (iter2 = solidMap->begin(); iter2 != solidMap->end(); ++iter2) {
+        ui->solidBox->addItem(iter2->first);
+        ui->boolBox1->addItem(iter2->first);
+        ui->boolBox2->addItem(iter2->first);
+    }
+
+    if (ui->boolBox1->count() > 1) {
+        ui->boolBtn->setEnabled(true);
+    } else {
+        ui->boolBtn->setEnabled(false);
+    }
     ui->paraWidget->setVisible(true);
     ui->positionWidget->setVisible(true);
+    ui->solidParaWidget->setVisible(true);
 }
 
 void ToolWidget::on_modelBox_currentIndexChanged(const QString &arg1)
@@ -413,4 +433,62 @@ void ToolWidget::on_positionBtn_clicked()
     selectedPrimitive->setYTranslate(ui->yTransSpin->value());
     selectedPrimitive->setZTranslate(ui->zTransSpin->value());
     mainWindow->getViewManager()->repaintAll();
+}
+
+void ToolWidget::on_solidBox_currentIndexChanged(const QString &arg1)
+{
+    map<QString, ASolid*>::iterator iter = solidMap->find(arg1);
+    if (iter == solidMap->end()) {
+        return;
+    }
+
+    selectedSolid = iter->second;
+    Vector3d scale = selectedSolid->getScale();
+    ui->xScaleSolidSpin->setValue(scale.x);
+    ui->yScaleSolidSpin->setValue(scale.y);
+    ui->zScaleSolidSpin->setValue(scale.z);
+    Vector3d rotate = selectedSolid->getRotate();
+    ui->xRotateSolidSpin->setValue(rotate.x);
+    ui->yRotateSolidSpin->setValue(rotate.y);
+    ui->zRotateSolidSpin->setValue(rotate.z);
+    Vector3d trans = selectedSolid->getTranslate();
+    ui->xTransSolidSpin->setValue(trans.x);
+    ui->yTransSolidSpin->setValue(trans.y);
+    ui->zTransSolidSpin->setValue(trans.z);
+}
+
+void ToolWidget::on_solidBtn_clicked()
+{
+    if (!selectedSolid) {
+        return;
+    }
+    selectedSolid->setXScale(ui->xScaleSolidSpin->value());
+    selectedSolid->setYScale(ui->yScaleSolidSpin->value());
+    selectedSolid->setZScale(ui->zScaleSolidSpin->value());
+    selectedSolid->setXRotate(ui->xRotateSolidSpin->value());
+    selectedSolid->setYRotate(ui->yRotateSolidSpin->value());
+    selectedSolid->setZRotate(ui->zRotateSolidSpin->value());
+    selectedSolid->setXTranslate(ui->xTransSolidSpin->value());
+    selectedSolid->setYTranslate(ui->yTransSolidSpin->value());
+    selectedSolid->setZTranslate(ui->zTransSolidSpin->value());
+    mainWindow->getViewManager()->repaintAll();
+}
+
+void ToolWidget::on_boolBtn_clicked()
+{
+    qDebug()<<ui->boolBox1->currentText();
+    qDebug()<<ui->boolBox2->currentText();
+    map<QString, ASolid*>::iterator iter1 =
+            solidMap->find(ui->boolBox1->currentText());
+    map<QString, ASolid*>::iterator iter2 =
+            solidMap->find(ui->boolBox2->currentText());
+    if (iter1 == solidMap->end() || iter2 == solidMap->end()) {
+        return;
+    }
+
+    // TODO: currently only union here
+    mainWindow->getModelManager()->insertSolid(iter1->second, iter2->second,
+                                               ASolid::BO_UNION);
+    mainWindow->getViewManager()->repaintAll();
+    updateModelBox();
 }

@@ -1,3 +1,5 @@
+#include <QtOpenGL>
+
 #include "ASolid.h"
 
 ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
@@ -6,7 +8,12 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
     leftChild(leftChild),
     rightChild(rightChild),
     operation(operation),
-    primitive(0)
+    parent(0),
+    primitive(0),
+    rotate(0.0, 0.0, 0.0),
+    scale(1.0, 1.0, 1.0),
+    translate(0.0, 0.0, 0.0),
+    isSelected(false)
 {
     // TODO: set bounding box here
 }
@@ -17,8 +24,13 @@ ASolid::ASolid(unsigned int primitiveID, APrimitive* primitive,
     leftChild(0),
     rightChild(0),
     operation(BO_PRIMITIVE),
+    parent(0),
     primitive(primitive),
-    primitiveID(primitiveID)
+    primitiveID(primitiveID),
+    rotate(0.0, 0.0, 0.0),
+    scale(1.0, 1.0, 1.0),
+    translate(0.0, 0.0, 0.0),
+    isSelected(false)
 {
     boundingBox = primitive->getBoundingBox();
 }
@@ -38,18 +50,72 @@ void ASolid::setName(const QString& name)
     this->name = name;
 }
 
+ASolid* ASolid::getParent()
+{
+    return parent;
+}
+
+void ASolid::setParenet(ASolid *parent)
+{
+    this->parent = parent;
+}
+
+void ASolid::drawBefore()
+{
+    glPushMatrix();
+
+    glRotated(rotate.x, 1.0, 0.0, 0.0);
+    glRotated(rotate.y, 0.0, 1.0, 0.0);
+    glRotated(rotate.z, 0.0, 0.0, 1.0);
+    glScaled(scale.x, scale.y, scale.z);
+    glTranslated(translate.x, translate.y, translate.z);
+}
+
 void ASolid::drawWire()
 {
-    if (operation == BO_PRIMITIVE) {
+    drawBefore();
+
+    switch (operation) {
+    case BO_PRIMITIVE:
         primitive->drawWire();
+        break;
+
+    case BO_UNION:
+        leftChild->drawWire();
+        rightChild->drawWire();
+        break;
+
+    default:
+        break;
     }
+
+    drawAfter();
 }
 
 void ASolid::drawSolid()
 {
-    if (operation == BO_PRIMITIVE) {
+    drawBefore();
+
+    switch (operation) {
+    case BO_PRIMITIVE:
         primitive->drawSolid();
+        break;
+
+    case BO_UNION:
+        leftChild->drawSolid();
+        rightChild->drawSolid();
+        break;
+
+    default:
+        break;
     }
+
+    drawAfter();
+}
+
+void ASolid::drawAfter()
+{
+    glPopMatrix();
 }
 
 ASolid* ASolid::getLeftChild()
