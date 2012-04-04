@@ -1,4 +1,4 @@
-#include <QtopenGL>
+#include <QtOpenGL>
 
 #include "ACube.h"
 #include "Vector3d.h"
