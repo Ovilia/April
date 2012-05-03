@@ -14,9 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->centerLayout->addWidget(viewManager);
 
+    viewManager->setViewMode(StateEnum::VM_MOVE);
+
     // TODO: this is the buttons not implemented
     ui->actionBest_fit->setVisible(false);
-    ui->actionRotate->setVisible(false);
     ui->actionSelect->setVisible(false);
     ui->actionModelRotate->setVisible(false);
     ui->actionModelMove->setVisible(false);

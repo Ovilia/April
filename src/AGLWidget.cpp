@@ -28,6 +28,8 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     orthoZRotate(0.0),
     rotateRatio(10.0),
 
+    arcBall(this->width(), this->height()),
+
     viewPortX(0),
     viewPortY(0),
 
@@ -124,12 +126,17 @@ void AGLWidget::paintGL()
             orthoNear, orthoFar);
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    // rotate ortho view
+
     glPushMatrix();
+    glLoadIdentity();
+
+    // rotate ortho view
     glRotated(orthoXRotate, 1.0, 0.0, 0.0);
     glRotated(orthoYRotate, 0.0, 1.0, 0.0);
     glRotated(orthoZRotate, 0.0, 0.0, 1.0);
+
+    // rotate by mouse dragging
+    arcBall.doRotate();
 
     drawMainPlain();
 
@@ -201,6 +208,8 @@ void AGLWidget::drawAxis()
 
 void AGLWidget::resizeGL(int width, int height)
 {
+    arcBall.resize(width, height);
+
     // update widthHeightRatio
     if (height != 0 && width != 0) {
         widthHeightRatio = (double)width / height;
@@ -241,6 +250,9 @@ void AGLWidget::mouseMoveEvent(QMouseEvent *event)
             break;
         }
 
+        case StateEnum::VM_ROTATE:
+            arcBall.mouseMove(event->x(), event->y());
+
         default:
             break;
         }
@@ -265,6 +277,12 @@ void AGLWidget::mousePressEvent(QMouseEvent *event)
     case StateEnum::VM_MOVE:
         setCursor(Qt::SizeAllCursor);
         break;
+
+    case StateEnum::VM_ROTATE:
+        setCursor(Qt::CrossCursor);
+        arcBall.mousePress(mousePressX, mousePressY);
+        break;
+
     default:
         break;
     }
@@ -273,6 +291,16 @@ void AGLWidget::mousePressEvent(QMouseEvent *event)
 void AGLWidget::mouseReleaseEvent(QMouseEvent *)
 {
     isMousePressed = false;
+
+    switch (viewMode) {
+    case StateEnum::VM_ROTATE:
+        arcBall.mouseRelease();
+        break;
+
+    default:
+        break;
+    }
+
     // set mouse cursor
     setCursor(Qt::ArrowCursor);
 }

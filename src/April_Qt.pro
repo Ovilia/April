@@ -40,7 +40,9 @@ HEADERS += \
     Solid/APrimitive.h \
     StateEnum.h \
     ACreateDialog.h \
-    Vector3i.h
+    Vector3i.h \
+    ArcBall.h \
+    MatrixD.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -58,7 +60,9 @@ SOURCES += \
     ViewWidget.cpp \
     ToolWidget.cpp \
     ACreateDialog.cpp \
-    Vector3i.cpp
+    Vector3i.cpp \
+    ArcBall.cpp \
+    MatrixD.cpp
 
 RESOURCES += \
     resource.qrc
@@ -66,6 +70,20 @@ RESOURCES += \
 FORMS += \
     ToolWidget.ui \
     ACreateDialog.ui
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

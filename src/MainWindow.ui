@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>670</width>
-     <height>19</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -126,6 +126,9 @@
   </action>
   <action name="actionMove">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
     <bool>true</bool>
    </property>
    <property name="icon">

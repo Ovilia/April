@@ -4,6 +4,7 @@
 #include <QtOpenGL/qgl.h>
 #include <QMdiSubWindow>
 
+#include "ArcBall.h"
 #include "ModelManager.h"
 #include "StateEnum.h"
 #include "Vector3d.h"
@@ -70,6 +71,9 @@ private:
     double orthoZRotate;
     // angle of each rotate
     double rotateRatio;
+
+    // rotate by mouse dragging
+    ArcBall arcBall;
 
     double viewPortX;
     double viewPortY;
