@@ -27,6 +27,9 @@ public:
     ASolid* getParent();
     void setParenet(ASolid* parent);
 
+    bool isRoot();
+    bool isLeave();
+
     void drawWire();
     void drawSolid();
     void drawBefore();

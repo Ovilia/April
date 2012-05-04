@@ -45,37 +45,37 @@ void ToolWidget::showCreateDialog()
     createDialog->exec();
 }
 
-void ToolWidget::on_cubeButton_clicked(bool checked)
+void ToolWidget::on_cubeButton_clicked()
 {
     createPrmType = APrimitive::PT_CUBE;
     showCreateDialog();
 }
 
-void ToolWidget::on_sphereButton_clicked(bool checked)
+void ToolWidget::on_sphereButton_clicked()
 {
     createPrmType = APrimitive::PT_SPHERE;
     showCreateDialog();
 }
 
-void ToolWidget::on_cylinderButton_clicked(bool checked)
+void ToolWidget::on_cylinderButton_clicked()
 {
     createPrmType = APrimitive::PT_CYLINDER;
     showCreateDialog();
 }
 
-void ToolWidget::on_coneButton_clicked(bool checked)
+void ToolWidget::on_coneButton_clicked()
 {
     createPrmType = APrimitive::PT_CONE;
     showCreateDialog();
 }
 
-void ToolWidget::on_prismButton_clicked(bool checked)
+void ToolWidget::on_prismButton_clicked()
 {
     createPrmType = APrimitive::PT_PRISM;
     showCreateDialog();
 }
 
-void ToolWidget::on_pyramidButton_clicked(bool checked)
+void ToolWidget::on_pyramidButton_clicked()
 {
     createPrmType = APrimitive::PT_PYRAMID;
     showCreateDialog();

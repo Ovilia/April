@@ -30,17 +30,17 @@ public:
     void updateModelBox();
     
 private slots:
-    void on_cubeButton_clicked(bool checked);
+    void on_cubeButton_clicked();
 
-    void on_sphereButton_clicked(bool checked);
+    void on_sphereButton_clicked();
 
-    void on_cylinderButton_clicked(bool checked);
+    void on_cylinderButton_clicked();
 
-    void on_coneButton_clicked(bool checked);
+    void on_coneButton_clicked();
 
-    void on_prismButton_clicked(bool checked);
+    void on_prismButton_clicked();
 
-    void on_pyramidButton_clicked(bool checked);
+    void on_pyramidButton_clicked();
 
     void on_primitiveBox_currentIndexChanged(const QString &arg1);
 

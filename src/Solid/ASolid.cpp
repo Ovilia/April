@@ -60,6 +60,24 @@ void ASolid::setParenet(ASolid *parent)
     this->parent = parent;
 }
 
+bool ASolid::isRoot()
+{
+    if (parent == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool ASolid::isLeave()
+{
+    if (leftChild == 0 && rightChild == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void ASolid::drawBefore()
 {
     glPushMatrix();
