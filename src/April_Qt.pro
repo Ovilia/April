@@ -70,27 +70,3 @@ RESOURCES += \
 FORMS += \
     ToolWidget.ui \
     ACreateDialog.ui
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -48,6 +48,13 @@ public:
     void setDrawWire(const bool enabled);
     void setDrawSolid(const bool enabled);
 
+    // for root solid only
+    // return if delete successfully, false if not exist in map
+    bool deleteSolid(QString solidName);
+    // for root solid only
+    // return if ungroup successfully, false if not exist in map
+    bool ungroupSolid(QString solidName);
+
 private:
     MainWindow* mainWindow;
 
@@ -63,6 +70,9 @@ private:
 
     // called by insertCude ..., insert to solidMap and primitiveMap
     void insertToMap(APrimitive* primitive);
+
+    // help funtion for bool deleteSolid(QString solidName);
+    void deleteSolidChild(ASolid* solid);
 
     bool isDrawSolid;
     bool isDrawWire;

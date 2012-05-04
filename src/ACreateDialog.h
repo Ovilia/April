@@ -3,17 +3,19 @@
 
 #include <QDialog>
 
-#include "ModelManager.h"
+#include "MainWindow.h"
 #include "Solid/APrimitive.h"
+#include "ToolWidget.h"
 
 namespace Ui {
     class ACreateDialog;
 }
 
-class ModelManager;
+class MainWindow;
+class ToolWidget;
 
 /**
- * This dialog is currently used to create primitives.
+ * This dialog is used to create primitives.
  * Creating by dragging will be later implemented.
  */
 class ACreateDialog : public QDialog
@@ -22,8 +24,9 @@ class ACreateDialog : public QDialog
 
 public:
     explicit ACreateDialog(APrimitive::PrimitiveType primitiveType,
-                          ModelManager* modelManager,
-                          QWidget *parent = 0);
+                           MainWindow* mainWindow,
+                           ToolWidget* toolWidget,
+                           QWidget *parent = 0);
     ~ACreateDialog();
 
     void changePrimitive(APrimitive::PrimitiveType primitiveType);
@@ -38,7 +41,8 @@ private slots:
 private:
     Ui::ACreateDialog *ui;
 
-    ModelManager* modelManager;
+    MainWindow* mainWindow;
+    ToolWidget* toolWidget;
 
     APrimitive::PrimitiveType primitiveType;
 };

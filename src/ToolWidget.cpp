@@ -1,10 +1,10 @@
-#include <map>
-
-#include <QString>
-#include <QDebug>
-
 #include "ToolWidget.h"
 #include "ui_ToolWidget.h"
+
+#include <map>
+
+#include <QMessageBox>
+#include <QString>
 
 #include "ModelManager.h"
 #include "Solid/ASolid.h"
@@ -20,10 +20,6 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     selectedPrimitive(0)
 {
     ui->setupUi(this);
-    ui->paraWidget->setVisible(false);
-    ui->positionWidget->setVisible(false);
-    ui->solidParaWidget->setVisible(false);
-
     solidMap = mainWindow->getModelManager()->getSolidMap();
     primitiveMap = mainWindow->getModelManager()->getPrimitiveMap();
 }
@@ -38,12 +34,11 @@ ToolWidget::~ToolWidget()
 
 void ToolWidget::showCreateDialog()
 {
-    // TODO: currently use CreateDialog to create primitives,
-    // improve later with dragging
     if (!createDialog) {
         createDialog = new ACreateDialog(createPrmType,
-                                        mainWindow->getModelManager(),
-                                        this);
+                                         mainWindow,
+                                         this,
+                                         this);
     } else {
         createDialog->changePrimitive(createPrmType);
     }
@@ -53,128 +48,90 @@ void ToolWidget::showCreateDialog()
 void ToolWidget::on_cubeButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_CUBE;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->sphereButton->setChecked(false);
-//        ui->cylinderButton->setChecked(false);
-//        ui->coneButton->setChecked(false);
-//        ui->prismButton->setChecked(false);
-//        ui->pyramidButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::on_sphereButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_SPHERE;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->cubeButton->setChecked(false);
-//        ui->cylinderButton->setChecked(false);
-//        ui->coneButton->setChecked(false);
-//        ui->prismButton->setChecked(false);
-//        ui->pyramidButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::on_cylinderButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_CYLINDER;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->sphereButton->setChecked(false);
-//        ui->cubeButton->setChecked(false);
-//        ui->coneButton->setChecked(false);
-//        ui->prismButton->setChecked(false);
-//        ui->pyramidButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::on_coneButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_CONE;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->sphereButton->setChecked(false);
-//        ui->cylinderButton->setChecked(false);
-//        ui->cubeButton->setChecked(false);
-//        ui->prismButton->setChecked(false);
-//        ui->pyramidButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::on_prismButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_PRISM;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->sphereButton->setChecked(false);
-//        ui->cylinderButton->setChecked(false);
-//        ui->coneButton->setChecked(false);
-//        ui->cubeButton->setChecked(false);
-//        ui->pyramidButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::on_pyramidButton_clicked(bool checked)
 {
     createPrmType = APrimitive::PT_PYRAMID;
-//    if (checked) {
-//        // uncheck other buttons
-//        ui->sphereButton->setChecked(false);
-//        ui->cylinderButton->setChecked(false);
-//        ui->coneButton->setChecked(false);
-//        ui->prismButton->setChecked(false);
-//        ui->cubeButton->setChecked(false);
-//    } else {
-//        createPrmType = APrimitive::PT_NONE;
-//    }
     showCreateDialog();
 }
 
 void ToolWidget::updateModelBox()
 {
-    ui->modelBox->clear();
+    // update primitiveBox according to primitiveMap
+    ui->primitiveBox->clear();
     map<QString, APrimitive*>::iterator iter;
     for (iter = primitiveMap->begin(); iter != primitiveMap->end(); ++iter) {
-        ui->modelBox->addItem(iter->first);
+        ui->primitiveBox->addItem(iter->first);
     }
 
+    // update boolBox and solidBox according to solidMap
     ui->solidBox->clear();
     ui->boolBox1->clear();
     ui->boolBox2->clear();
     map<QString, ASolid*>::iterator iter2;
     for (iter2 = solidMap->begin(); iter2 != solidMap->end(); ++iter2) {
-        ui->solidBox->addItem(iter2->first);
+        // every solid can do bool operation
         ui->boolBox1->addItem(iter2->first);
         ui->boolBox2->addItem(iter2->first);
+        if (!iter2->second->isLeave())
+        {
+            // leave solid can't be delete itself,
+            // and transform should be done in primitive part
+            ui->solidBox->addItem(iter2->first);
+        }
+    }
+    checkUngroupDelete();
+
+    // set primitiveTab enabled according to count of primitiveBox
+    if (ui->primitiveBox->count() > 0) {
+        ui->primitiveTab->setEnabled(true);
+    } else {
+        ui->primitiveTab->setEnabled(false);
     }
 
+    // set solidTab enabled according to count of solidBox
+    if (ui->solidBox->count() > 0) {
+        ui->solidTab->setEnabled(true);
+    } else {
+        ui->solidTab->setEnabled(false);
+    }
+
+    // set bool operation enabled according to count of boolBox
     if (ui->boolBox1->count() > 1) {
+        ui->boolPage->setEnabled(true);
         ui->boolBtn->setEnabled(true);
     } else {
-        ui->boolBtn->setEnabled(false);
+        ui->boolPage->setEnabled(false);
     }
-    ui->paraWidget->setVisible(true);
-    ui->positionWidget->setVisible(true);
-    ui->solidParaWidget->setVisible(true);
 }
 
-void ToolWidget::on_modelBox_currentIndexChanged(const QString &arg1)
+void ToolWidget::on_primitiveBox_currentIndexChanged(const QString &arg1)
 {
     map<QString, APrimitive*>::iterator iter = primitiveMap->find(arg1);
     if (iter == primitiveMap->end()) {
@@ -455,6 +412,8 @@ void ToolWidget::on_solidBox_currentIndexChanged(const QString &arg1)
     ui->xTransSolidSpin->setValue(trans.x);
     ui->yTransSolidSpin->setValue(trans.y);
     ui->zTransSolidSpin->setValue(trans.z);
+
+    checkUngroupDelete();
 }
 
 void ToolWidget::on_solidBtn_clicked()
@@ -476,8 +435,6 @@ void ToolWidget::on_solidBtn_clicked()
 
 void ToolWidget::on_boolBtn_clicked()
 {
-    qDebug()<<ui->boolBox1->currentText();
-    qDebug()<<ui->boolBox2->currentText();
     map<QString, ASolid*>::iterator iter1 =
             solidMap->find(ui->boolBox1->currentText());
     map<QString, ASolid*>::iterator iter2 =
@@ -491,4 +448,41 @@ void ToolWidget::on_boolBtn_clicked()
                                                ASolid::BO_UNION);
     mainWindow->getViewManager()->repaintAll();
     updateModelBox();
+}
+
+void ToolWidget::on_deleteSolidButton_clicked()
+{
+    QString solidName = ui->solidBox->currentText();
+    if (mainWindow->getModelManager()->deleteSolid(solidName)) {
+        updateModelBox();
+        mainWindow->getViewManager()->repaintAll();
+    } else {
+        QMessageBox::about(this, "Error",
+                           "Fail to delete solid: " + solidName);
+    }
+}
+
+void ToolWidget::on_ungroupSolidButton_clicked()
+{
+    QString solidName = ui->solidBox->currentText();
+    if (mainWindow->getModelManager()->ungroupSolid(solidName)) {
+        updateModelBox();
+        mainWindow->getViewManager()->repaintAll();
+    } else {
+        QMessageBox::about(this, "Error",
+                           "Fail to ungroup solid: " + solidName);
+    }
+}
+
+void ToolWidget::checkUngroupDelete()
+{
+    if (selectedSolid) {
+        if (selectedSolid->isRoot()) {
+            ui->deleteSolidButton->setEnabled(true);
+            ui->ungroupSolidButton->setEnabled(true);
+        } else {
+            ui->deleteSolidButton->setEnabled(false);
+            ui->ungroupSolidButton->setEnabled(false);
+        }
+    }
 }

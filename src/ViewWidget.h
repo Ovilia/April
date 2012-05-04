@@ -7,6 +7,7 @@
 #include "ModelManager.h"
 
 class AGLWidget;
+class ModelManager;
 
 class ViewWidget : public QMdiSubWindow
 {

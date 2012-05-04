@@ -42,7 +42,7 @@ private slots:
 
     void on_pyramidButton_clicked(bool checked);
 
-    void on_modelBox_currentIndexChanged(const QString &arg1);
+    void on_primitiveBox_currentIndexChanged(const QString &arg1);
 
     void on_okButton_clicked();
 
@@ -53,6 +53,10 @@ private slots:
     void on_solidBtn_clicked();
 
     void on_boolBtn_clicked();
+
+    void on_deleteSolidButton_clicked();
+
+    void on_ungroupSolidButton_clicked();
 
 private:
     Ui::ToolWidget *ui;
@@ -71,6 +75,10 @@ private:
 
     ASolid* selectedSolid;
     APrimitive* selectedPrimitive;
+
+    // set ungroup and delete button enabling according to selected solid
+    // enabled if is root
+    void checkUngroupDelete();
 };
 
 #endif // TOOLWIDGET_H

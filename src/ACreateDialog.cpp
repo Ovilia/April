@@ -2,11 +2,13 @@
 #include "ui_ACreateDialog.h"
 
 ACreateDialog::ACreateDialog(APrimitive::PrimitiveType primitiveType,
-                           ModelManager* modelManager,
-                           QWidget *parent) :
+                             MainWindow* mainWindow,
+                             ToolWidget* toolWidget,
+                             QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ACreateDialog),
-    modelManager(modelManager),
+    mainWindow(mainWindow),
+    toolWidget(toolWidget),
     primitiveType(primitiveType)
 {
     ui->setupUi(this);
@@ -40,6 +42,7 @@ void ACreateDialog::on_tabWidget_currentChanged(int index)
 
 void ACreateDialog::on_okButton_clicked()
 {
+    ModelManager* modelManager = mainWindow->getModelManager();
     switch (primitiveType) {
     case APrimitive::PT_CUBE:
         modelManager->insertCube(ui->cubeWidthSpin->value(),
@@ -77,5 +80,9 @@ void ACreateDialog::on_okButton_clicked()
     default:
         break;
     }
+
+    toolWidget->updateModelBox();
+    mainWindow->getViewManager()->repaintAll();
+
     close();
 }

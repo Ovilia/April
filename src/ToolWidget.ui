@@ -35,7 +35,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="createTab">
       <attribute name="title">
@@ -45,7 +45,7 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="basicPage">
           <property name="geometry">
@@ -274,12 +274,15 @@
           </layout>
          </widget>
          <widget class="QWidget" name="boolPage">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
             <width>258</width>
-            <height>322</height>
+            <height>387</height>
            </rect>
           </property>
           <attribute name="label">
@@ -367,6 +370,9 @@
       </layout>
      </widget>
      <widget class="QWidget" name="primitiveTab">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <attribute name="title">
        <string>Primitive</string>
       </attribute>
@@ -379,7 +385,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="modelBox"/>
+        <widget class="QComboBox" name="primitiveBox"/>
        </item>
        <item>
         <widget class="QToolBox" name="modifyToolBox">
@@ -889,6 +895,9 @@
       </layout>
      </widget>
      <widget class="QWidget" name="solidTab">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <attribute name="title">
        <string>Solid</string>
       </attribute>
@@ -902,6 +911,39 @@
        </item>
        <item>
         <widget class="QComboBox" name="solidBox"/>
+       </item>
+       <item>
+        <widget class="QWidget" name="solidBasicWidget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="ungroupSolidButton">
+            <property name="text">
+             <string>Ungroup</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteSolidButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <widget class="QWidget" name="solidParaWidget" native="true">
