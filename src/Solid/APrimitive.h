@@ -11,13 +11,15 @@ class APrimitive
 public:
     enum PrimitiveType {
         PT_NONE = 0,
-        PT_CUBE,
-        PT_SPHERE,
-        PT_CYLINDER,
         PT_CONE,
+        PT_CUBE,
+        PT_CYLINDER,
         PT_PRISM,
-        PT_PYRAMID
+        PT_PYRAMID,
+        PT_SPHERE
     };
+    static const int PRIMITIVE_TYPE_COUNT = 7;
+    static const QString PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT];
 
     APrimitive(PrimitiveType type, const QString& name = "Primitive");
     // virtual destructor to make this class abstract

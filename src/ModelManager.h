@@ -26,6 +26,12 @@ public:
     ModelManager(MainWindow* mainWindow);
     ~ModelManager();
 
+    // get if model is changed since last saving to file
+    bool getModelChanged();
+
+    // initialize to contain no model
+    void initialize();
+
     // draw all objects
     void drawSolid();
     void drawWire();
@@ -57,6 +63,9 @@ public:
 
 private:
     MainWindow* mainWindow;
+
+    // if model changed since last saving to file
+    bool modelChanged;
 
     // unique name and solid
     map<QString, ASolid*> solidMap;

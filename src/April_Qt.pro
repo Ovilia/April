@@ -42,7 +42,8 @@ HEADERS += \
     ACreateDialog.h \
     Vector3i.h \
     ArcBall.h \
-    MatrixD.h
+    MatrixD.h \
+    FileManager.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -62,7 +63,8 @@ SOURCES += \
     ACreateDialog.cpp \
     Vector3i.cpp \
     ArcBall.cpp \
-    MatrixD.cpp
+    MatrixD.cpp \
+    FileManager.cpp
 
 RESOURCES += \
     resource.qrc

@@ -78,7 +78,7 @@ bool ASolid::isLeave()
     }
 }
 
-void ASolid::drawBefore()
+void ASolid::drawBefore() const
 {
     glPushMatrix();
 
@@ -89,7 +89,7 @@ void ASolid::drawBefore()
     glTranslated(translate.x, translate.y, translate.z);
 }
 
-void ASolid::drawWire()
+void ASolid::drawWire() const
 {
     drawBefore();
 
@@ -110,7 +110,7 @@ void ASolid::drawWire()
     drawAfter();
 }
 
-void ASolid::drawSolid()
+void ASolid::drawSolid() const
 {
     drawBefore();
 
@@ -131,7 +131,7 @@ void ASolid::drawSolid()
     drawAfter();
 }
 
-void ASolid::drawAfter()
+void ASolid::drawAfter() const
 {
     glPopMatrix();
 }

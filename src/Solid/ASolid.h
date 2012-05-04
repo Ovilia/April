@@ -30,10 +30,8 @@ public:
     bool isRoot();
     bool isLeave();
 
-    void drawWire();
-    void drawSolid();
-    void drawBefore();
-    void drawAfter();
+    void drawWire() const;
+    void drawSolid() const;
 
     ASolid* getLeftChild();
     ASolid* getRightChild();
@@ -91,6 +89,9 @@ private:
     Vector3d translate;
 
     bool isSelected;
+
+    void drawBefore() const;
+    void drawAfter() const;
 };
 
 #endif // APRILSOLID_H

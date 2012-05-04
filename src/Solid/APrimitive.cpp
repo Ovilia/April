@@ -5,6 +5,10 @@
 
 #include "APrimitive.h"
 
+const QString APrimitive::PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT] = {
+    "none", "cone", "cube", "cylinder", "prism", "pyramid", "sphere"
+};
+
 const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
 {
     {0.00, 1.00, 1.00},
