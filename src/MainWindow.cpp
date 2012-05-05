@@ -1,7 +1,11 @@
-#include <QGridLayout>
-
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
+#include <QDateTime>
+#include <QFileDialog>
+#include <QMessageBox>
+
+#include "FileManager.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -139,4 +143,96 @@ void MainWindow::on_actionWire_triggered(bool checked)
     modelManager->setDrawSolid(ui->actionSolid->isChecked());
     modelManager->setDrawWire(checked);
     viewManager->repaintAll();
+}
+
+void MainWindow::setSaveEnabled(bool enabled)
+{
+    ui->actionSave->setEnabled(enabled);
+}
+
+bool MainWindow::openProject()
+{
+    QString openName = QFileDialog::getOpenFileName(
+                this,
+                tr("Open April Project"),
+                QDir::currentPath(),
+                tr("April Project File (*.apr)"));
+    if (!openName.isNull()) {
+        FileErrorWarning result;
+        bool isOpened = FileManager::readFile(openName, *modelManager, result);
+        if (isOpened) {
+            return true;
+        } else {
+            QMessageBox::about(this, tr("Failed to open project"),
+                               tr("Failed to open project file ") + openName);
+            return false;
+        }
+    } else {
+        // cancelled when input open name
+        return false;
+    }
+    // unexpected to reach here
+    return false;
+}
+
+bool MainWindow::saveProject()
+{
+    if (modelManager->getModelChanged()) {
+        QString saveName = QFileDialog::getSaveFileName(
+                    this,
+                    tr("Save April Project"),
+                    QDateTime::currentDateTime().
+                    toString("yyyy_MM_dd_hh_mm_ss").append(".apr"),
+                    tr("April Project File (*.apr)"));
+
+        if (!saveName.isNull()) {
+            FileErrorWarning result;
+            bool isSaved = FileManager::writeFile(
+                        saveName, *modelManager, true, result);
+
+            if (isSaved) {
+                return true;
+            } else {
+                // ask if to retry if failed
+                QMessageBox::StandardButton retry =
+                        QMessageBox::warning(this, tr("Failed to save project"),
+                                             result.getBrief() +
+                                             tr("\nFailed to save project. Try again?"),
+                                             QMessageBox::Yes | QMessageBox::No,
+                                             QMessageBox::Yes);
+                if (retry == QMessageBox::Yes) {
+                    return saveProject();
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            // cancelled when input save name
+            return false;
+        }
+    }
+    // model not changed
+    return true;
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    if (modelManager->getModelChanged()) {
+        // ask if to save model if model changed
+        QMessageBox::StandardButton button =
+                QMessageBox::question(NULL, tr("Save project"),
+                                      tr("Project has been changed. Save project?"),
+                                      QMessageBox::Yes | QMessageBox::No,
+                                      QMessageBox::Yes);
+
+        if (button == QMessageBox::Yes) {
+            saveProject();
+        }
+    }
+    openProject();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    saveProject();
 }

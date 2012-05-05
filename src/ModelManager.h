@@ -28,6 +28,8 @@ public:
 
     // get if model is changed since last saving to file
     bool getModelChanged();
+    // call when model saved
+    void setModelSaved();
 
     // initialize to contain no model
     void initialize();
@@ -85,6 +87,8 @@ private:
 
     bool isDrawSolid;
     bool isDrawWire;
+
+    void setModelChanged(bool changed);
 };
 
 #endif // MODELMANAGER_H

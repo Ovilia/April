@@ -10,6 +10,8 @@ struct FileErrorWarning
 {
     QMap<unsigned int, QString> errorMap;
     QMap<unsigned int, QString> warningMap;
+
+    QString getBrief();
 };
 
 
@@ -27,7 +29,7 @@ public:
     // writeReadMe determines if to write ReadMe information into the file
     // result is the error and warning information returned
     static bool writeFile(const QString fileName,
-                          const ModelManager& modelManager,
+                          ModelManager &modelManager,
                           const bool writeReadMe,
                           FileErrorWarning& result);
 

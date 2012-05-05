@@ -7,6 +7,16 @@
 
 #include "Solid/APrimitive.h"
 
+QString FileErrorWarning::getBrief()
+{
+    return errorMap.count() + QString("errors, ")
+            + warningMap.count() + QString("warnings\n")
+            + QString("First error: (Line ") + errorMap.begin().key()
+            + QString(") - ") + errorMap.begin().value();
+}
+
+
+
 const QString FileManager::READ_ME_STR =
         "# ---------------------------------------------------------------------------- #\n"\
         "# ---------------------------------------------------------------------------- #\n"\
@@ -53,7 +63,7 @@ const QString FileManager::READ_ME_STR =
         "#    - The format of transform attributes is the same with that of the         #\n"\
         "#      APrimitive.                                                             #\n"\
         "#                                                                              #\n"\
-        "# An example of *.apr file: #\n"\
+        "# An example of *.apr file:                                                    #\n"\
         "# cube \"Primitive 0\" \"Solid 0\"                                                 #\n"\
         "# width=1.5                                                                    #\n"\
         "# depth=1.2                                                                    #\n"\
@@ -148,6 +158,7 @@ bool FileManager::readFile(const QString fileName,
             }
         }
 
+        file.close();
         return true;
     } else {
         // fail to open file
@@ -157,10 +168,31 @@ bool FileManager::readFile(const QString fileName,
 }
 
 bool FileManager::writeFile(const QString fileName,
-                            const ModelManager& modelManager,
+                            ModelManager& modelManager,
                             const bool writeReadMe,
                             FileErrorWarning& result)
 {
     result.errorMap.clear();
     result.warningMap.clear();
+
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+
+        // write read me
+        if (writeReadMe) {
+            stream << READ_ME_STR;
+        }
+
+        file.close();
+
+        // model saved successfully
+        modelManager.setModelSaved();
+
+        return true;
+    } else {
+        // fail to open file
+        result.errorMap.insert(0, ERROR_OPEN_FILE);
+        return false;
+    }
 }

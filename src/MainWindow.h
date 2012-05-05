@@ -26,6 +26,8 @@ public:
     ModelManager* getModelManager();
     ViewManager* getViewManager();
 
+    void setSaveEnabled(bool enabled);
+
 private slots:
     void on_actionMove_triggered(bool checked);
 
@@ -49,6 +51,10 @@ private slots:
 
     void on_actionWire_triggered(bool checked);
 
+    void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -56,6 +62,11 @@ private:
     ModelManager* modelManager;
     // show different views of models
     ViewManager* viewManager;
+
+    // return true if open *.apr without error
+    bool openProject();
+    // return true if model is not changed or saved to *.apr without error
+    bool saveProject();
 };
 
 #endif // MAINWINDOW_H

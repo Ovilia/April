@@ -25,9 +25,20 @@ bool ModelManager::getModelChanged()
     return modelChanged;
 }
 
+void ModelManager::setModelSaved()
+{
+    setModelChanged(false);
+}
+
+void ModelManager::setModelChanged(bool changed)
+{
+    modelChanged = changed;
+    mainWindow->setSaveEnabled(changed);
+}
+
 void ModelManager::initialize()
 {
-    modelChanged = false;
+    setModelChanged(false);
     solidMap.clear();
     primitiveMap.clear();
     nextSolidID = 0;
@@ -77,7 +88,7 @@ void ModelManager::insertToMap(APrimitive* primitive)
     solidMap.insert(pair<QString, ASolid*>(solidName, solid));
     ++nextPrimiID;
     ++nextSolidID;
-    modelChanged = true;
+    setModelChanged(true);
 }
 
 void ModelManager::insertCube(double width, double depth, double height)
@@ -119,7 +130,7 @@ void ModelManager::insertSolid(ASolid* left, ASolid* right,
     right->setParenet(solid);
     solidMap.insert(pair<QString, ASolid*>(solidName, solid));
     ++nextSolidID;
-    modelChanged = true;
+    setModelChanged(true);
 }
 
 bool ModelManager::getIsDrawSolid() const
@@ -156,7 +167,7 @@ bool ModelManager::deleteSolid(QString solidName)
             deleteSolidChild(solid);
             // delete this solid
             solidMap.erase(target);
-            modelChanged = true;
+            setModelChanged(true);
             return true;
         } else {
             return false;
@@ -205,7 +216,7 @@ bool ModelManager::ungroupSolid(QString solidName)
             solid->getRightChild()->setParenet(0);
             // delete this solid from solid map
             solidMap.erase(target);
-            modelChanged = true;
+            setModelChanged(true);
             return true;
         } else {
             return false;
