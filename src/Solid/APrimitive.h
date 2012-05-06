@@ -3,8 +3,11 @@
 
 #include <QString>
 
+#include "ASolid.h"
 #include "Vector3d.h"
 #include "Vector3i.h"
+
+class ASolid;
 
 class APrimitive
 {
@@ -62,12 +65,18 @@ public:
     bool getSelected() const;
     void setSelected(const bool value);
 
+    QString virtual toString(ASolid* solid) const = 0;
+
 protected:
     QString name;
     PrimitiveType primitiveType;
 
     // min box to hold it
     Vector3d boundingBox;
+
+    static const Vector3d DEFAULT_ROTATE;
+    static const Vector3d DEFAULT_SCALE;
+    static const Vector3d DEFAULT_TRANSLATE;
 
     Vector3d rotate;
     Vector3d scale;
@@ -91,6 +100,9 @@ protected:
     // vertex pair to make triangle faces, not the real face count
     int faceCount;
     Vector3i* faceArray;
+
+    // common part of toString
+    QString toStringCommon(ASolid* solid) const;
 };
 
 #endif // APRILPRIMITIVE_H

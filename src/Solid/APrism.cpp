@@ -1,6 +1,19 @@
+#include "APrism.h"
+
 #include <qmath.h>
 
-#include "APrism.h"
+const double APrism::DEFAULT_LENGTH = 1.0;
+const double APrism::DEFAULT_SIDE_LENGTH = 1.0;
+const int APrism::DEFAULT_SIDE_COUNT = 3;
+
+APrism::APrism() :
+    APrimitive(APrimitive::PT_PRISM),
+    length(DEFAULT_LENGTH),
+    sideLength(DEFAULT_SIDE_LENGTH),
+    sideCount(DEFAULT_SIDE_COUNT)
+{
+    reset(length, sideLength, sideCount);
+}
 
 APrism::APrism(double length, double sideLength, int sideCount) :
     APrimitive(APrimitive::PT_PRISM),
@@ -65,4 +78,22 @@ void APrism::reset(double length, double sideLength, int sideCount)
     faceArray[5] = Vector3i(0, 5, 3);
     faceArray[6] = Vector3i(0, 2, 1);
     faceArray[7] = Vector3i(3, 4, 5);
+}
+
+QString APrism::toString(ASolid* solid) const
+{
+    QString str = toStringCommon(solid);
+    if (length - DEFAULT_LENGTH > EPSILON) {
+        str += QString("length=") + QString::number(length) + QString("\n");
+    }
+    if (sideLength - DEFAULT_SIDE_LENGTH > EPSILON) {
+        str += QString("sideLength=") + QString::number(sideLength) +
+                QString("\n");
+    }
+    if (sideCount != DEFAULT_SIDE_COUNT) {
+        str += QString("sideCount=") + QString::number(sideCount) +
+                QString("\n");
+    }
+    str += QString("\n");
+    return str;
 }

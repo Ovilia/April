@@ -6,6 +6,7 @@
 class ASphere : public APrimitive
 {
 public:
+    ASphere();
     ASphere(double radius, int slices, int stacks);
     ~ASphere();
 
@@ -15,7 +16,13 @@ public:
 
     void reset(double radius, int slices, int stacks);
 
+    QString virtual toString(ASolid* solid) const;
+
 protected:
+    static const double DEFAULT_RADIUS;
+    static const int DEFAULT_SLICES;
+    static const int DEFAULT_STACKS;
+
     double radius;
     int slices;
     int stacks;

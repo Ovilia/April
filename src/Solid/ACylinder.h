@@ -6,6 +6,7 @@
 class ACylinder : public APrimitive
 {
 public:
+    ACylinder();
     ACylinder(double radius, int slices, double height);
     ~ACylinder();
 
@@ -15,7 +16,13 @@ public:
 
     void reset(double radius, int slices, double height);
 
+    QString virtual toString(ASolid* solid) const;
+
 protected:
+    static const double DEFAULT_RADIUS;
+    static const int DEFAULT_SLICES;
+    static const double DEFAULT_HEIGHT;
+
     double radius;
     int slices;
     double height;

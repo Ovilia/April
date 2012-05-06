@@ -4,6 +4,19 @@
 #include "Vector3d.h"
 #include "Vector3i.h"
 
+const double ACube::DEFAULT_WIDTH = 1.0;
+const double ACube::DEFAULT_DEPTH = 1.0;
+const double ACube::DEFAULT_HEIGHT = 1.0;
+
+ACube::ACube() :
+    APrimitive(APrimitive::PT_CUBE),
+    width(DEFAULT_WIDTH),
+    depth(DEFAULT_DEPTH),
+    height(DEFAULT_HEIGHT)
+{
+    reset(width, depth, height);
+}
+
 ACube::ACube(double width, double depth, double height) :
     APrimitive(APrimitive::PT_CUBE),
     width(width),
@@ -80,4 +93,20 @@ void ACube::reset(double width, double depth, double height)
     faceArray[9] = Vector3i(0, 2, 3);
     faceArray[10] = Vector3i(4, 5, 7);
     faceArray[11] = Vector3i(5, 6, 7);
+}
+
+QString ACube::toString(ASolid* solid) const
+{
+    QString str = toStringCommon(solid);
+    if (width - DEFAULT_WIDTH > EPSILON) {
+        str += QString("width=") + QString::number(width) + QString("\n");
+    }
+    if (depth - DEFAULT_DEPTH > EPSILON) {
+        str += QString("depth=") + QString::number(depth) + QString("\n");
+    }
+    if (height - DEFAULT_HEIGHT > EPSILON) {
+        str += QString("height=") + QString::number(height) + QString("\n");
+    }
+    str += QString("\n");
+    return str;
 }

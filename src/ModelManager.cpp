@@ -82,6 +82,7 @@ void ModelManager::drawWire()
 void ModelManager::insertToMap(APrimitive* primitive)
 {
     QString primiName = "Primitive " + QString::number(nextPrimiID);
+    primitive->setName(primiName);
     primitiveMap.insert(pair<QString, APrimitive*>(primiName, primitive));
     QString solidName = "Solid " + QString::number(nextSolidID);
     ASolid* solid = new ASolid(nextPrimiID, primitive, solidName);
@@ -222,4 +223,16 @@ bool ModelManager::ungroupSolid(QString solidName)
             return false;
         }
     }
+}
+
+ASolid* ModelManager::getSolidFromPmt(APrimitive* primitive)
+{
+    map<QString, ASolid*>::iterator sIter;
+    for (sIter = solidMap.begin(); sIter != solidMap.end(); ++sIter) {
+        if (primitive == sIter->second->getPrimitive()) {
+            return sIter->second;
+        }
+    }
+    // not found
+    return 0;
 }

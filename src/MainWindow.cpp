@@ -177,6 +177,15 @@ bool MainWindow::openProject()
 
 bool MainWindow::saveProject()
 {
+    bool saveReadMe = true;
+    if (QMessageBox::question(this, tr("Save read me"),
+                              tr("Do you want to save read me part in model file?"),
+                              QMessageBox::Yes | QMessageBox::No,
+                              QMessageBox::Yes) == QMessageBox::Yes) {
+        saveReadMe = true;
+    } else {
+        saveReadMe = false;
+    }
     if (modelManager->getModelChanged()) {
         QString saveName = QFileDialog::getSaveFileName(
                     this,
@@ -188,7 +197,7 @@ bool MainWindow::saveProject()
         if (!saveName.isNull()) {
             FileErrorWarning result;
             bool isSaved = FileManager::writeFile(
-                        saveName, *modelManager, true, result);
+                        saveName, *modelManager, saveReadMe, result);
 
             if (isSaved) {
                 return true;

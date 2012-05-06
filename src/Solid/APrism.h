@@ -6,6 +6,7 @@
 class APrism : public APrimitive
 {
 public:
+    APrism();
     APrism(double length, double sideLength, int sideCount = 3);
     ~APrism();
 
@@ -15,7 +16,13 @@ public:
 
     void reset(double length, double sideLength, int sideCount = 3);
 
+    QString virtual toString(ASolid* solid) const;
+
 protected:
+    static const double DEFAULT_LENGTH;
+    static const double DEFAULT_SIDE_LENGTH;
+    static const int DEFAULT_SIDE_COUNT;
+
     double length;
     double sideLength;
     int sideCount;

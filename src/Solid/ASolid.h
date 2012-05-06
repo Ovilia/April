@@ -4,6 +4,9 @@
 #include <QString>
 
 #include "APrimitive.h"
+#include "Vector3d.h"
+
+class APrimitive;
 
 class ASolid
 {
@@ -14,6 +17,8 @@ public:
         BO_UNION,
         BO_DIFFERENCE
     };
+    static const int BOOL_OPERATION_COUNT = 4;
+    static const QString BOOL_OPERATION_NAME[BOOL_OPERATION_COUNT];
 
     ASolid(unsigned int primitiveID, APrimitive* primitive,
            const QString& name = "Solid");
@@ -67,6 +72,8 @@ public:
     bool getSelected() const;
     void setSelected(const bool value);
 
+    QString toString() const;
+
 private:
     QString name;
 
@@ -83,6 +90,10 @@ private:
 
     // min box to hold it
     Vector3d boundingBox;
+
+    static const Vector3d DEFAULT_ROTATE;
+    static const Vector3d DEFAULT_SCALE;
+    static const Vector3d DEFAULT_TRANSLATE;
 
     Vector3d rotate;
     Vector3d scale;

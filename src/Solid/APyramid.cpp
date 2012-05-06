@@ -1,6 +1,17 @@
+#include "APyramid.h"
+
 #include <qmath.h>
 
-#include "APyramid.h"
+const double APyramid::DEFAULT_SIDE_LENGTH = 1.0;
+const int APyramid::DEFAULT_SIDE_COUNT = 4;
+
+APyramid::APyramid() :
+    APrimitive(APrimitive::PT_PRISM),
+    sideLength(DEFAULT_SIDE_LENGTH),
+    sideCount(DEFAULT_SIDE_LENGTH)
+{
+    reset(sideLength, sideCount);
+}
 
 APyramid::APyramid(double sideLength, int sideCount) :
     APrimitive(APrimitive::PT_PYRAMID),
@@ -54,4 +65,19 @@ void APyramid::reset(double sideLength, int sideCount)
     faceArray[1] = Vector3i(0, 2, 3);
     faceArray[2] = Vector3i(1, 2, 3);
     faceArray[3] = Vector3i(0, 1, 3);
+}
+
+QString APyramid::toString(ASolid* solid) const
+{
+    QString str = toStringCommon(solid);
+    if (sideLength - DEFAULT_SIDE_LENGTH > EPSILON) {
+        str += QString("sideLength=") + QString::number(sideLength) +
+                QString("\n");
+    }
+    if (sideCount != DEFAULT_SIDE_COUNT) {
+        str += QString("sideCount=") + QString::number(sideCount) +
+                QString("\n");
+    }
+    str += QString("\n");
+    return str;
 }

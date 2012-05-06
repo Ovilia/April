@@ -2,6 +2,14 @@
 
 #include "ASolid.h"
 
+const QString ASolid::BOOL_OPERATION_NAME[BOOL_OPERATION_COUNT] = {
+    "none", "intersection", "union", "difference"
+};
+
+const Vector3d ASolid::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
+const Vector3d ASolid::DEFAULT_SCALE = Vector3d(1.0, 1.0, 1.0);
+const Vector3d ASolid::DEFAULT_TRANSLATE = Vector3d(0.0, 0.0, 0.0);
+
 ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
                BoolOperation operation, const QString& name) :
     name(name),
@@ -10,9 +18,9 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
     operation(operation),
     parent(0),
     primitive(0),
-    rotate(0.0, 0.0, 0.0),
-    scale(1.0, 1.0, 1.0),
-    translate(0.0, 0.0, 0.0),
+    rotate(DEFAULT_ROTATE),
+    scale(DEFAULT_SCALE),
+    translate(DEFAULT_TRANSLATE),
     isSelected(false)
 {
     // TODO: set bounding box here
@@ -244,4 +252,43 @@ bool ASolid::getSelected() const
 void ASolid::setSelected(const bool value)
 {
     isSelected = value;
+}
+
+QString ASolid::toString() const
+{
+    // solid name
+    QString str = QString("solid \"") + name + QString("\"\n");
+
+    // primitive, children and operation
+    if (primitive) {
+        // leave solid
+        str += QString("primitive=") + primitive->getName() + QString("\n");
+    } else {
+        if (leftChild) {
+            str += QString("left=") + leftChild->getName() + QString("\n");
+        }
+        if (rightChild) {
+            str += QString("right=") + rightChild->getName() + QString("\n");
+        }
+        str += BOOL_OPERATION_NAME[operation] + QString("\n");
+    }
+
+    // transform parameter
+    if (rotate != DEFAULT_ROTATE) {
+        str += QString("rotate={") + QString::number(rotate.x) +
+                QString(", ") + QString::number(rotate.y) + QString(", ") +
+                QString::number(rotate.z) + QString("}\n");
+    }
+    if (scale != DEFAULT_SCALE) {
+        str += QString("scale={") + QString::number(scale.x) +
+                QString(", ") + QString::number(scale.y) + QString(", ") +
+                QString::number(scale.z) + QString("}\n");
+    }
+    if (translate != DEFAULT_TRANSLATE) {
+        str += QString("translate={") + QString::number(translate.x) +
+                QString(", ") + QString::number(translate.y) + QString(", ") +
+                QString::number(translate.z) + QString("}\n");
+    }
+    str += QString("\n");
+    return str;
 }

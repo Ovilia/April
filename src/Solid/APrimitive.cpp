@@ -1,9 +1,9 @@
+#include "APrimitive.h"
+
 #include <ctime>
 #include <cstdlib>
 
-#include <QtOpenGL/qgl.h>
-
-#include "APrimitive.h"
+#include <QtOpenGL>
 
 const QString APrimitive::PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT] = {
     "none", "cone", "cube", "cylinder", "prism", "pyramid", "sphere"
@@ -25,12 +25,16 @@ const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
     {1.00, 0.75, 1.00}
 };
 
+const Vector3d APrimitive::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
+const Vector3d APrimitive::DEFAULT_SCALE = Vector3d(1.0, 1.0, 1.0);
+const Vector3d APrimitive::DEFAULT_TRANSLATE = Vector3d(0.0, 0.0, 0.0);
+
 APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     name(name),
     primitiveType(type),
-    rotate(0.0, 0.0, 0.0),
-    scale(1.0, 1.0, 1.0),
-    translate(0.0, 0.0, 0.0),
+    rotate(DEFAULT_ROTATE),
+    scale(DEFAULT_SCALE),
+    translate(DEFAULT_TRANSLATE),
     isSelected(false),
     wireColor(Vector3d(0.3, 0.3, 0.3)),
     vertexCount(0),
@@ -203,4 +207,34 @@ bool APrimitive::getSelected() const
 void APrimitive::setSelected(const bool value)
 {
     isSelected = value;
+}
+
+QString APrimitive::toStringCommon(ASolid* solid) const
+{
+    // primitive type, primitive name and solid name
+    QString str = PRIMITIVE_TYPE_NAME[primitiveType] +
+            QString(" \"") + name + QString("\"");
+    if (solid != 0) {
+        // if solid not defined, don't write
+        str += QString(" \"") + solid->getName() + QString("\"");
+    }
+    str += QString("\n");
+
+    // transform parameter
+    if (rotate != DEFAULT_ROTATE) {
+        str += QString("rotate={") + QString::number(rotate.x) +
+                QString(", ") + QString::number(rotate.y) + QString(", ") +
+                QString::number(rotate.z) + QString("}\n");
+    }
+    if (scale != DEFAULT_SCALE) {
+        str += QString("scale={") + QString::number(scale.x) +
+                QString(", ") + QString::number(scale.y) + QString(", ") +
+                QString::number(scale.z) + QString("}\n");
+    }
+    if (translate != DEFAULT_TRANSLATE) {
+        str += QString("translate={") + QString::number(translate.x) +
+                QString(", ") + QString::number(translate.y) + QString(", ") +
+                QString::number(translate.z) + QString("}\n");
+    }
+    return str;
 }

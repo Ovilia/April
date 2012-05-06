@@ -1,9 +1,22 @@
+#include "ASphere.h"
+
 #include "cmath"
 #ifndef M_PI
 #define M_PI 3.1415926536
 #endif
 
-#include "ASphere.h"
+const double ASphere::DEFAULT_RADIUS = 0.5;
+const int ASphere::DEFAULT_SLICES = 16;
+const int ASphere::DEFAULT_STACKS = 8;
+
+ASphere::ASphere() :
+    APrimitive(APrimitive::PT_SPHERE),
+    radius(DEFAULT_RADIUS),
+    slices(DEFAULT_SLICES),
+    stacks(DEFAULT_STACKS)
+{
+    reset(radius, slices, stacks);
+}
 
 ASphere::ASphere(double radius, int slices, int stacks) :
     APrimitive(APrimitive::PT_SPHERE),
@@ -105,4 +118,20 @@ void ASphere::reset(double radius, int slices, int stacks)
                                     t * slices + 1);
         ++index;
     }
+}
+
+QString ASphere::toString(ASolid* solid) const
+{
+    QString str = toStringCommon(solid);
+    if (radius - DEFAULT_RADIUS > EPSILON) {
+        str += QString("radius=") + QString::number(radius) + QString("\n");
+    }
+    if (slices != DEFAULT_SLICES) {
+        str += QString("slices=") + QString::number(slices) + QString("\n");
+    }
+    if (stacks != DEFAULT_STACKS) {
+        str += QString("stacks=") + QString::number(stacks) + QString("\n");
+    }
+    str += QString("\n");
+    return str;
 }

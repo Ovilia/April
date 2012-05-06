@@ -8,10 +8,14 @@
 
 struct FileErrorWarning
 {
+    // line number and error or warning info
     QMap<unsigned int, QString> errorMap;
     QMap<unsigned int, QString> warningMap;
 
+    // get brief description of error and warning info
     QString getBrief();
+
+    static const unsigned int NO_LINE_NUMBER = 0;
 };
 
 
@@ -38,8 +42,10 @@ private:
 
     static const QString READ_ME_STR;
 
-    static const QString ERROR_OPEN_FILE;
-    static const QString ERROR_PRIMITIVE_NAME_COUNT;
+    static const QString FAIL_OPEN_FILE;
+    static const QString ILLEGAL_PRIMITIVE_NAME_COUNT;
+    static const QString ILLEGAL_PRIMITIVE_TYPE;
+    static const QString SOLID_NOT_FOUND;
 
     enum SegmentState {
         Seg_Init = 0,

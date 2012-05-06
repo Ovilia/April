@@ -45,7 +45,7 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="basicPage">
           <property name="geometry">
@@ -390,15 +390,15 @@
        <item>
         <widget class="QToolBox" name="modifyToolBox">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="geometryPage">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>171</width>
-            <height>273</height>
+            <width>258</width>
+            <height>343</height>
            </rect>
           </property>
           <attribute name="label">

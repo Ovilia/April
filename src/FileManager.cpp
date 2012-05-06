@@ -9,10 +9,15 @@
 
 QString FileErrorWarning::getBrief()
 {
-    return errorMap.count() + QString("errors, ")
+    QString brief = errorMap.count() + QString("errors, ")
             + warningMap.count() + QString("warnings\n")
-            + QString("First error: (Line ") + errorMap.begin().key()
-            + QString(") - ") + errorMap.begin().value();
+            + QString("First error: ");
+    if (errorMap.begin().key() != NO_LINE_NUMBER) {
+        // add line number
+        brief += QString("(Line ") + errorMap.begin().key() + QString(")");
+    }
+    brief += QString(" - ") + errorMap.begin().value();
+    return brief;
 }
 
 
@@ -41,13 +46,13 @@ const QString FileManager::READ_ME_STR =
         "#      of primitive and name of solid, otherwise, there'll be an error.        #\n"\
         "#      Defining a primitive of the same name with previous ones will cause an  #\n"\
         "#      error.                                                                  #\n"\
+        "#    - The transform attributes(translate/rotate/scale) could be given.        #\n"\
+        "#      Default value will be given if not.                                     #\n"\
         "#    - The following lines of APrimitive could contain geometry attributes     #\n"\
         "#      (e.g.: width). If an attribute is not the one this type is supposed to  #\n"\
         "#      contain(e.g.: width attribute for a cone) or an attribute undefined     #\n"\
         "#      (e.g.: weight), there'll be an error. If an attribute is not defined    #\n"\
         "#      for this type, default value will be given.                             #\n"\
-        "#    - The transform attributes(translate/rotate/scale) could be given.        #\n"\
-        "#      Default value will be given if not.                                     #\n"\
         "# 3) ASolid should be declared in the following format:                        #\n"\
         "#    solid \"Solid ...\"                                                         #\n"\
         "#    [left/right]=\"Solid ...\"                                                  #\n"\
@@ -79,9 +84,13 @@ const QString FileManager::READ_ME_STR =
         "#                                                                              #\n"\
         "\n";
 
-const QString FileManager::ERROR_OPEN_FILE = "Error in opening file";
-const QString FileManager::ERROR_PRIMITIVE_NAME_COUNT =
+const QString FileManager::FAIL_OPEN_FILE = "Error in opening file";
+const QString FileManager::ILLEGAL_PRIMITIVE_NAME_COUNT =
         "Error in count of primitive and solid name when defining a primitive";
+const QString FileManager::ILLEGAL_PRIMITIVE_TYPE =
+        "Primitive type is not supposed to be PT_NONE";
+const QString FileManager::SOLID_NOT_FOUND =
+        "Solid is not found with given primitive";
 
 FileManager::FileManager()
 {
@@ -141,7 +150,9 @@ bool FileManager::readFile(const QString fileName,
                             pmtName = names[0];
                             solidName = names[1];
                         } else {
-                            result.errorMap.insert(lineCount, ERROR_PRIMITIVE_NAME_COUNT);
+                            result.errorMap.insert(
+                                        lineCount,
+                                        ILLEGAL_PRIMITIVE_NAME_COUNT);
                             return false;
                         }
                         segState = Seg_Primitive;
@@ -150,7 +161,14 @@ bool FileManager::readFile(const QString fileName,
                 break;
 
             case Seg_Primitive:
-
+//                APrimitive::PrimitiveType pType = pIter->second->getType();
+//                if (pType == APrimitive::PT_NONE) {
+//                    // primitive is not supposed to be PT_NONE,
+//                    // ignore this and give a warning
+//                    result.warningMap.insert(FileErrorWarning::NO_LINE_NUMBER,
+//                                             ILLEGAL_PRIMITIVE_TYPE);
+//                    continue;
+//                }
                 break;
 
             case Seg_Solid:
@@ -162,7 +180,8 @@ bool FileManager::readFile(const QString fileName,
         return true;
     } else {
         // fail to open file
-        result.errorMap.insert(0, ERROR_OPEN_FILE);
+        unsigned int lineNum = FileErrorWarning::NO_LINE_NUMBER;
+        result.errorMap.insert(lineNum, FAIL_OPEN_FILE);
         return false;
     }
 }
@@ -179,6 +198,41 @@ bool FileManager::writeFile(const QString fileName,
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
 
+        map<QString, APrimitive*>* primitiveMap =
+                modelManager.getPrimitiveMap();
+        map<QString, ASolid*>* solidMap =
+                modelManager.getSolidMap();
+
+        // write info of model if model is not empty
+        if (!primitiveMap->empty() && !solidMap->empty()) {
+            // write primitive info
+            for (map<QString, APrimitive*>::iterator pIter =
+                 primitiveMap->begin();
+                 pIter != primitiveMap->end(); ++pIter) {
+                // corresponding solid of this primitive
+                ASolid* solid = modelManager.getSolidFromPmt(pIter->second);
+                if (solid == 0) {
+                    // solid of this primitive is not found
+                    // fail to save model and give an error
+                    unsigned int lineNum = FileErrorWarning::NO_LINE_NUMBER;
+                    result.errorMap.insert(lineNum, SOLID_NOT_FOUND);
+                    return false;
+                }
+                stream << pIter->second->toString(solid);
+            }
+
+            // write solid info
+            for (map<QString, ASolid*>::iterator sIter =
+                 solidMap->begin();
+                 sIter != solidMap->begin(); ++sIter) {
+                // only write those are not leaves, because leave solid
+                // has been written in primitive
+                if (!sIter->second->isLeave()) {
+                    stream << sIter->second->toString();
+                }
+            }
+        }
+
         // write read me
         if (writeReadMe) {
             stream << READ_ME_STR;
@@ -192,7 +246,8 @@ bool FileManager::writeFile(const QString fileName,
         return true;
     } else {
         // fail to open file
-        result.errorMap.insert(0, ERROR_OPEN_FILE);
+        unsigned int lineNum = FileErrorWarning::NO_LINE_NUMBER;
+        result.errorMap.insert(lineNum, FAIL_OPEN_FILE);
         return false;
     }
 }

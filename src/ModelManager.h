@@ -63,6 +63,9 @@ public:
     // return if ungroup successfully, false if not exist in map
     bool ungroupSolid(QString solidName);
 
+    // get solid from primitive
+    ASolid* getSolidFromPmt(APrimitive* primitive);
+
 private:
     MainWindow* mainWindow;
 

@@ -1,9 +1,22 @@
+#include "ACylinder.h"
+
 #include <cmath>
 #ifndef M_PI
 #define M_PI 3.1415926536
 #endif
 
-#include "ACylinder.h"
+const double ACylinder::DEFAULT_RADIUS = 0.5;
+const int ACylinder::DEFAULT_SLICES = 16;
+const double ACylinder::DEFAULT_HEIGHT = 1.0;
+
+ACylinder::ACylinder() :
+    APrimitive(APrimitive::PT_CYLINDER),
+    radius(DEFAULT_RADIUS),
+    slices(DEFAULT_SLICES),
+    height(DEFAULT_HEIGHT)
+{
+    reset(radius, slices, height);
+}
 
 ACylinder::ACylinder(double radius, int slices, double height) :
     APrimitive(APrimitive::PT_CYLINDER),
@@ -79,4 +92,20 @@ void ACylinder::reset(double radius, int slices, double height)
                                          2 * slices - 1, 2 * slices + 1);
     faceArray[slices * 4 - 2] = Vector3i(0, slices - 1, 2 * slices - 1);
     faceArray[slices * 4 - 1] = Vector3i(0, 2 * slices - 1, slices);
+}
+
+QString ACylinder::toString(ASolid* solid) const
+{
+    QString str = toStringCommon(solid);
+    if (radius - DEFAULT_RADIUS > EPSILON) {
+        str += QString("radius=") + QString::number(radius) + QString("\n");
+    }
+    if (slices != DEFAULT_SLICES) {
+        str += QString("slices=") + QString::number(slices) + QString("\n");
+    }
+    if (height - DEFAULT_HEIGHT > EPSILON) {
+        str += QString("height=") + QString::number(height) + QString("\n");
+    }
+    str += QString("\n");
+    return str;
 }
