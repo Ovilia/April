@@ -91,6 +91,12 @@ const QString FileManager::ILLEGAL_PRIMITIVE_TYPE =
         "Primitive type is not supposed to be PT_NONE";
 const QString FileManager::SOLID_NOT_FOUND =
         "Solid is not found with given primitive";
+const QString FileManager::ILLEGAL_EXPRESSION =
+        "Illegal expression";
+const QString FileManager::ILLEGAL_ATTRIBUTE_OF_PTYPE =
+        "Illegal attribute of current primitive type";
+const QString FileManager::ILLEGAL_ATTRIBUTE_VALUE =
+        "Illegal attribute value";
 
 FileManager::FileManager()
 {
@@ -114,13 +120,18 @@ bool FileManager::readFile(const QString fileName,
         APrimitive::PrimitiveType pmtType = APrimitive::PT_NONE;
         QString pmtName = "";
         QString solidName = "";
-        double width = 0.0, height = 0.0, depth = 0.0;
-        double radius = 0.0, sideLength = 0.0, length = 0.0;
-        int slices = 0, stacks = 0;
+        QString leftName = "", rightName = "";
+        ASolid::BoolOperation operation = ASolid::BO_PRIMITIVE;
+        double width = 0.0, height = 0.0, depth = 0.0,
+                radius = 0.0, sideLength = 0.0, length = 0.0;
+        int slices = 0, stacks = 0, sideCount = 3;
+        Vector3d rotate, translate, scale;
         bool widthSetted = false, heightSetted = false,
                 depthSetted = false, radiusSetted = false,
                 sideLengthSetted = false, lengthSetted = false,
-                slicesSetted = false, stacksSetted = false;
+                slicesSetted = false, stacksSetted = false,
+                rotateSetted = false, translateSetted = false,
+                scaleSetted = false;
 
         while (!stream.atEnd()) {
             QString line = stream.readLine();
@@ -142,37 +153,284 @@ bool FileManager::readFile(const QString fileName,
                     if (line.startsWith(APrimitive::PRIMITIVE_TYPE_NAME[i])) {
                         // primitive type
                         pmtType = (APrimitive::PrimitiveType)i;
-                        line = line.mid(APrimitive::PRIMITIVE_TYPE_NAME[i].length());
-                        qDebug()<<"mid:["<<line<<"]";
+                        if (pmtType == APrimitive::PT_NONE) {
+                            // primitive is not supposed to be PT_NONE,
+                            // ignore this and give a warning
+                            result.warningMap.insert(lineCount,
+                                                     ILLEGAL_PRIMITIVE_TYPE);
+                            continue;
+                        }
+                        line = line.mid(APrimitive::
+                                        PRIMITIVE_TYPE_NAME[i].length() + 2);
                         // primitive and solid name
                         QStringList names = line.split("\"", QString::SkipEmptyParts);
-                        if (names.count() == 2) {
+                        if (names.count() == 3) {
                             pmtName = names[0];
-                            solidName = names[1];
+                            // names[1] is supposed to be space
+                            solidName = names[2];
                         } else {
                             result.errorMap.insert(
                                         lineCount,
                                         ILLEGAL_PRIMITIVE_NAME_COUNT);
                             return false;
                         }
+
+                        // init attributes
+                        width = 0.0; height = 0.0; depth = 0.0;
+                        radius = 0.0; sideLength = 0.0; length = 0.0;
+                        slices = 0; stacks = 0; sideCount = 3;
+                        widthSetted = false; heightSetted = false;
+                        depthSetted = false; radiusSetted = false;
+                        sideLengthSetted = false; lengthSetted = false;
+                        slicesSetted = false; stacksSetted = false;
+                        rotateSetted = false; translateSetted = false;
+                        scaleSetted = false;
                         segState = Seg_Primitive;
+                        break;
                     }
+                }
+                // check for solid
+                if (line.startsWith("solid")) {
+                    int pos = line.indexOf('\"');
+                    int len = line.mid(sPos).indexOf('\"');
+                    if (pos < 0 || len < 0) {
+                        result.errorMap.insert(lineCount, ILLEGAL_EXPRESSION);
+                        return false;
+                    }
+                    solidName = line.mid(pos, len);
+                    segState = Seg_Solid;
                 }
                 break;
 
             case Seg_Primitive:
-//                APrimitive::PrimitiveType pType = pIter->second->getType();
-//                if (pType == APrimitive::PT_NONE) {
-//                    // primitive is not supposed to be PT_NONE,
-//                    // ignore this and give a warning
-//                    result.warningMap.insert(FileErrorWarning::NO_LINE_NUMBER,
-//                                             ILLEGAL_PRIMITIVE_TYPE);
-//                    continue;
-//                }
+                // geometry attributes
+                if (line.startsWith("radius", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_CONE:
+                    case APrimitive::PT_CYLINDER:
+                    case APrimitive::PT_SPHERE:
+                    {
+                        double getRadius = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            radius = getRadius;
+                            radiusSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("slices", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_CONE:
+                    case APrimitive::PT_CYLINDER:
+                    case APrimitive::PT_SPHERE:
+                    {
+                        int getSlices = attributeInt(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            slices = getSlices;
+                            slicesSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("height", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_CONE:
+                    case APrimitive::PT_CUBE:
+                    case APrimitive::PT_CYLINDER:
+                    {
+                        double getHeight = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            height = getHeight;
+                            heightSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("width", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_CUBE:
+                    {
+                        double getWidth = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            width = getWidth;
+                            widthSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("depth", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_CUBE:
+                    {
+                        double getDepth = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            depth = getDepth;
+                            depthSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("length", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_PRISM:
+                    {
+                        double getLength = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            length = getLength;
+                            lengthSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("sideLength", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_PRISM:
+                    case APrimitive::PT_PYRAMID:
+                    {
+                        double getLength = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            sideLength = getLength;
+                            sideLengthSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("sideCount", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_PRISM:
+                    {
+                        int getCount = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            // TODO: currently only 3 valid
+                            if (getCount != 3) {
+                                result.warningMap.insert(
+                                            lineCount,
+                                            "Currently lineCount only 3 valid");
+                            }
+                            sideCount = 3;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                } else if (line.startsWith("stacks", Qt::CaseInsensitive)) {
+                    switch(pmtType) {
+                    case APrimitive::PT_SPHERE:
+                    {
+                        double getStacks = attributeDouble(
+                                    lineCount, line, result);
+                        if (result.errorMap.empty()) {
+                            // no error
+                            stacks = getStacks;
+                            stacksSetted = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                        break;
+                    default:
+                        // other primitive type is illegal, ignore current line
+                        result.warningMap.insert(lineCount,
+                                                 ILLEGAL_ATTRIBUTE_OF_PTYPE);
+                    }
+                }
                 break;
 
             case Seg_Solid:
+                // left, right child, operation
+                if (line.startsWith("left")) {
+                    //QString left =
+                }
                 break;
+            }
+
+            // transform attributes
+            if (segState == Seg_Primitive || segState == Seg_Solid) {
+                if (line.startsWith("rotate")){
+                    rotate = attributeVector3d(lineCount, line, result);
+                    if (result.errorMap.empty()) {
+                        rotateSetted = true;
+                    } else {
+                        return false;
+                    }
+                }else if (line.startsWith("translate")){
+                    translate = attributeVector3d(lineCount, line, result);
+                    if (result.errorMap.empty()) {
+                        translateSetted = true;
+                    } else {
+                        return false;
+                    }
+                }else if (line.startsWith("scale")){
+                    scale = attributeVector3d(lineCount, line, result);
+                    if (result.errorMap.empty()) {
+                        scaleSetted = true;
+                    } else {
+                        return false;
+                    }
+                }
             }
         }
 
@@ -183,6 +441,83 @@ bool FileManager::readFile(const QString fileName,
         unsigned int lineNum = FileErrorWarning::NO_LINE_NUMBER;
         result.errorMap.insert(lineNum, FAIL_OPEN_FILE);
         return false;
+    }
+}
+
+double FileManager::attributeDouble(
+        const int lineCount, const QString& line, FileErrorWarning& result)
+{
+    int pos = line.indexOf('=');
+    if (pos < 0) {
+        // = not found, error
+        result.errorMap.insert(lineCount, ILLEGAL_EXPRESSION);
+        return 0.0;
+    }
+    bool toDoubleOk = false;
+    double value = line.mid(pos).toDouble(&toDoubleOk);
+    if (!toDoubleOk) {
+        // error in toDouble
+        result.errorMap.insert(lineCount, ILLEGAL_EXPRESSION);
+        return 0.0;
+    } else {
+        if (value < EPSILON) {
+            result.errorMap.insert(lineCount, ILLEGAL_ATTRIBUTE_VALUE);
+            return 0.0;
+        }
+        return value;
+    }
+}
+
+int FileManager::attributeInt(
+        const int lineCount, const QString& line, FileErrorWarning& result)
+{
+    int pos = line.indexOf('=');
+    if (pos < 0) {
+        // = not found, error
+        result.errorMap.insert(lineCount,
+                               ILLEGAL_EXPRESSION);
+        return 0;
+    }
+    bool toIntOk = false;
+    int value = line.mid(pos).toInt(&toIntOk);
+    if (!toIntOk) {
+        // error in toDouble
+        result.errorMap.insert(lineCount,
+                               ILLEGAL_EXPRESSION);
+        return 0;
+    } else {
+        if (value < 0) {
+            result.errorMap.insert(lineCount, ILLEGAL_ATTRIBUTE_VALUE);
+            return 0;
+        }
+        return value;
+    }
+}
+
+Vector3d FileManager::attributeVector3d(const int lineCount,
+                                       const QString& line,
+                                       FileErrorWarning& result)
+{
+    int xPos = line.indexOf("={");
+    int yPos = line.mid(xPos).indexOf(',') + xPos;
+    int zPos = line.mid(yPos).indexOf(',') + yPos;
+    if (xPos < 0 || yPos < 0 || zPos < 0) {
+        // = not found, error
+        result.errorMap.insert(lineCount,
+                               ILLEGAL_EXPRESSION);
+        return Vector3d();
+    }
+    bool xOk = false, yOk = false, zOk = false;
+    int x = line.mid(xPos, yPos - xPos).toDouble(&xOk);
+    int y = line.mid(yPos, zPos - yPos).toDouble(&yOk);
+    int z = line.mid(zPos).toDouble(&zOk);
+    if (!xOk || !yOk || !zOk) {
+        // error in toDouble
+        result.errorMap.insert(lineCount,
+                               ILLEGAL_EXPRESSION);
+        return Vector3d();
+    } else {
+        return Vector3d(x, y, z);
     }
 }
 

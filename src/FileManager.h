@@ -46,12 +46,23 @@ private:
     static const QString ILLEGAL_PRIMITIVE_NAME_COUNT;
     static const QString ILLEGAL_PRIMITIVE_TYPE;
     static const QString SOLID_NOT_FOUND;
+    static const QString ILLEGAL_EXPRESSION;
+    static const QString ILLEGAL_ATTRIBUTE_OF_PTYPE;
+    static const QString ILLEGAL_ATTRIBUTE_VALUE;
 
     enum SegmentState {
         Seg_Init = 0,
         Seg_Primitive,
         Seg_Solid
     };
+
+    // get attribute from a line, rememeber to check result before use
+    static double attributeDouble(const int lineCount, const QString& line,
+                                  FileErrorWarning& result);
+    static int attributeInt(const int lineCount, const QString& line,
+                                  FileErrorWarning& result);
+    static Vector3d attributeVector3d(const int lineCount, const QString& line,
+                                      FileErrorWarning& result);
 };
 
 #endif // FILEMANAGER_H
