@@ -122,9 +122,13 @@ void ModelManager::insertPyramid(double sideLength, int sideCount)
     insertToMap(new APyramid(sideLength, sideCount));
 }
 
-void ModelManager::insertSolid(ASolid* left, ASolid* right,
+bool ModelManager::insertSolid(ASolid* left, ASolid* right,
                                ASolid::BoolOperation operation)
 {
+    if ((!left->isLeave() && left->hasDescent(right)) ||
+            (!right->isLeave() && right->hasDescent(left))) {
+        return false;
+    }
     QString solidName = "Solid " + QString::number(nextSolidID);
     ASolid* solid = new ASolid(left, right, operation, solidName);
     left->setParenet(solid);
@@ -132,6 +136,7 @@ void ModelManager::insertSolid(ASolid* left, ASolid* right,
     solidMap.insert(pair<QString, ASolid*>(solidName, solid));
     ++nextSolidID;
     setModelChanged(true);
+    return true;
 }
 
 bool ModelManager::getIsDrawSolid() const
@@ -168,6 +173,10 @@ bool ModelManager::deleteSolid(QString solidName)
             deleteSolidChild(solid);
             // delete this solid
             solidMap.erase(target);
+            if (solid->isLeave()) {
+                // delete primitive
+                primitiveMap.erase(solid->getPrimitive()->getName());
+            }
             setModelChanged(true);
             return true;
         } else {

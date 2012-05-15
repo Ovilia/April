@@ -444,8 +444,11 @@ void ToolWidget::on_boolBtn_clicked()
     }
 
     // TODO: currently only union here
-    mainWindow->getModelManager()->insertSolid(iter1->second, iter2->second,
-                                               ASolid::BO_UNION);
+    if (!mainWindow->getModelManager()->insertSolid(
+                iter1->second, iter2->second, ASolid::BO_UNION)) {
+        QMessageBox::critical(this, "Error",
+                              "Fail to insert solid because one is the other's decent");
+    }
     mainWindow->getViewManager()->repaintAll();
     updateModelBox();
 }

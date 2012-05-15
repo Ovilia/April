@@ -18,16 +18,14 @@ Vector3d::Vector3d(double x, double y, double z) :
 
 bool operator == (const Vector3d& vector1, const Vector3d& vector2)
 {
-    return (vector1.x == vector2.x &&
-            vector1.y == vector2.y &&
-            vector1.z == vector2.z);
+    return (qAbs(vector1.x - vector2.x) < EPSILON &&
+            qAbs(vector1.y - vector2.y) < EPSILON &&
+            qAbs(vector1.z - vector2.z) < EPSILON);
 }
 
 bool operator != (const Vector3d& vector1, const Vector3d& vector2)
 {
-    return (vector1.x != vector2.x ||
-            vector1.y != vector2.y ||
-            vector1.z != vector2.z);
+    return !(vector1 == vector2);
 }
 
 double Vector3d::dotProduct(Vector3d another) const

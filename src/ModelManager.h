@@ -41,6 +41,9 @@ public:
     map<QString, ASolid*>* getSolidMap();
     map<QString, APrimitive*>* getPrimitiveMap();
 
+    // insert to solidMap and primitiveMap
+    void insertToMap(APrimitive* primitive);
+
     void insertCube(double width, double depth, double height);
     void insertSphere(double radius, int slices, int stacks);
     void insertCylinder(double radius, int slices, double height);
@@ -48,7 +51,8 @@ public:
     void insertPrism(double length, double sideLength, int sideCount = 3);
     void insertPyramid(double sideLength, int sideCount = 3);
 
-    void insertSolid(ASolid* left, ASolid* right,
+    // fail if one solid is descent of the other
+    bool insertSolid(ASolid* left, ASolid* right,
                      ASolid::BoolOperation operation);
 
     bool getIsDrawSolid() const;
@@ -81,9 +85,6 @@ private:
     map<QString, APrimitive*> primitiveMap;
     // used as a hint of next id
     unsigned int nextPrimiID;
-
-    // called by insertCude ..., insert to solidMap and primitiveMap
-    void insertToMap(APrimitive* primitive);
 
     // help funtion for bool deleteSolid(QString solidName);
     void deleteSolidChild(ASolid* solid);

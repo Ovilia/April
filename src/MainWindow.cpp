@@ -158,8 +158,7 @@ bool MainWindow::openProject()
                 QDir::currentPath(),
                 tr("April Project File (*.apr)"));
     if (!openName.isNull()) {
-        FileErrorWarning result;
-        bool isOpened = FileManager::readFile(openName, *modelManager, result);
+        bool isOpened = FileManager::readFile(openName, *modelManager);
         if (isOpened) {
             return true;
         } else {
@@ -177,15 +176,6 @@ bool MainWindow::openProject()
 
 bool MainWindow::saveProject()
 {
-    bool saveReadMe = true;
-    if (QMessageBox::question(this, tr("Save read me"),
-                              tr("Do you want to save read me part in model file?"),
-                              QMessageBox::Yes | QMessageBox::No,
-                              QMessageBox::Yes) == QMessageBox::Yes) {
-        saveReadMe = true;
-    } else {
-        saveReadMe = false;
-    }
     if (modelManager->getModelChanged()) {
         QString saveName = QFileDialog::getSaveFileName(
                     this,
@@ -195,9 +185,7 @@ bool MainWindow::saveProject()
                     tr("April Project File (*.apr)"));
 
         if (!saveName.isNull()) {
-            FileErrorWarning result;
-            bool isSaved = FileManager::writeFile(
-                        saveName, *modelManager, saveReadMe, result);
+            bool isSaved = FileManager::writeFile(saveName, *modelManager);
 
             if (isSaved) {
                 return true;
@@ -205,8 +193,7 @@ bool MainWindow::saveProject()
                 // ask if to retry if failed
                 QMessageBox::StandardButton retry =
                         QMessageBox::warning(this, tr("Failed to save project"),
-                                             result.getBrief() +
-                                             tr("\nFailed to save project. Try again?"),
+                                             tr("Failed to save project. Try again?"),
                                              QMessageBox::Yes | QMessageBox::No,
                                              QMessageBox::Yes);
                 if (retry == QMessageBox::Yes) {
