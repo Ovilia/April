@@ -18,7 +18,7 @@ public:
     // return true if write file successfully
     // result is the error and warning information returned
     static bool writeFile(const QString fileName,
-                          ModelManager &modelManager);
+                          ModelManager& modelManager);
 
 private:
     FileManager();
@@ -26,10 +26,15 @@ private:
     static const QString DOC_NAME;
     static const QString ROOT_NAME;
 
+    static bool insertSolid(QDomNode sNode, ModelManager& modelManager);
+
     static void pmtDom(QDomDocument& doc, QDomElement& element,
                        APrimitive* pmt);
     static void vectorDom(QDomElement& element, const QString& name,
-                          QDomDocument& doc, const Vector3d& vec);
+                          QDomDocument& doc, const Vector3d& vec,
+                          const QString& xLabel = "x",
+                          const QString& yLabel = "y",
+                          const QString& zLabel = "z");
     static QDomElement solidDom(QDomDocument& doc, ASolid* solid);
 
 //    // get attribute from a line, rememeber to check result before use

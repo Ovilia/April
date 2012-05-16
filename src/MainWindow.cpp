@@ -226,9 +226,30 @@ void MainWindow::on_actionOpen_triggered()
         }
     }
     openProject();
+    viewManager->repaintAll();
+    ui->actionSolid->setChecked(true);
+    ui->actionWire->setChecked(false);
 }
 
 void MainWindow::on_actionSave_triggered()
 {
     saveProject();
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    if (modelManager->getModelChanged()) {
+        // ask if to save model if model changed
+        QMessageBox::StandardButton button =
+                QMessageBox::question(NULL, tr("Save project"),
+                                      tr("Project has been changed. Save project?"),
+                                      QMessageBox::Yes | QMessageBox::No,
+                                      QMessageBox::Yes);
+
+        if (button == QMessageBox::Yes) {
+            saveProject();
+        }
+    }
+    modelManager->initialize();
+    viewManager->repaintAll();
 }

@@ -16,7 +16,7 @@ public:
 
     void reset(double width, double depth, double height);
 
-    QString virtual toString(ASolid* solid) const;
+    QString virtual toString() const;
 
 protected:
     double width;

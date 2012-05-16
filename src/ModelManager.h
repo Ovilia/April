@@ -42,18 +42,26 @@ public:
     map<QString, APrimitive*>* getPrimitiveMap();
 
     // insert to solidMap and primitiveMap
-    void insertToMap(APrimitive* primitive);
+    void insertToMap(APrimitive* primitive,
+                     const QString& pName = "", const QString& sName = "");
 
-    void insertCube(double width, double depth, double height);
-    void insertSphere(double radius, int slices, int stacks);
-    void insertCylinder(double radius, int slices, double height);
-    void insertCone(double radius, int slices, double height);
-    void insertPrism(double length, double sideLength, int sideCount = 3);
-    void insertPyramid(double sideLength, int sideCount = 3);
+    void insertCube(double width, double depth, double height,
+                    const QString& pName = "", const QString& sName = "");
+    void insertSphere(double radius, int slices, int stacks,
+                      const QString& pName = "", const QString& sName = "");
+    void insertCylinder(double radius, int slices, double height,
+                        const QString& pName = "", const QString& sName = "");
+    void insertCone(double radius, int slices, double height,
+                    const QString& pName = "", const QString& sName = "");
+    void insertPrism(double length, double sideLength, int sideCount = 3,
+                     const QString& pName = "", const QString& sName = "");
+    void insertPyramid(double sideLength, int sideCount = 3,
+                       const QString& pName = "", const QString& sName = "");
 
     // fail if one solid is descent of the other
     bool insertSolid(ASolid* left, ASolid* right,
-                     ASolid::BoolOperation operation);
+                     ASolid::BoolOperation operation,
+                     const QString& sName = "");
 
     bool getIsDrawSolid() const;
     bool getIsDrawWire() const;

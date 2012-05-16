@@ -79,62 +79,103 @@ void ModelManager::drawWire()
     }
 }
 
-void ModelManager::insertToMap(APrimitive* primitive)
+void ModelManager::insertToMap(APrimitive* primitive,
+                               const QString& pName, const QString& sName)
 {
-    QString primiName = "Primitive " + QString::number(nextPrimiID);
-    primitive->setName(primiName);
-    primitiveMap.insert(pair<QString, APrimitive*>(primiName, primitive));
-    QString solidName = "Solid " + QString::number(nextSolidID);
-    ASolid* solid = new ASolid(nextPrimiID, primitive, solidName);
-    solidMap.insert(pair<QString, ASolid*>(solidName, solid));
-    ++nextPrimiID;
-    ++nextSolidID;
+    if (pName == "" || sName == "") {
+        // assign name by modelManager
+        while (true) {
+            QString primiName = "Primitive " + QString::number(nextPrimiID);
+            if (primitiveMap.find(primiName) == primitiveMap.end()) {
+                // new name found
+                primitive->setName(primiName);
+                primitiveMap.insert(pair<QString, APrimitive*>(
+                                        primiName, primitive));
+                break;
+            }
+            ++nextPrimiID;
+        }
+        while (true) {
+            QString solidName = "Solid " + QString::number(nextSolidID);
+            if (solidMap.find(solidName) == solidMap.end()) {
+                // new name found
+                ASolid* solid = new ASolid(primitive, solidName);
+                solidMap.insert(pair<QString, ASolid*>(solidName, solid));
+                break;
+            }
+            ++nextSolidID;
+        }
+    } else {
+        primitive->setName(pName);
+        primitiveMap.insert(pair<QString, APrimitive*>(pName, primitive));
+
+        ASolid* solid = new ASolid(primitive, sName);
+        solidMap.insert(pair<QString, ASolid*>(sName, solid));
+    }
     setModelChanged(true);
 }
 
-void ModelManager::insertCube(double width, double depth, double height)
+void ModelManager::insertCube(double width, double depth, double height,
+                              const QString& pName, const QString& sName)
 {
-    insertToMap(new ACube(width, depth, height));
+    insertToMap(new ACube(width, depth, height), pName, sName);
 }
 
-void ModelManager::insertSphere(double radius, int slices, int stacks)
+void ModelManager::insertSphere(double radius, int slices, int stacks,
+                                const QString& pName, const QString& sName)
 {
-    insertToMap(new ASphere(radius, slices, stacks));
+    insertToMap(new ASphere(radius, slices, stacks), pName, sName);
 }
 
-void ModelManager::insertCylinder(double radius, int slices, double height)
+void ModelManager::insertCylinder(double radius, int slices, double height,
+                                  const QString& pName, const QString& sName)
 {
-    insertToMap(new ACylinder(radius, slices, height));
+    insertToMap(new ACylinder(radius, slices, height), pName, sName);
 }
 
-void ModelManager::insertCone(double radius, int slices, double height)
+void ModelManager::insertCone(double radius, int slices, double height,
+                              const QString& pName, const QString& sName)
 {
-    insertToMap(new ACone(radius, slices, height));
+    insertToMap(new ACone(radius, slices, height), pName, sName);
 }
 
-void ModelManager::insertPrism(double length, double sideLength, int sideCount)
+void ModelManager::insertPrism(double length, double sideLength, int sideCount,
+                               const QString& pName, const QString& sName)
 {
-    insertToMap(new APrism(length, sideLength, sideCount));
+    insertToMap(new APrism(length, sideLength, sideCount), pName, sName);
 }
 
-void ModelManager::insertPyramid(double sideLength, int sideCount)
+void ModelManager::insertPyramid(double sideLength, int sideCount,
+                                 const QString& pName, const QString& sName)
 {
-    insertToMap(new APyramid(sideLength, sideCount));
+    insertToMap(new APyramid(sideLength, sideCount), pName, sName);
 }
 
 bool ModelManager::insertSolid(ASolid* left, ASolid* right,
-                               ASolid::BoolOperation operation)
+                               ASolid::BoolOperation operation,
+                               const QString& sName)
 {
-    if ((!left->isLeave() && left->hasDescent(right)) ||
-            (!right->isLeave() && right->hasDescent(left))) {
+    if (left->hasDescent(right) || right->hasDescent(left)) {
         return false;
     }
-    QString solidName = "Solid " + QString::number(nextSolidID);
-    ASolid* solid = new ASolid(left, right, operation, solidName);
-    left->setParenet(solid);
-    right->setParenet(solid);
-    solidMap.insert(pair<QString, ASolid*>(solidName, solid));
-    ++nextSolidID;
+    if (sName == "") {
+        while (true) {
+            QString solidName = "Solid " + QString::number(nextSolidID);
+            if (solidMap.find(solidName) == solidMap.end()) {
+                ASolid* solid = new ASolid(left, right, operation, solidName);
+                left->setParenet(solid);
+                right->setParenet(solid);
+                solidMap.insert(pair<QString, ASolid*>(solidName, solid));
+                break;
+            }
+            ++nextSolidID;
+        }
+    } else {
+        ASolid* solid = new ASolid(left, right, operation, sName);
+        left->setParenet(solid);
+        right->setParenet(solid);
+        solidMap.insert(pair<QString, ASolid*>(sName, solid));
+    }
     setModelChanged(true);
     return true;
 }

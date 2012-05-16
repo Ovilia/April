@@ -26,15 +26,13 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
     // TODO: set bounding box here
 }
 
-ASolid::ASolid(unsigned int primitiveID, APrimitive* primitive,
-               const QString& name) :
+ASolid::ASolid(APrimitive* primitive, const QString& name) :
     name(name),
     leftChild(0),
     rightChild(0),
     operation(BO_PRIMITIVE),
     parent(0),
     primitive(primitive),
-    primitiveID(primitiveID),
     rotate(0.0, 0.0, 0.0),
     scale(1.0, 1.0, 1.0),
     translate(0.0, 0.0, 0.0),
@@ -83,6 +81,20 @@ bool ASolid::isLeave()
         return true;
     } else {
         return false;
+    }
+}
+
+bool ASolid::hasDescent(ASolid *descent)
+{
+    if (isLeave()) {
+        return false;
+    } else {
+        if (leftChild == descent || rightChild == descent) {
+            return true;
+        } else {
+            return leftChild->hasDescent(descent) ||
+                    rightChild->hasDescent(descent);
+        }
     }
 }
 
@@ -242,6 +254,21 @@ void ASolid::setYTranslate(const double translate)
 void ASolid::setZTranslate(const double translate)
 {
     this->translate.z = translate;
+}
+
+void ASolid::setScale(const Vector3d &scale)
+{
+    this->scale = scale;
+}
+
+void ASolid::setRotate(const Vector3d &rotate)
+{
+    this->rotate = rotate;
+}
+
+void ASolid::setTranslate(const Vector3d &translate)
+{
+    this->translate = translate;
 }
 
 bool ASolid::getSelected() const

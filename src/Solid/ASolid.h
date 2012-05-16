@@ -20,8 +20,7 @@ public:
     static const int BOOL_OPERATION_COUNT = 4;
     static const QString BOOL_OPERATION_NAME[BOOL_OPERATION_COUNT];
 
-    ASolid(unsigned int primitiveID, APrimitive* primitive,
-           const QString& name = "Solid");
+    ASolid(APrimitive* primitive, const QString& name = "Solid");
     ASolid(ASolid* leftChild, ASolid* rightChild,
            BoolOperation operation, const QString& name = "Solid");
     ~ASolid();
@@ -34,6 +33,8 @@ public:
 
     bool isRoot();
     bool isLeave();
+
+    bool hasDescent(ASolid* descent);
 
     void drawWire() const;
     void drawSolid() const;
@@ -52,22 +53,25 @@ public:
 
     Vector3d getRotate() const;
     Vector3d getScale() const;
-    Vector3d getTranslate() const;
+    Vector3d getTranslate() const;    
 
     // rotate within [0, 360)
     void setXRotate(const double rotate);
     void setYRotate(const double rotate);
     void setZRotate(const double rotate);
+    void setRotate(const Vector3d& rotate);
 
     // scale within (0, infinity)
     void setXScale(const double scale);
     void setYScale(const double scale);
     void setZScale(const double scale);
+    void setScale(const Vector3d& scale);
 
     // translate within (-infinity, infinity)
     void setXTranslate(const double translate);
     void setYTranslate(const double translate);
     void setZTranslate(const double translate);
+    void setTranslate(const Vector3d& translate);
 
     bool getSelected() const;
     void setSelected(const bool value);
@@ -84,9 +88,6 @@ private:
 
     // used if is leaf
     APrimitive* primitive;
-    // unique! used to identify different primitive, allocated by ModelManager
-    // should not be changed within ASolid
-    unsigned int primitiveID;
 
     // min box to hold it
     Vector3d boundingBox;

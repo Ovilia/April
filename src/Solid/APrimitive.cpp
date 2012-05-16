@@ -22,7 +22,11 @@ const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
     {1.00, 0.00, 0.75},
     {0.00, 1.00, 0.75},
     {0.75, 0.00, 1.00},
-    {1.00, 0.75, 1.00}
+    {1.00, 0.75, 1.00},
+    {0.50, 1.00, 1.00},
+    {1.00, 0.50, 1.00},
+    {1.00, 1.00, 0.50},
+    {0.50, 0.50, 1.00}
 };
 
 const Vector3d APrimitive::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
@@ -169,6 +173,11 @@ void APrimitive::setZRotate(const double rotate)
     this->rotate.z = rotate;
 }
 
+void APrimitive::setRotate(const Vector3d &rotate)
+{
+    this->rotate = rotate;
+}
+
 void APrimitive::setXScale(const double scale)
 {
     this->scale.x = scale;
@@ -182,6 +191,11 @@ void APrimitive::setYScale(const double scale)
 void APrimitive::setZScale(const double scale)
 {
     this->scale.z = scale;
+}
+
+void APrimitive::setScale(const Vector3d &scale)
+{
+    this->scale = scale;
 }
 
 void APrimitive::setXTranslate(const double translate)
@@ -199,6 +213,11 @@ void APrimitive::setZTranslate(const double translate)
     this->translate.z = translate;
 }
 
+void APrimitive::setTranslate(const Vector3d &translate)
+{
+    this->translate = translate;
+}
+
 bool APrimitive::getSelected() const
 {
     return isSelected;
@@ -209,32 +228,12 @@ void APrimitive::setSelected(const bool value)
     isSelected = value;
 }
 
-QString APrimitive::toStringCommon(ASolid* solid) const
+Vector3d APrimitive::getColor() const
 {
-    // primitive type, primitive name and solid name
-    QString str = PRIMITIVE_TYPE_NAME[primitiveType] +
-            QString(" \"") + name + QString("\"");
-    if (solid != 0) {
-        // if solid not defined, don't write
-        str += QString(" \"") + solid->getName() + QString("\"");
-    }
-    str += QString("\n");
+    return color;
+}
 
-    // transform parameter
-    if (rotate != DEFAULT_ROTATE) {
-        str += QString("rotate={") + QString::number(rotate.x) +
-                QString(", ") + QString::number(rotate.y) + QString(", ") +
-                QString::number(rotate.z) + QString("}\n");
-    }
-    if (scale != DEFAULT_SCALE) {
-        str += QString("scale={") + QString::number(scale.x) +
-                QString(", ") + QString::number(scale.y) + QString(", ") +
-                QString::number(scale.z) + QString("}\n");
-    }
-    if (translate != DEFAULT_TRANSLATE) {
-        str += QString("translate={") + QString::number(translate.x) +
-                QString(", ") + QString::number(translate.y) + QString(", ") +
-                QString::number(translate.z) + QString("}\n");
-    }
-    return str;
+void APrimitive::setColor(Vector3d color)
+{
+    this->color = color;
 }

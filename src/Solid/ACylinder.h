@@ -16,7 +16,7 @@ public:
 
     void reset(double radius, int slices, double height);
 
-    QString virtual toString(ASolid* solid) const;
+    QString virtual toString() const;
 
 protected:
     static const double DEFAULT_RADIUS;

@@ -82,18 +82,9 @@ void ACone::reset(double radius, int slices, double height)
     faceArray[slices * 2 - 1] = Vector3i(0, slices - 1, slices + 1);
 }
 
-QString ACone::toString(ASolid* solid) const
+QString ACone::toString() const
 {
-    QString str = toStringCommon(solid);
-    if (radius - DEFAULT_RADIUS > EPSILON) {
-        str += QString("radius=") + QString::number(radius) + QString("\n");
-    }
-    if (slices != DEFAULT_SLICES) {
-        str += QString("slices=") + QString::number(slices) + QString("\n");
-    }
-    if (height - DEFAULT_HEIGHT > EPSILON) {
-        str += QString("height=") + QString::number(height) + QString("\n");
-    }
-    str += QString("\n");
-    return str;
+    return "radius=" + QString::number(radius) + "\nslices=" +
+            QString::number(slices) + "\nheight=" + QString::number(height)
+            + "\n";
 }

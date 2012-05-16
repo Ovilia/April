@@ -67,17 +67,8 @@ void APyramid::reset(double sideLength, int sideCount)
     faceArray[3] = Vector3i(0, 1, 3);
 }
 
-QString APyramid::toString(ASolid* solid) const
+QString APyramid::toString() const
 {
-    QString str = toStringCommon(solid);
-    if (sideLength - DEFAULT_SIDE_LENGTH > EPSILON) {
-        str += QString("sideLength=") + QString::number(sideLength) +
-                QString("\n");
-    }
-    if (sideCount != DEFAULT_SIDE_COUNT) {
-        str += QString("sideCount=") + QString::number(sideCount) +
-                QString("\n");
-    }
-    str += QString("\n");
-    return str;
+    return "sideLength=" + QString::number(sideLength) + "\nsideCount=" + \
+            QString::number(sideCount) + "\n";
 }

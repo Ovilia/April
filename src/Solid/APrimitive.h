@@ -51,21 +51,27 @@ public:
     void setXRotate(const double rotate);
     void setYRotate(const double rotate);
     void setZRotate(const double rotate);
+    void setRotate(const Vector3d& rotate);
 
     // scale within (0, infinity)
     void setXScale(const double scale);
     void setYScale(const double scale);
     void setZScale(const double scale);
+    void setScale(const Vector3d& scale);
 
     // translate within (-infinity, infinity)
     void setXTranslate(const double translate);
     void setYTranslate(const double translate);
     void setZTranslate(const double translate);
+    void setTranslate(const Vector3d& translate);
+
+    Vector3d getColor() const;
+    void setColor(Vector3d color);
 
     bool getSelected() const;
     void setSelected(const bool value);
 
-    QString virtual toString(ASolid* solid) const = 0;
+    QString virtual toString() const = 0;
 
 protected:
     QString name;
@@ -90,7 +96,7 @@ protected:
     // color used when drawWire
     Vector3d wireColor;
     // random color to be used when init
-    static const int RANDOM_COLOR_COUNT = 12;
+    static const int RANDOM_COLOR_COUNT = 16;
     static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][3];
 
     // vertex position

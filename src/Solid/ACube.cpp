@@ -95,18 +95,9 @@ void ACube::reset(double width, double depth, double height)
     faceArray[11] = Vector3i(5, 6, 7);
 }
 
-QString ACube::toString(ASolid* solid) const
+QString ACube::toString() const
 {
-    QString str = toStringCommon(solid);
-    if (width - DEFAULT_WIDTH > EPSILON) {
-        str += QString("width=") + QString::number(width) + QString("\n");
-    }
-    if (depth - DEFAULT_DEPTH > EPSILON) {
-        str += QString("depth=") + QString::number(depth) + QString("\n");
-    }
-    if (height - DEFAULT_HEIGHT > EPSILON) {
-        str += QString("height=") + QString::number(height) + QString("\n");
-    }
-    str += QString("\n");
-    return str;
+    return "width=" + QString::number(width) + "\ndepth="
+            + QString::number(depth) + "\nheight=" +
+            QString::number(height) + "\n";
 }

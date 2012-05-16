@@ -15,7 +15,7 @@ public:
 
     void reset(double sideLength, int sideCount = 3);
 
-    QString virtual toString(ASolid* solid) const;
+    QString virtual toString() const;
 
 protected:
     static const double DEFAULT_SIDE_LENGTH;

@@ -120,18 +120,9 @@ void ASphere::reset(double radius, int slices, int stacks)
     }
 }
 
-QString ASphere::toString(ASolid* solid) const
+QString ASphere::toString() const
 {
-    QString str = toStringCommon(solid);
-    if (radius - DEFAULT_RADIUS > EPSILON) {
-        str += QString("radius=") + QString::number(radius) + QString("\n");
-    }
-    if (slices != DEFAULT_SLICES) {
-        str += QString("slices=") + QString::number(slices) + QString("\n");
-    }
-    if (stacks != DEFAULT_STACKS) {
-        str += QString("stacks=") + QString::number(stacks) + QString("\n");
-    }
-    str += QString("\n");
-    return str;
+    return "radius=" + QString::number(radius) + "\nslices=" +
+            QString::number(slices) + "\nstacks=" + QString::number(stacks)
+            + "\n";
 }

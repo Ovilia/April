@@ -80,20 +80,9 @@ void APrism::reset(double length, double sideLength, int sideCount)
     faceArray[7] = Vector3i(3, 4, 5);
 }
 
-QString APrism::toString(ASolid* solid) const
+QString APrism::toString() const
 {
-    QString str = toStringCommon(solid);
-    if (length - DEFAULT_LENGTH > EPSILON) {
-        str += QString("length=") + QString::number(length) + QString("\n");
-    }
-    if (sideLength - DEFAULT_SIDE_LENGTH > EPSILON) {
-        str += QString("sideLength=") + QString::number(sideLength) +
-                QString("\n");
-    }
-    if (sideCount != DEFAULT_SIDE_COUNT) {
-        str += QString("sideCount=") + QString::number(sideCount) +
-                QString("\n");
-    }
-    str += QString("\n");
-    return str;
+    return "length=" + QString::number(length) + "\nsideLength=" +
+            QString::number(sideLength) + "\nsideCount=" +
+            QString::number(sideCount) + "\n";
 }
