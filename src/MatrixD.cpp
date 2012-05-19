@@ -1,9 +1,6 @@
-#ifdef _DEBUG
-#define <assert.h>
-#endif
-
 #include "MatrixD.h"
-#include <QDebug>
+
+#include <assert.h>
 
 MatrixD::MatrixD(int size) :
     size(size),
@@ -56,9 +53,9 @@ double* MatrixD::getPointer() const
     return matrix;
 }
 
-double MatrixD::getElement(int x, int y) const
+double MatrixD::getElement(int row, int col) const
 {
-    return getElement(x * size + y);
+    return getElement(row * size + col);
 }
 
 double MatrixD::getElement(int index) const
@@ -66,9 +63,9 @@ double MatrixD::getElement(int index) const
     return matrix[index];
 }
 
-void MatrixD::setElement(int x, int y, double value)
+void MatrixD::setElement(int row, int col, double value)
 {
-    setElement(x * size + y, value);
+    setElement(row * size + col, value);
 }
 
 void MatrixD::setElement(int index, double value)
@@ -88,11 +85,13 @@ void MatrixD::setIdentity()
 
 MatrixD MatrixD::multiply(MatrixD another) const
 {
-#ifdef _DEBUG
-    assert(size == another.getSize());
-#endif
-
     MatrixD result(size);
+    if (size != another.getSize()) {
+        // error
+        assert(false);
+        return result;
+    }
+
     int index = 0;
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
@@ -102,6 +101,22 @@ MatrixD MatrixD::multiply(MatrixD another) const
             }
             result.setElement(index, sum);
             ++index;
+        }
+    }
+    return result;
+}
+
+QString MatrixD::toString()
+{
+    QString result = "";
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            result += QString::number(getElement(i, j));
+            if (j == size - 1) {
+                result += "\n";
+            } else {
+                result += " ";
+            }
         }
     }
     return result;

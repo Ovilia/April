@@ -3,8 +3,6 @@
 #include <qmath.h>
 #include <QtOpenGL>
 
-#include <QDebug>
-
 #define PI 3.14159265
 
 ArcBall::ArcBall(int screenWidth, int screenHeight) :
@@ -12,6 +10,7 @@ ArcBall::ArcBall(int screenWidth, int screenHeight) :
     height(screenHeight),
     newRot(4),
     oldRot(4),
+    curRot(4),
     isMousePressed(false),
     mousePressX(0),
     mousePressY(0),
@@ -21,6 +20,7 @@ ArcBall::ArcBall(int screenWidth, int screenHeight) :
 {
     oldRot.setIdentity();
     newRot.setIdentity();
+    curRot.setIdentity();
 }
 
 void ArcBall::resize(int screenWidth, int screenHeight)
@@ -31,7 +31,7 @@ void ArcBall::resize(int screenWidth, int screenHeight)
 
 void ArcBall::doRotate()
 {
-    glMultMatrixd(newRot.getPointer());
+    glMultMatrixd(curRot.getPointer());
 }
 
 void ArcBall::mousePress(int x, int y)
@@ -40,7 +40,6 @@ void ArcBall::mousePress(int x, int y)
     mousePressX = x;
     mousePressY = y;
     pressVector = screenToArcBall(x, y);
-    newRot = oldRot;
 }
 
 void ArcBall::mouseMove(int x, int y)
@@ -54,19 +53,18 @@ void ArcBall::mouseMove(int x, int y)
         // rotate axis and angle(in radian)
         // from press position to current position
         Vector3d axis = getRotateAxis(pressVector, curVector);
-        axis.normalize();
-        qDebug() << axis.x << axis.y << axis.z;
         double angle = getRotateAngle(pressVector, curVector);
 
         // rotate matrix from origin to current
-        newRot = getRotateMatrix(angle, axis).multiply(oldRot);
+        newRot = getRotateMatrix(angle, axis);
+        curRot = oldRot.multiply(newRot);
     }
 }
 
 void ArcBall::mouseRelease()
 {
     isMousePressed = false;
-    oldRot = newRot;
+    oldRot = curRot;
 }
 
 Vector3d ArcBall::screenToArcBall(int x, int y)
@@ -112,8 +110,7 @@ Vector3d ArcBall::getRotateAxis(Vector3d vec1, Vector3d vec2)
 
 MatrixD ArcBall::getRotateMatrix(double angle, Vector3d axis)
 {
-    // method from http://en.wikipedia.org/wiki/Rotation_matrix
-    // #Rotation_matrix_from_axis_and_angle
+    axis.normalize();
 
     // 4x4 rotate matrix
     MatrixD result(4);
@@ -121,20 +118,20 @@ MatrixD ArcBall::getRotateMatrix(double angle, Vector3d axis)
     double cos = qCos(angle);
     double sin = qSin(angle);
     result.setElement(0, cos + axis.x * axis.x * (1.0 - cos));
-    result.setElement(1, axis.x * axis.y * (1.0 - cos) - axis.z * sin);
-    result.setElement(2, axis.x * axis.z * (1.0 - cos) + axis.y * sin);
-    result.setElement(3, 0.0);
-    result.setElement(4, axis.y * axis.x * (1.0 - cos) + axis.z * sin);
-    result.setElement(5, cos + axis.y * axis.y * (1.0 - cos));
-    result.setElement(6, axis.y * axis.z * (1.0 - cos) - axis.x * sin);
-    result.setElement(7, 0.0);
-    result.setElement(8, axis.z * axis.x * (1.0 - cos) - axis.y * sin);
-    result.setElement(9, axis.z * axis.y * (1.0 - cos) + axis.x * sin);
-    result.setElement(10, cos + axis.z * axis.z * (1.0 - cos));
-    result.setElement(11, 0.0);
+    result.setElement(4, axis.x * axis.y * (1.0 - cos) - axis.z * sin);
+    result.setElement(8, axis.x * axis.z * (1.0 - cos) + axis.y * sin);
     result.setElement(12, 0.0);
+    result.setElement(1, axis.y * axis.x * (1.0 - cos) + axis.z * sin);
+    result.setElement(5, cos + axis.y * axis.y * (1.0 - cos));
+    result.setElement(9, axis.y * axis.z * (1.0 - cos) - axis.x * sin);
     result.setElement(13, 0.0);
+    result.setElement(2, axis.z * axis.x * (1.0 - cos) - axis.y * sin);
+    result.setElement(6, axis.z * axis.y * (1.0 - cos) + axis.x * sin);
+    result.setElement(10, cos + axis.z * axis.z * (1.0 - cos));
     result.setElement(14, 0.0);
+    result.setElement(3, 0.0);
+    result.setElement(7, 0.0);
+    result.setElement(11, 0.0);
     result.setElement(15, 1.0);
     return result;
 }

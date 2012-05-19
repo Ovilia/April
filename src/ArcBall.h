@@ -21,10 +21,12 @@ private:
     int width;
     int height;
 
-    // 4x4 rotate matrix since mouse pressed
+    // 4x4 rotate matrix since mouse pressed to current
     MatrixD newRot;
-    // 4x4 rotate matrix since origin
+    // 4x4 rotate matrix since origin to mouse pressed
     MatrixD oldRot;
+    // 4x4 rotate matrix since origin to current
+    MatrixD curRot;
 
     bool isMousePressed;
     int mousePressX;
@@ -40,7 +42,7 @@ private:
     double getRotateAngle(Vector3d vec1, Vector3d vec2);
     // get rotate axis from two normalized vectors
     Vector3d getRotateAxis(Vector3d vec1, Vector3d vec2);
-    // get rotate matrix from rotate angle and normalized axis
+    // get rotate matrix from rotate angle and axis
     MatrixD getRotateMatrix(double angle, Vector3d axis);
 };
 
