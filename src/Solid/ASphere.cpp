@@ -62,10 +62,9 @@ void ASphere::reset(double radius, int slices, int stacks)
     vertexArray = new Vector3d[vertexCount];
     vertexArray[0] = Vector3d(0.0, radius, 0.0);
     int index = 1;
-    double tStep = 2 * radius / stacks;
-    double sStep = 2 * M_PI / slices;
+    double sStep = 2.0 * M_PI / slices;
     for (int t = 1; t < stacks; ++t) {
-        double y = radius - tStep * t;
+        double y = radius * cos(M_PI * t / stacks);
         double newRadius = sqrt(radius * radius - y * y);
         for (int s = 0; s < slices; ++s) {
             double alpha = sStep * s;
