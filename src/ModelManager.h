@@ -1,8 +1,10 @@
 #ifndef MODELMANAGER_H
 #define MODELMANAGER_H
 
-#include <map>
 using namespace std;
+
+#include <list>
+#include <map>
 
 #include <QString>
 
@@ -30,6 +32,8 @@ public:
     bool getModelChanged();
     // call when model saved
     void setModelSaved();
+    // call when model changed (during open file)
+    void setModelChanged();
 
     // initialize to contain no model
     void initialize();
@@ -74,9 +78,14 @@ public:
     // for root solid only
     // return if ungroup successfully, false if not exist in map
     bool ungroupSolid(QString solidName);
+    // for primitive of root and leave solid
+    // return if ungroup successfully, false if not exist in map
+    bool deletePmt(APrimitive* primitive);
 
     // get solid from primitive
     ASolid* getSolidFromPmt(APrimitive* primitive);
+
+    void selectSolid(ASolid* solid);
 
 private:
     MainWindow* mainWindow;
@@ -101,6 +110,8 @@ private:
     bool isDrawWire;
 
     void setModelChanged(bool changed);
+
+    ASolid* selectedSolid;
 };
 
 #endif // MODELMANAGER_H

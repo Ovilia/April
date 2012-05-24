@@ -10,7 +10,8 @@ ModelManager::ModelManager(MainWindow* mainWindow) :
     primitiveMap(),
     nextPrimiID(0),
     isDrawSolid(true),
-    isDrawWire(false)
+    isDrawWire(false),
+    selectedSolid(0)
 {
 }
 
@@ -30,6 +31,12 @@ void ModelManager::setModelSaved()
     setModelChanged(false);
 }
 
+void ModelManager::setModelChanged()
+{
+    setModelChanged(true);
+    mainWindow->getViewManager()->getToolWidget()->updateModelBox();
+}
+
 void ModelManager::setModelChanged(bool changed)
 {
     modelChanged = changed;
@@ -45,6 +52,7 @@ void ModelManager::initialize()
     nextPrimiID = 0;
     isDrawSolid = true;
     isDrawWire = false;
+    selectedSolid = 0;
 }
 
 map<QString, ASolid*>* ModelManager::getSolidMap()
@@ -285,4 +293,45 @@ ASolid* ModelManager::getSolidFromPmt(APrimitive* primitive)
     }
     // not found
     return 0;
+}
+
+void ModelManager::selectSolid(ASolid* solid)
+{
+    if (selectedSolid) {
+        selectedSolid->setSelected(false);
+    }
+    selectedSolid = solid;
+    if (solid) {
+        solid->setSelected(true);
+    }
+}
+
+bool ModelManager::deletePmt(APrimitive* primitive)
+{
+    ASolid* solid = getSolidFromPmt(primitive);
+    if (!solid) {
+        return false;
+    }
+    if (solid->isLeave() && solid->isRoot()) {
+        // delete solid
+        map<QString, ASolid*>::iterator sIter;
+        for (sIter = solidMap.begin(); sIter != solidMap.end(); ++sIter) {
+            if (sIter->second == solid) {
+                solidMap.erase(sIter);
+
+                // delete primitive
+                map<QString, APrimitive*>::iterator pIter;
+                for (pIter = primitiveMap.begin();
+                     pIter != primitiveMap.end(); ++pIter) {
+                    if (pIter->second == primitive) {
+                        primitiveMap.erase(pIter);
+                        return true;
+                    }
+                }
+                // primitive not found
+                return false;
+            }
+        }
+    }
+    return false;
 }

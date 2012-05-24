@@ -82,6 +82,7 @@ void ACreateDialog::on_okButton_clicked()
     }
 
     mainWindow->getViewManager()->repaintAll();
+    toolWidget->updateModelBox();
 
     close();
 }

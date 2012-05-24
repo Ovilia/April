@@ -50,6 +50,7 @@ bool FileManager::readFile(const QString fileName,
         }
         node = node.nextSibling();
     }
+    modelManager.setModelChanged();
     modelManager.setModelSaved();
     return true;
 }

@@ -58,6 +58,14 @@ private slots:
 
     void on_ungroupSolidButton_clicked();
 
+    void on_deletePmtButton_clicked();
+
+    void on_tabWidget_currentChanged(QWidget *arg1);
+
+    void on_visiblePmtBtn_clicked();
+
+    void on_visibleSldBtn_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -75,6 +83,9 @@ private:
 
     ASolid* selectedSolid;
     APrimitive* selectedPrimitive;
+
+    // protect from selecting solid when clearing box
+    bool protectSelectMode;
 
     // set ungroup and delete button enabling according to selected solid
     // enabled if is root

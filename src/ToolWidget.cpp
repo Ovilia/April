@@ -17,7 +17,8 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     createDialog(0),
     createPrmType(APrimitive::PT_NONE),
     selectedSolid(0),
-    selectedPrimitive(0)
+    selectedPrimitive(0),
+    protectSelectMode(false)
 {
     ui->setupUi(this);
     solidMap = mainWindow->getModelManager()->getSolidMap();
@@ -91,9 +92,12 @@ void ToolWidget::updateModelBox()
     }
 
     // update boolBox and solidBox according to solidMap
+    protectSelectMode = true;
     ui->solidBox->clear();
     ui->boolBox1->clear();
     ui->boolBox2->clear();
+    protectSelectMode = false;
+
     map<QString, ASolid*>::iterator iter2;
     for (iter2 = solidMap->begin(); iter2 != solidMap->end(); ++iter2) {
         // every solid can do bool operation
@@ -139,6 +143,25 @@ void ToolWidget::on_primitiveBox_currentIndexChanged(const QString &arg1)
     }
 
     selectedPrimitive = iter->second;
+
+    ASolid* solid = mainWindow->getModelManager()->
+            getSolidFromPmt(selectedPrimitive);
+    if (solid) {
+        // set delete primitive enabled
+        if (solid->isRoot()) {
+            ui->deletePmtButton->setEnabled(true);
+        } else {
+            ui->deletePmtButton->setEnabled(false);
+        }
+
+        // set selected primitive
+        if (!protectSelectMode) {
+            mainWindow->getModelManager()->selectSolid(solid);
+            mainWindow->getViewManager()->repaintAll();
+        }
+
+        ui->visiblePmtBtn->setChecked(solid->getVisible());
+    }
 
     Vector3d scale = selectedPrimitive->getScale();
     ui->xScaleSpin->setValue(scale.x);
@@ -396,10 +419,15 @@ void ToolWidget::on_solidBox_currentIndexChanged(const QString &arg1)
 {
     map<QString, ASolid*>::iterator iter = solidMap->find(arg1);
     if (iter == solidMap->end()) {
+        if (!protectSelectMode) {
+            mainWindow->getModelManager()->selectSolid(0);
+        }
         return;
     }
 
     selectedSolid = iter->second;
+    mainWindow->getModelManager()->selectSolid(selectedSolid);
+
     Vector3d scale = selectedSolid->getScale();
     ui->xScaleSolidSpin->setValue(scale.x);
     ui->yScaleSolidSpin->setValue(scale.y);
@@ -412,6 +440,8 @@ void ToolWidget::on_solidBox_currentIndexChanged(const QString &arg1)
     ui->xTransSolidSpin->setValue(trans.x);
     ui->yTransSolidSpin->setValue(trans.y);
     ui->zTransSolidSpin->setValue(trans.z);
+
+    ui->visibleSldBtn->setChecked(selectedSolid->getVisible());
 
     checkUngroupDelete();
 }
@@ -447,7 +477,8 @@ void ToolWidget::on_boolBtn_clicked()
     if (!mainWindow->getModelManager()->insertSolid(
                 iter1->second, iter2->second, ASolid::BO_UNION)) {
         QMessageBox::critical(this, "Error",
-                              "Fail to insert solid because one is the other's decent");
+                              "Fail to insert solid because one"\
+                              " is the other's decent");
     }
     mainWindow->getViewManager()->repaintAll();
     updateModelBox();
@@ -457,8 +488,8 @@ void ToolWidget::on_deleteSolidButton_clicked()
 {
     QString solidName = ui->solidBox->currentText();
     if (mainWindow->getModelManager()->deleteSolid(solidName)) {
-        updateModelBox();
         mainWindow->getViewManager()->repaintAll();
+        updateModelBox();
     } else {
         QMessageBox::about(this, "Error",
                            "Fail to delete solid: " + solidName);
@@ -469,8 +500,8 @@ void ToolWidget::on_ungroupSolidButton_clicked()
 {
     QString solidName = ui->solidBox->currentText();
     if (mainWindow->getModelManager()->ungroupSolid(solidName)) {
-        updateModelBox();
         mainWindow->getViewManager()->repaintAll();
+        updateModelBox();
     } else {
         QMessageBox::about(this, "Error",
                            "Fail to ungroup solid: " + solidName);
@@ -486,6 +517,60 @@ void ToolWidget::checkUngroupDelete()
         } else {
             ui->deleteSolidButton->setEnabled(false);
             ui->ungroupSolidButton->setEnabled(false);
+        }
+    }
+}
+
+void ToolWidget::on_deletePmtButton_clicked()
+{
+    if (selectedPrimitive) {
+        if (mainWindow->getModelManager()->deletePmt(selectedPrimitive)) {
+            mainWindow->getViewManager()->repaintAll();
+            updateModelBox();
+        } else {
+            QMessageBox::critical(this, "Error",
+                                  "Error in deleting primitive");
+        }
+    }
+}
+
+void ToolWidget::on_tabWidget_currentChanged(QWidget *arg1)
+{
+    if (arg1 == ui->solidTab) {
+        mainWindow->getModelManager()->selectSolid(selectedSolid);
+        mainWindow->getViewManager()->repaintAll();
+    } else if (arg1 == ui->primitiveTab) {
+        ModelManager* model = mainWindow->getModelManager();
+        ASolid* solid = model->getSolidFromPmt(selectedPrimitive);
+        model->selectSolid(solid);
+        mainWindow->getViewManager()->repaintAll();
+    }
+}
+
+void ToolWidget::on_visiblePmtBtn_clicked()
+{
+    ModelManager* model = mainWindow->getModelManager();
+    ASolid* solid = model->getSolidFromPmt(selectedPrimitive);
+    if (solid) {
+        solid->setVisible(!solid->getVisible());
+        mainWindow->getViewManager()->repaintAll();
+        if (ui->visiblePmtBtn->text() == "Hide") {
+            ui->visiblePmtBtn->setText("Show");
+        } else {
+            ui->visiblePmtBtn->setText("Hide");
+        }
+    }
+}
+
+void ToolWidget::on_visibleSldBtn_clicked()
+{
+    if (selectedSolid) {
+        selectedSolid->setVisible(!selectedSolid->getVisible());
+        mainWindow->getViewManager()->repaintAll();
+        if (ui->visibleSldBtn->text() == "Hide") {
+            ui->visibleSldBtn->setText("Show");
+        } else {
+            ui->visibleSldBtn->setText("Hide");
         }
     }
 }

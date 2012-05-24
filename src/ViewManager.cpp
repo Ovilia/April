@@ -77,7 +77,6 @@ void ViewManager::repaintAll()
             viewWidget[i]->getAglWidget()->repaint();
         }
     }
-    toolWidget->updateModelBox();
 }
 
 ToolWidget* ViewManager::getToolWidget()

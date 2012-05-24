@@ -13,14 +13,13 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
 
     clearColor(0.9, 0.9, 0.9),
 
-    //scaleOnceRatio(5.0),
     zoomInRatio(0.9),
-    zoomOutRatio(1.5),
+    zoomOutRatio(1.2),
 
     orthoLeft(-1.0),
     orthoRight(1.0),
-    orthoBottom(-1.0),
-    orthoTop(1.0),
+    orthoBottom(-0.7),
+    orthoTop(1.3),
     orthoNear(-100.0),
     orthoFar(100.0),
     orthoXRotate(45.0),
@@ -224,9 +223,13 @@ void AGLWidget::resizeGL(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     if (width <= height) {
-        orthoTop = orthoBottom + (orthoRight - orthoLeft) / widthHeightRatio;
+        double orthoHeight = (orthoRight - orthoLeft) / widthHeightRatio;
+        orthoBottom = (orthoBottom + orthoTop - orthoHeight) / 2.0;
+        orthoTop = orthoBottom + orthoHeight;
     } else {
-        orthoRight = orthoLeft + (orthoTop - orthoBottom) * widthHeightRatio;
+        double orthoWidth = (orthoTop - orthoBottom) * widthHeightRatio;
+        orthoLeft = (orthoLeft + orthoRight - orthoWidth) / 2.0;
+        orthoRight = orthoLeft + orthoWidth;
     }
 }
 
