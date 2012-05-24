@@ -43,7 +43,8 @@ HEADERS += \
     Vector3i.h \
     ArcBall.h \
     MatrixD.h \
-    FileManager.h
+    FileManager.h \
+    ColorDialog.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -64,11 +65,13 @@ SOURCES += \
     Vector3i.cpp \
     ArcBall.cpp \
     MatrixD.cpp \
-    FileManager.cpp
+    FileManager.cpp \
+    ColorDialog.cpp
 
 RESOURCES += \
     resource.qrc
 
 FORMS += \
     ToolWidget.ui \
-    ACreateDialog.ui
+    ACreateDialog.ui \
+    ColorDialog.ui

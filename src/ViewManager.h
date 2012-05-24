@@ -38,7 +38,7 @@ private:
     MainWindow* mainWindow;
 
     // widget to show model under different views
-    static const int MAX_VIEWER_AMT = 6;
+    static const int MAX_VIEWER_AMT = 4;
     int preferedViewerAmt;
     ViewWidget* viewWidget[MAX_VIEWER_AMT];
 

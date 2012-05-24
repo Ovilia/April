@@ -18,7 +18,8 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     createPrmType(APrimitive::PT_NONE),
     selectedSolid(0),
     selectedPrimitive(0),
-    protectSelectMode(false)
+    protectSelectMode(false),
+    colorDialog(0)
 {
     ui->setupUi(this);
     solidMap = mainWindow->getModelManager()->getSolidMap();
@@ -30,6 +31,9 @@ ToolWidget::~ToolWidget()
     delete ui;
     if (createDialog) {
         delete createDialog;
+    }
+    if (colorDialog) {
+        delete colorDialog;
     }
 }
 
@@ -576,4 +580,13 @@ void ToolWidget::on_visibleSldBtn_clicked()
             ui->visibleSldBtn->setText("Hide");
         }
     }
+}
+
+void ToolWidget::on_colorButton_clicked()
+{
+    if (colorDialog) {
+        delete colorDialog;
+    }
+    colorDialog = new ColorDialog(mainWindow, selectedPrimitive, this);
+    colorDialog->show();
 }

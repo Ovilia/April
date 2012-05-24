@@ -1,7 +1,6 @@
 #include "MatrixD.h"
 
 #include <assert.h>
-#include<QDebug>
 
 MatrixD::MatrixD(int size) :
     size(size),

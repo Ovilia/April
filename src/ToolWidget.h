@@ -7,6 +7,7 @@
 #include <QWidget>
 
 #include "ACreateDialog.h"
+#include "ColorDialog.h"
 #include "Solid/ASolid.h"
 #include "Solid/APrimitive.h"
 #include "MainWindow.h"
@@ -66,6 +67,8 @@ private slots:
 
     void on_visibleSldBtn_clicked();
 
+    void on_colorButton_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -90,6 +93,8 @@ private:
     // set ungroup and delete button enabling according to selected solid
     // enabled if is root
     void checkUngroupDelete();
+
+    class ColorDialog* colorDialog;
 };
 
 #endif // TOOLWIDGET_H

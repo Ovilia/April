@@ -281,8 +281,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>387</height>
+            <width>132</width>
+            <height>189</height>
            </rect>
           </property>
           <attribute name="label">
@@ -423,6 +423,17 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="colorButton">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="resource.qrc">
+              <normaloff>:/image/images/color.png</normaloff>:/image/images/color.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_5">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -448,8 +459,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>171</width>
-            <height>273</height>
+            <width>248</width>
+            <height>295</height>
            </rect>
           </property>
           <attribute name="label">

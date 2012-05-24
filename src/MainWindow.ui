@@ -82,9 +82,6 @@
     <addaction name="actionMove"/>
     <addaction name="menuZoom"/>
     <addaction name="actionRotate"/>
-    <addaction name="actionRotate_X"/>
-    <addaction name="actionRotate_Y"/>
-    <addaction name="actionRotate_Z"/>
     <addaction name="actionBest_fit"/>
     <addaction name="actionSelect"/>
    </widget>
@@ -107,9 +104,6 @@
    <addaction name="actionZoom_in"/>
    <addaction name="actionZoom_out"/>
    <addaction name="actionRotate"/>
-   <addaction name="actionRotate_X"/>
-   <addaction name="actionRotate_Y"/>
-   <addaction name="actionRotate_Z"/>
    <addaction name="actionSelect"/>
    <addaction name="separator"/>
    <addaction name="actionSolid"/>
@@ -228,33 +222,6 @@
    </property>
    <property name="text">
     <string>Scale</string>
-   </property>
-  </action>
-  <action name="actionRotate_X">
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/image/images/scene_rotate_x.png</normaloff>:/image/images/scene_rotate_x.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rotate X</string>
-   </property>
-  </action>
-  <action name="actionRotate_Y">
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/image/images/scene_rotate_y.png</normaloff>:/image/images/scene_rotate_y.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rotate Y</string>
-   </property>
-  </action>
-  <action name="actionRotate_Z">
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/image/images/scene_rotate_z.png</normaloff>:/image/images/scene_rotate_z.png</iconset>
-   </property>
-   <property name="text">
-    <string>Rotate Z</string>
    </property>
   </action>
   <action name="actionSelect">
