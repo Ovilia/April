@@ -3,7 +3,6 @@
 
 using namespace std;
 
-#include <list>
 #include <map>
 
 #include <QString>

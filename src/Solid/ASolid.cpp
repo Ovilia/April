@@ -1,6 +1,7 @@
-#include <QtOpenGL>
-
 #include "ASolid.h"
+
+#include <qmath.h>
+#include <QtOpenGL>
 
 const QString ASolid::BOOL_OPERATION_NAME[BOOL_OPERATION_COUNT] = {
     "none", "intersection", "union", "difference"
@@ -9,6 +10,8 @@ const QString ASolid::BOOL_OPERATION_NAME[BOOL_OPERATION_COUNT] = {
 const Vector3d ASolid::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
 const Vector3d ASolid::DEFAULT_SCALE = Vector3d(1.0, 1.0, 1.0);
 const Vector3d ASolid::DEFAULT_TRANSLATE = Vector3d(0.0, 0.0, 0.0);
+
+const Vector3d ASolid::SELECTED_COLOR = Vector3d(1.0, 0.8, 0.2);
 
 ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
                BoolOperation operation, const QString& name) :
@@ -21,9 +24,21 @@ ASolid::ASolid(ASolid* leftChild, ASolid* rightChild,
     rotate(DEFAULT_ROTATE),
     scale(DEFAULT_SCALE),
     translate(DEFAULT_TRANSLATE),
-    isSelected(false)
+    isSelected(false),
+    isVisible(true)
 {
-    // TODO: set bounding box here
+    // set bounding box
+    // TODO: Not considering translate yet
+    Vector3d leftMin = leftChild->getBoundingBoxMin();
+    Vector3d leftMax = leftChild->getBoundingBoxMax();
+    Vector3d rightMin = rightChild->getBoundingBoxMin();
+    Vector3d rightMax = rightChild->getBoundingBoxMax();
+    boundingBoxMin.x = qMin(leftMin.x, rightMin.x);
+    boundingBoxMin.y = qMin(leftMin.y, rightMin.y);
+    boundingBoxMin.z = qMin(leftMin.z, rightMin.z);
+    boundingBoxMax.x = qMax(leftMax.x, rightMax.x);
+    boundingBoxMax.y = qMax(leftMax.y, rightMax.y);
+    boundingBoxMax.z = qMax(leftMax.z, rightMax.z);
 }
 
 ASolid::ASolid(APrimitive* primitive, const QString& name) :
@@ -36,9 +51,11 @@ ASolid::ASolid(APrimitive* primitive, const QString& name) :
     rotate(0.0, 0.0, 0.0),
     scale(1.0, 1.0, 1.0),
     translate(0.0, 0.0, 0.0),
-    isSelected(false)
+    isSelected(false),
+    isVisible(true)
 {
-    boundingBox = primitive->getBoundingBox();
+    boundingBoxMin = primitive->getBoundingBoxMin();
+    boundingBoxMax = primitive->getBoundingBoxMax();
 }
 
 ASolid::~ASolid()
@@ -56,7 +73,7 @@ void ASolid::setName(const QString& name)
     this->name = name;
 }
 
-ASolid* ASolid::getParent()
+ASolid* ASolid::getParent() const
 {
     return parent;
 }
@@ -66,7 +83,7 @@ void ASolid::setParenet(ASolid *parent)
     this->parent = parent;
 }
 
-bool ASolid::isRoot()
+bool ASolid::isRoot() const
 {
     if (parent == 0) {
         return true;
@@ -75,7 +92,7 @@ bool ASolid::isRoot()
     }
 }
 
-bool ASolid::isLeave()
+bool ASolid::isLeave() const
 {
     if (leftChild == 0 && rightChild == 0) {
         return true;
@@ -84,7 +101,7 @@ bool ASolid::isLeave()
     }
 }
 
-bool ASolid::hasDescent(ASolid *descent)
+bool ASolid::hasDescent(ASolid *descent) const
 {
     if (isLeave()) {
         return false;
@@ -101,16 +118,19 @@ bool ASolid::hasDescent(ASolid *descent)
 void ASolid::drawBefore() const
 {
     glPushMatrix();
-
-    glRotated(rotate.x, 1.0, 0.0, 0.0);
-    glRotated(rotate.y, 0.0, 1.0, 0.0);
     glRotated(rotate.z, 0.0, 0.0, 1.0);
-    glScaled(scale.x, scale.y, scale.z);
+    glRotated(rotate.y, 0.0, 1.0, 0.0);
+    glRotated(rotate.x, 1.0, 0.0, 0.0);
     glTranslated(translate.x, translate.y, translate.z);
+    glScaled(scale.x, scale.y, scale.z);
 }
 
 void ASolid::drawWire() const
 {
+    if (!isVisible) {
+        return;
+    }
+
     drawBefore();
 
     switch (operation) {
@@ -132,6 +152,10 @@ void ASolid::drawWire() const
 
 void ASolid::drawSolid() const
 {
+    if (!isVisible) {
+        return;
+    }
+
     drawBefore();
 
     switch (operation) {
@@ -156,17 +180,46 @@ void ASolid::drawAfter() const
     glPopMatrix();
 }
 
-ASolid* ASolid::getLeftChild()
+void ASolid::drawBoundingBox() const
+{
+    glColor3d(SELECTED_COLOR.x, SELECTED_COLOR.y, SELECTED_COLOR.z);
+    glBegin(GL_LINE_STRIP);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+    glEnd();
+    glBegin(GL_LINE_STRIP);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMax.z);
+    glEnd();
+}
+
+ASolid* ASolid::getLeftChild() const
 {
     return leftChild;
 }
 
-ASolid* ASolid::getRightChild()
+ASolid* ASolid::getRightChild() const
 {
     return rightChild;
 }
 
-ASolid::BoolOperation ASolid::getOperation()
+ASolid::BoolOperation ASolid::getOperation() const
 {
     return operation;
 }
@@ -186,14 +239,19 @@ void ASolid::setOperation(BoolOperation operation)
     this->operation = operation;
 }
 
-APrimitive* ASolid::getPrimitive()
+APrimitive* ASolid::getPrimitive() const
 {
     return primitive;
 }
 
-Vector3d ASolid::getBoundingBox()
+Vector3d ASolid::getBoundingBoxMin() const
 {
-    return boundingBox;
+    return boundingBoxMin;
+}
+
+Vector3d ASolid::getBoundingBoxMax() const
+{
+    return boundingBoxMax;
 }
 
 Vector3d ASolid::getRotate() const
@@ -276,9 +334,15 @@ bool ASolid::getSelected() const
     return isSelected;
 }
 
-void ASolid::setSelected(const bool value)
+void ASolid::setSelected(const bool value, const bool usePmtColor)
 {
     isSelected = value;
+    if (operation == BO_PRIMITIVE) {
+        primitive->setSelected(value, usePmtColor);
+    } else {
+        leftChild->setSelected(value, false);
+        rightChild->setSelected(value, false);
+    }
 }
 
 QString ASolid::toString() const
@@ -318,4 +382,14 @@ QString ASolid::toString() const
     }
     str += QString("\n");
     return str;
+}
+
+bool ASolid::getVisible() const
+{
+    return isVisible;
+}
+
+void ASolid::setVisible(const bool visible)
+{
+    isVisible = visible;
 }

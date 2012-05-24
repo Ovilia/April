@@ -28,28 +28,29 @@ public:
     QString getName() const;
     void setName(const QString& name);
 
-    ASolid* getParent();
+    ASolid* getParent() const;
     void setParenet(ASolid* parent);
 
-    bool isRoot();
-    bool isLeave();
+    bool isRoot() const;
+    bool isLeave() const;
 
-    bool hasDescent(ASolid* descent);
+    bool hasDescent(ASolid* descent) const;
 
     void drawWire() const;
     void drawSolid() const;
 
-    ASolid* getLeftChild();
-    ASolid* getRightChild();
-    BoolOperation getOperation();
+    ASolid* getLeftChild() const;
+    ASolid* getRightChild() const;
+    BoolOperation getOperation() const;
 
     void setLeftChild(ASolid* leftChild);
     void setRightChild(ASolid* rightChild);
     void setOperation(BoolOperation operation);
 
-    APrimitive* getPrimitive();
+    APrimitive* getPrimitive() const;
 
-    Vector3d getBoundingBox();
+    Vector3d getBoundingBoxMin() const;
+    Vector3d getBoundingBoxMax() const;
 
     Vector3d getRotate() const;
     Vector3d getScale() const;
@@ -74,7 +75,10 @@ public:
     void setTranslate(const Vector3d& translate);
 
     bool getSelected() const;
-    void setSelected(const bool value);
+    void setSelected(const bool value, const bool usePmtColor = true);
+
+    bool getVisible() const;
+    void setVisible(const bool visible);
 
     QString toString() const;
 
@@ -89,21 +93,26 @@ private:
     // used if is leaf
     APrimitive* primitive;
 
-    // min box to hold it
-    Vector3d boundingBox;
+    // bounding box to hold it
+    Vector3d boundingBoxMin;
+    Vector3d boundingBoxMax;
 
     static const Vector3d DEFAULT_ROTATE;
     static const Vector3d DEFAULT_SCALE;
     static const Vector3d DEFAULT_TRANSLATE;
+
+    static const Vector3d SELECTED_COLOR;
 
     Vector3d rotate;
     Vector3d scale;
     Vector3d translate;
 
     bool isSelected;
+    bool isVisible;
 
     void drawBefore() const;
     void drawAfter() const;
+    void drawBoundingBox() const;
 };
 
 #endif // APRILSOLID_H

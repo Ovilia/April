@@ -6,25 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>290</width>
     <height>500</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
+    <width>290</width>
     <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>300</width>
+    <width>400</width>
     <height>500</height>
    </size>
   </property>
@@ -35,7 +35,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="createTab">
       <attribute name="title">
@@ -52,7 +52,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>258</width>
+            <width>248</width>
             <height>387</height>
            </rect>
           </property>
@@ -281,8 +281,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>132</width>
-            <height>189</height>
+            <width>248</width>
+            <height>387</height>
            </rect>
           </property>
           <attribute name="label">
@@ -389,6 +389,12 @@
        </item>
        <item>
         <widget class="QWidget" name="widget_4" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <property name="leftMargin">
            <number>0</number>
@@ -442,8 +448,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>258</width>
-            <height>296</height>
+            <width>171</width>
+            <height>273</height>
            </rect>
           </property>
           <attribute name="label">

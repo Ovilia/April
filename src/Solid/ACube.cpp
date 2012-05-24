@@ -52,7 +52,8 @@ void ACube::reset(double width, double depth, double height)
     this->depth = depth;
     this->height = height;
 
-    boundingBox = Vector3d(width, height, depth);
+    boundingBoxMin = Vector3d(-width / 2.0, 0.0, -depth / 2.0);
+    boundingBoxMax = Vector3d(width / 2.0, height, depth / 2.0);
 
     // vertex position
     vertexCount = 8;

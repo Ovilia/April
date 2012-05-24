@@ -44,10 +44,10 @@ private:
 
     StateEnum::ViewMode viewMode;
 
-    static const int DEFAULT_AGL_X = 320;
+    static const int DEFAULT_AGL_X = 350;
     static const int DEFAULT_AGL_Y = 0;
-    static const int DEFAULT_AGL_WIDTH = 700;
-    static const int DEFAULT_AGL_HEIGHT = 500;
+    static const int DEFAULT_AGL_WIDTH = 800;
+    static const int DEFAULT_AGL_HEIGHT = 600;
 
     ToolWidget* toolWidget;
 };

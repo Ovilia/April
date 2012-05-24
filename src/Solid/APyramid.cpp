@@ -42,19 +42,20 @@ void APyramid::reset(double sideLength, int sideCount)
     this->sideCount = sideCount;
 
     // TODO: only calculated when sideCount is 4 now
-    double height = sideLength * 0.5 * qSqrt(2);
-    boundingBox = Vector3d(sideLength, height, sideLength);
+    double height = sideLength * 0.5 * qSqrt(3);
+
+    boundingBoxMin = Vector3d(-sideLength / 2.0, 0.0, -height * 2.0 / 3.0);
+    boundingBoxMax = Vector3d(sideLength / 2.0, height, height / 3.0);
 
     vertexCount = 4;
     if (vertexArray) {
         delete []vertexArray;
     }
     vertexArray = new Vector3d[vertexCount];
-    double tmp = sideLength * qSqrt(3);
-    vertexArray[0] = Vector3d(0.0, height, 0.0);
-    vertexArray[1] = Vector3d(-0.5 * sideLength, 0.0, tmp / 6.0);
-    vertexArray[2] = Vector3d(0.5 * sideLength, 0.0, tmp / 6.0);
-    vertexArray[3] = Vector3d(0.0, 0.0, -tmp / 3.0);
+    vertexArray[0] = Vector3d(0.0, sideLength * qSqrt(6.0) / 3.0, 0.0);
+    vertexArray[1] = Vector3d(-0.5 * sideLength, 0.0, height / 3.0);
+    vertexArray[2] = Vector3d(0.5 * sideLength, 0.0, height / 3.0);
+    vertexArray[3] = Vector3d(0.0, 0.0, -height * 2.0 / 3.0);
 
     faceCount = 4;
     if (faceArray) {

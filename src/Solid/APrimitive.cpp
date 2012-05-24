@@ -1,5 +1,10 @@
 #include "APrimitive.h"
 
+#ifndef M_PI
+#define M_PI 3.14159
+#endif
+
+#include <qmath.h>
 #include <ctime>
 #include <cstdlib>
 
@@ -11,27 +16,30 @@ const QString APrimitive::PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT] = {
 
 const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
 {
-    {0.00, 1.00, 1.00},
-    {1.00, 0.00, 1.00},
-    {1.00, 1.00, 0.00},
-    {0.25, 0.75, 0.75},
-    {0.75, 0.25, 0.75},
-    {0.75, 0.75, 0.25},
-    {0.00, 0.75, 1.00},
-    {0.75, 1.00, 0.00},
-    {1.00, 0.00, 0.75},
-    {0.00, 1.00, 0.75},
-    {0.75, 0.00, 1.00},
+    {0.60, 1.00, 1.00},
+    {1.00, 0.60, 1.00},
+    {1.00, 1.00, 0.60},
+    {0.65, 0.75, 0.75},
+    {0.75, 0.65, 0.75},
+    {0.75, 0.75, 0.65},
+    {0.80, 0.75, 1.00},
+    {0.75, 1.00, 0.80},
+    {1.00, 0.80, 0.75},
+    {0.80, 1.00, 0.75},
+    {0.75, 0.80, 1.00},
     {1.00, 0.75, 1.00},
-    {0.50, 1.00, 1.00},
-    {1.00, 0.50, 1.00},
-    {1.00, 1.00, 0.50},
-    {0.50, 0.50, 1.00}
+    {0.70, 1.00, 1.00},
+    {1.00, 0.70, 1.00},
+    {1.00, 1.00, 0.70},
+    {0.70, 0.70, 1.00}
 };
 
 const Vector3d APrimitive::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
 const Vector3d APrimitive::DEFAULT_SCALE = Vector3d(1.0, 1.0, 1.0);
 const Vector3d APrimitive::DEFAULT_TRANSLATE = Vector3d(0.0, 0.0, 0.0);
+
+const Vector3d APrimitive::SELECTED_PMT_COLOR = Vector3d(1.0, 0.8, 0.0);
+const Vector3d APrimitive::SELECTED_SLD_COLOR = Vector3d(0.0, 0.6, 0.6);
 
 APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     name(name),
@@ -39,12 +47,14 @@ APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     rotate(DEFAULT_ROTATE),
     scale(DEFAULT_SCALE),
     translate(DEFAULT_TRANSLATE),
-    isSelected(false),
     wireColor(Vector3d(0.3, 0.3, 0.3)),
     vertexCount(0),
     vertexArray(0),
     faceCount(0),
-    faceArray(0)
+    faceArray(0),
+    oldScale(1.0, 1.0, 1.0),
+    oldTrans(0.0, 0.0, 0.0),
+    isSelected(false)
 {
     // set random color
     srand((unsigned)time(0));
@@ -64,23 +74,22 @@ APrimitive::~APrimitive()
     }
 }
 
-APrimitive::PrimitiveType APrimitive::getType()
+APrimitive::PrimitiveType APrimitive::getType() const
 {
     return primitiveType;
 }
 
-void APrimitive::drawBefore()
+void APrimitive::drawBefore() const
 {
     glPushMatrix();
-
-    glRotated(rotate.x, 1.0, 0.0, 0.0);
-    glRotated(rotate.y, 0.0, 1.0, 0.0);
     glRotated(rotate.z, 0.0, 0.0, 1.0);
-    glScaled(scale.x, scale.y, scale.z);
+    glRotated(rotate.y, 0.0, 1.0, 0.0);
+    glRotated(rotate.x, 1.0, 0.0, 0.0);
     glTranslated(translate.x, translate.y, translate.z);
+    glScaled(scale.x, scale.y, scale.z);
 }
 
-void APrimitive::drawSolid()
+void APrimitive::drawSolid() const
 {
     drawBefore();
 
@@ -89,7 +98,7 @@ void APrimitive::drawSolid()
     drawAfter();
 }
 
-void APrimitive::drawWire()
+void APrimitive::drawWire() const
 {
     drawBefore();
 
@@ -106,7 +115,7 @@ void APrimitive::drawWire()
     glPolygonMode(GL_BACK, GL_FILL);
 }
 
-void APrimitive::drawAfter()
+void APrimitive::drawAfter() const
 {
     glBegin(GL_TRIANGLES);
     for (int face = 0; face < faceCount; ++face) {
@@ -125,7 +134,63 @@ void APrimitive::drawAfter()
     }
     glEnd();
 
+    // draw vertex if is selected
+    if (isSelected) {
+        glPointSize(7.0f);
+        glColor3d(selectColor.x, selectColor.y, selectColor.z);
+        glBegin(GL_POINTS);
+        for (int i = 0; i < vertexCount; ++i) {
+            glVertex3d(vertexArray[i].x, vertexArray[i].y, vertexArray[i].z);
+        }
+        glEnd();
+        glPointSize(1.0f);
+    }
+
     glPopMatrix();
+}
+
+bool APrimitive::getSelected() const
+{
+    return isSelected;
+}
+
+void APrimitive::setSelected(const bool value, const bool usePmtColor)
+{
+    isSelected = value;
+    if (usePmtColor) {
+        selectColor = SELECTED_PMT_COLOR;
+    } else {
+        selectColor = SELECTED_SLD_COLOR;
+    }
+}
+
+void APrimitive::drawBoundingBox() const
+{
+    glColor3d(selectColor.x, selectColor.y, selectColor.z);
+    glBegin(GL_LINE_STRIP);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+    glEnd();
+    glBegin(GL_LINE_STRIP);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMin.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMin.x, boundingBoxMax.y, boundingBoxMax.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMin.z);
+        glVertex3d(boundingBoxMax.x, boundingBoxMax.y, boundingBoxMax.z);
+    glEnd();
 }
 
 QString APrimitive::getName() const
@@ -138,9 +203,14 @@ void APrimitive::setName(const QString& name)
     this->name = name;
 }
 
-Vector3d APrimitive::getBoundingBox()
+Vector3d APrimitive::getBoundingBoxMin()
 {
-    return boundingBox;
+    return boundingBoxMin;
+}
+
+Vector3d APrimitive::getBoundingBoxMax()
+{
+    return boundingBoxMax;
 }
 
 Vector3d APrimitive::getRotate() const
@@ -161,71 +231,73 @@ Vector3d APrimitive::getTranslate() const
 void APrimitive::setXRotate(const double rotate)
 {
     this->rotate.x = rotate;
+//    resetBoundBoxRotate();
 }
 
 void APrimitive::setYRotate(const double rotate)
 {
     this->rotate.y = rotate;
+//    resetBoundBoxRotate();
 }
 
 void APrimitive::setZRotate(const double rotate)
 {
     this->rotate.z = rotate;
+//    resetBoundBoxRotate();
 }
 
 void APrimitive::setRotate(const Vector3d &rotate)
 {
     this->rotate = rotate;
+//    resetBoundBoxRotate();
 }
 
 void APrimitive::setXScale(const double scale)
 {
     this->scale.x = scale;
+//    resetBoundBoxScale(this->scale);
 }
 
 void APrimitive::setYScale(const double scale)
 {
     this->scale.y = scale;
+//    resetBoundBoxScale(this->scale);
 }
 
 void APrimitive::setZScale(const double scale)
 {
     this->scale.z = scale;
+//    resetBoundBoxScale(this->scale);
 }
 
 void APrimitive::setScale(const Vector3d &scale)
 {
     this->scale = scale;
+//    resetBoundBoxScale(this->scale);
 }
 
 void APrimitive::setXTranslate(const double translate)
 {
     this->translate.x = translate;
+//    resetBoundBoxTrans(this->translate);
 }
 
 void APrimitive::setYTranslate(const double translate)
 {
     this->translate.y = translate;
+//    resetBoundBoxTrans(this->translate);
 }
 
 void APrimitive::setZTranslate(const double translate)
 {
     this->translate.z = translate;
+//    resetBoundBoxTrans(this->translate);
 }
 
 void APrimitive::setTranslate(const Vector3d &translate)
 {
     this->translate = translate;
-}
-
-bool APrimitive::getSelected() const
-{
-    return isSelected;
-}
-
-void APrimitive::setSelected(const bool value)
-{
-    isSelected = value;
+//    resetBoundBoxTrans(this->translate);
 }
 
 Vector3d APrimitive::getColor() const
@@ -236,4 +308,114 @@ Vector3d APrimitive::getColor() const
 void APrimitive::setColor(Vector3d color)
 {
     this->color = color;
+}
+
+void APrimitive::resetBoundBoxRotate()
+{
+    if (vertexCount > 0) {
+        // rotate matrix
+        double cos = qCos(rotate.x * M_PI / 180.0);
+        double sin = qSin(rotate.x * M_PI / 180.0);
+        double xArr[16] = {1.0, 0.0, 0.0, 0.0,
+                           0.0, cos, sin, 0.0,
+                           0.0, -sin, cos, 0.0,
+                           0.0, 0.0, 0.0, 1.0};
+        MatrixD xRot(4, xArr);
+
+        cos = qCos(rotate.y * M_PI / 180.0);
+        sin = qSin(rotate.y * M_PI / 180.0);
+        double yArr[16] = {cos, 0.0, -sin, 0.0,
+                           0.0, 1.0, 0.0, 0.0,
+                           sin, 0.0, cos, 0.0,
+                           0.0, 0.0, 0.0, 1.0};
+        MatrixD yRot(4, yArr);
+
+        cos = qCos(rotate.z * M_PI / 180.0);
+        sin = qSin(rotate.z * M_PI / 180.0);
+        double zArr[16] = {cos, sin, 0.0, 0.0,
+                          -sin, cos, 0.0, 0.0,
+                          0.0, 0.0, 1.0, 0.0,
+                          0.0, 0.0, 0.0, 1.0};
+        MatrixD zRot(4, zArr);
+
+        MatrixD rot = xRot.multiply(yRot).multiply(zRot);
+
+        boundingBoxMin = transform(vertexArray[0], rot);
+        boundingBoxMax = boundingBoxMin;
+        for (int i = 1; i < vertexCount; ++i) {
+            Vector3d vertex = transform(vertexArray[i], rot);
+            if (vertex.x < boundingBoxMin.x) {
+                boundingBoxMin.x = vertex.x;
+            } else if (vertex.x > boundingBoxMax.x) {
+                boundingBoxMax.x = vertex.x;
+            }
+            if (vertex.y < boundingBoxMin.y) {
+                boundingBoxMin.y = vertex.y;
+            } else if (vertex.y > boundingBoxMax.y) {
+                boundingBoxMax.y = vertex.y;
+            }
+            if (vertex.z < boundingBoxMin.z) {
+                boundingBoxMin.z = vertex.z;
+            } else if (vertex.z > boundingBoxMax.z) {
+                boundingBoxMax.z = vertex.z;
+            }
+        }
+        oldScale = Vector3d(1.0, 1.0, 1.0);
+        oldTrans = Vector3d(0.0, 0.0, 0.0);
+    }
+}
+
+void APrimitive::resetBoundBoxScale(Vector3d newScale)
+{
+    if (oldScale.x > EPSILON) {
+        double ratio = newScale.x / oldScale.x;
+        boundingBoxMin.x *= ratio;
+        boundingBoxMax.x *= ratio;
+    } else {
+        boundingBoxMin.x = 0.0;
+        boundingBoxMax.x = 0.0;
+    }
+    if (oldScale.y > EPSILON) {
+        double ratio = newScale.y / oldScale.y;
+        boundingBoxMin.y *= ratio;
+        boundingBoxMax.y *= ratio;
+    } else {
+        boundingBoxMin.y = 0.0;
+        boundingBoxMax.y = 0.0;
+    }
+    if (oldScale.z > EPSILON) {
+        double ratio = newScale.z / oldScale.z;
+        boundingBoxMin.z *= ratio;
+        boundingBoxMax.z *= ratio;
+    } else {
+        boundingBoxMin.z = 0.0;
+        boundingBoxMax.z = 0.0;
+    }
+    oldScale = newScale;
+}
+
+void APrimitive::resetBoundBoxTrans(Vector3d newTrans)
+{
+    Vector3d delta = newTrans - oldTrans;
+    boundingBoxMin = boundingBoxMin + delta;
+    boundingBoxMax = boundingBoxMax + delta;
+    oldTrans = newTrans;
+}
+
+Vector3d APrimitive::transform(Vector3d vertex, const MatrixD& mat) const
+{
+    Vector3d result;
+    result.x = vertex.x * mat.getElement(0) +
+            vertex.y * mat.getElement(4) +
+            vertex.z * mat.getElement(8) +
+            mat.getElement(12);
+    result.y = vertex.x * mat.getElement(1) +
+            vertex.y * mat.getElement(5) +
+            vertex.z * mat.getElement(9) +
+            mat.getElement(13);
+    result.z = vertex.x * mat.getElement(2) +
+            vertex.y * mat.getElement(6) +
+            vertex.z * mat.getElement(10) +
+            mat.getElement(14);
+    return result;
 }

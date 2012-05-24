@@ -4,6 +4,7 @@
 #include <QString>
 
 #include "ASolid.h"
+#include "MatrixD.h"
 #include "Vector3d.h"
 #include "Vector3i.h"
 
@@ -28,20 +29,22 @@ public:
     // virtual destructor to make this class abstract
     virtual ~APrimitive() = 0;
 
-    PrimitiveType getType();
+    PrimitiveType getType() const;
 
     // draw model with certain style
-    void drawWire();
-    void drawSolid();
+    void drawWire() const;
+    void drawSolid() const;
     // draw help functions dealing with rotate and so on
     // to be called before and after drawWire and drawSolid
-    void drawBefore();
-    void drawAfter();
+    void drawBefore() const;
+    void drawAfter() const;
+    void drawBoundingBox() const;
 
     QString getName() const;
     void setName(const QString& name);
 
-    Vector3d getBoundingBox();
+    Vector3d getBoundingBoxMin();
+    Vector3d getBoundingBoxMax();
 
     Vector3d getRotate() const;
     Vector3d getScale() const;
@@ -69,7 +72,7 @@ public:
     void setColor(Vector3d color);
 
     bool getSelected() const;
-    void setSelected(const bool value);
+    void setSelected(const bool value, const bool usePmtColor);
 
     QString virtual toString() const = 0;
 
@@ -77,8 +80,9 @@ protected:
     QString name;
     PrimitiveType primitiveType;
 
-    // min box to hold it
-    Vector3d boundingBox;
+    // bounding box to hold it
+    Vector3d boundingBoxMin;
+    Vector3d boundingBoxMax;
 
     static const Vector3d DEFAULT_ROTATE;
     static const Vector3d DEFAULT_SCALE;
@@ -88,8 +92,6 @@ protected:
     Vector3d scale;
     Vector3d translate;
 
-    bool isSelected;
-
     // rgba color within [0, 1], with index of RGB_INDEX
     // it is originally set to be random
     Vector3d color;
@@ -98,6 +100,8 @@ protected:
     // random color to be used when init
     static const int RANDOM_COLOR_COUNT = 16;
     static const double RANDOM_COLOR[RANDOM_COLOR_COUNT][3];
+    static const Vector3d SELECTED_PMT_COLOR;
+    static const Vector3d SELECTED_SLD_COLOR;
 
     // vertex position
     int vertexCount;
@@ -109,6 +113,20 @@ protected:
 
     // common part of toString
     QString toStringCommon(ASolid* solid) const;
+
+    // reset bounding box according to vertex and current rotate, scale
+    // and translate
+    void resetBoundBoxRotate();
+    void resetBoundBoxScale(Vector3d newScale);
+    void resetBoundBoxTrans(Vector3d newTrans);
+    Vector3d oldScale;
+    Vector3d oldTrans;
+    // get transformed vertex from transform matrix
+    Vector3d transform(Vector3d vertex, const MatrixD& mat) const;
+
+    bool isSelected;
+    // different color if is selected primitive or solid
+    Vector3d selectColor;
 };
 
 #endif // APRILPRIMITIVE_H

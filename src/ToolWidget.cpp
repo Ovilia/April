@@ -403,15 +403,18 @@ void ToolWidget::on_positionBtn_clicked()
     if (!selectedPrimitive) {
         return;
     }
-    selectedPrimitive->setXScale(ui->xScaleSpin->value());
-    selectedPrimitive->setYScale(ui->yScaleSpin->value());
-    selectedPrimitive->setZScale(ui->zScaleSpin->value());
-    selectedPrimitive->setXRotate(ui->xRotateSpin->value());
-    selectedPrimitive->setYRotate(ui->yRotateSpin->value());
-    selectedPrimitive->setZRotate(ui->zRotateSpin->value());
-    selectedPrimitive->setXTranslate(ui->xTransSpin->value());
-    selectedPrimitive->setYTranslate(ui->yTransSpin->value());
-    selectedPrimitive->setZTranslate(ui->zTransSpin->value());
+    Vector3d rot(ui->xRotateSpin->value(),
+                 ui->yRotateSpin->value(),
+                 ui->zRotateSpin->value());
+    selectedPrimitive->setRotate(rot);
+    Vector3d scale(ui->xScaleSpin->value(),
+                   ui->yScaleSpin->value(),
+                   ui->zScaleSpin->value());
+    selectedPrimitive->setScale(scale);
+    Vector3d trans(ui->xTransSpin->value(),
+                   ui->yTransSpin->value(),
+                   ui->zTransSpin->value());
+    selectedPrimitive->setTranslate(trans);
     mainWindow->getViewManager()->repaintAll();
 }
 

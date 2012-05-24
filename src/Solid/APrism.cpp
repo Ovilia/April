@@ -51,7 +51,9 @@ void APrism::reset(double length, double sideLength, int sideCount)
     this->sideCount = sideCount;
 
     double zLength = sideLength * 0.5 * qSqrt(3);
-    boundingBox = Vector3d(sideLength, length, zLength);
+
+    boundingBoxMin = Vector3d(-sideLength / 2.0, 0.0, 0.0);
+    boundingBoxMax = Vector3d(sideLength / 2.0, length, zLength);
 
     vertexCount = 6;
     if (vertexArray) {

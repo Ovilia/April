@@ -1,6 +1,7 @@
 #include "MatrixD.h"
 
 #include <assert.h>
+#include<QDebug>
 
 MatrixD::MatrixD(int size) :
     size(size),
@@ -9,6 +10,16 @@ MatrixD::MatrixD(int size) :
     matrix = new double[arrLength];
     for (int i = 0; i < arrLength; ++i) {
         matrix[i] = 0.0;
+    }
+}
+
+MatrixD::MatrixD(int size, double* arr) :
+    size(size),
+    arrLength(size * size)
+{
+    matrix = new double[arrLength];
+    for (int i = 0; i < arrLength; ++i) {
+        matrix[i] = arr[i];
     }
 }
 
@@ -120,4 +131,16 @@ QString MatrixD::toString()
         }
     }
     return result;
+}
+
+void MatrixD::setTransposed()
+{
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < i; ++j) {
+            double a = getElement(i, j);
+            double b = getElement(j, i);
+            setElement(j, i, a);
+            setElement(i, j, b);
+        }
+    }
 }

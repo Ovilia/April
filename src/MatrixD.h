@@ -8,6 +8,7 @@ class MatrixD
 {
 public:
     MatrixD(int size);
+    MatrixD(int size, double* arr);
     ~MatrixD();
     MatrixD(const MatrixD&);
     MatrixD& operator = (const MatrixD&);
@@ -22,6 +23,8 @@ public:
 
     // set to be identity matrix
     void setIdentity();
+    // set to be transposed
+    void setTransposed();
 
     // multiply two matrix with the same size
     MatrixD multiply(MatrixD another) const;

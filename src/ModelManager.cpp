@@ -222,10 +222,6 @@ bool ModelManager::deleteSolid(QString solidName)
             deleteSolidChild(solid);
             // delete this solid
             solidMap.erase(target);
-            if (solid->isLeave()) {
-                // delete primitive
-                primitiveMap.erase(solid->getPrimitive()->getName());
-            }
             setModelChanged(true);
             return true;
         } else {
@@ -238,24 +234,18 @@ void ModelManager::deleteSolidChild(ASolid* solid)
 {
     if (solid != 0) {
         // delete child of this solid from solid map
+        APrimitive* pmt = solid->getPrimitive();
+        if (pmt) {
+            primitiveMap.erase(pmt->getName());
+            return;
+        }
         ASolid* left = solid->getLeftChild();
         ASolid* right = solid->getRightChild();
         if (left != 0 || right != 0) {
-            map<QString, ASolid*>::iterator iter;
-            for (iter = solidMap.begin(); iter != solidMap.end(); ++iter) {
-                if (iter->second == left) {
-                    solidMap.erase(iter);
-                    break;
-                }
-            }
-            for (iter = solidMap.begin(); iter != solidMap.end(); ++iter) {
-                if (iter->second == right) {
-                    solidMap.erase(iter);
-                    break;
-                }
-            }
             deleteSolidChild(left);
             deleteSolidChild(right);
+            solidMap.erase(left->getName());
+            solidMap.erase(right->getName());
         }
     }
 }

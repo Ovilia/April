@@ -13,6 +13,10 @@ public:
                              const Vector3d& vector2);
     friend bool operator != (const Vector3d& vector1,
                              const Vector3d& vector2);
+    friend Vector3d operator + (const Vector3d& vector1,
+                                const Vector3d& vector2);
+    friend Vector3d operator - (const Vector3d& vector1,
+                                const Vector3d& vector2);
 
     double dotProduct(Vector3d another) const;
     Vector3d crossProduct(Vector3d another) const;

@@ -53,7 +53,8 @@ void ACylinder::reset(double radius, int slices, double height)
     this->slices = slices;
     this->height = height;
 
-    boundingBox = Vector3d(2 * radius, height, 2 * radius);
+    boundingBoxMin = Vector3d(-radius, 0.0, -radius);
+    boundingBoxMax = Vector3d(radius, height, radius);
 
     vertexCount = 2 * slices + 2;
     if (vertexArray) {
