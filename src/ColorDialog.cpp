@@ -71,6 +71,9 @@ void ColorDialog::on_oldButton_clicked()
 {
     newColor = oldColor;
     ui->newButton->setStyleSheet(getStyleSheet(newColor));
+    ui->redSlider->setValue(newColor.x * 100);
+    ui->greenSlider->setValue(newColor.y * 100);
+    ui->blueSlider->setValue(newColor.z * 100);
     primitive->setColor(newColor);
     mainWindow->getViewManager()->repaintAll();
 }

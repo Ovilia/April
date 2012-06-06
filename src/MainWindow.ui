@@ -67,6 +67,7 @@
     <addaction name="actionModelScale"/>
     <addaction name="actionSolid"/>
     <addaction name="actionWire"/>
+    <addaction name="actionLight"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -108,6 +109,7 @@
    <addaction name="separator"/>
    <addaction name="actionSolid"/>
    <addaction name="actionWire"/>
+   <addaction name="actionLight"/>
    <addaction name="separator"/>
    <addaction name="actionModelMove"/>
    <addaction name="actionModelRotate"/>
@@ -288,6 +290,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionLight">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Light</string>
    </property>
   </action>
  </widget>
