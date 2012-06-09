@@ -16,22 +16,22 @@ const QString APrimitive::PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT] = {
 
 const double APrimitive::RANDOM_COLOR[RANDOM_COLOR_COUNT][3] =
 {
-    {0.60, 1.00, 1.00},
-    {1.00, 0.60, 1.00},
-    {1.00, 1.00, 0.60},
-    {0.65, 0.75, 0.75},
-    {0.75, 0.65, 0.75},
-    {0.75, 0.75, 0.65},
-    {0.80, 0.75, 1.00},
-    {0.75, 1.00, 0.80},
-    {1.00, 0.80, 0.75},
-    {0.80, 1.00, 0.75},
-    {0.75, 0.80, 1.00},
-    {1.00, 0.75, 1.00},
-    {0.70, 1.00, 1.00},
-    {1.00, 0.70, 1.00},
-    {1.00, 1.00, 0.70},
-    {0.70, 0.70, 1.00}
+    {0.50, 1.00, 1.00},
+    {1.00, 0.50, 1.00},
+    {1.00, 1.00, 0.50},
+    {0.45, 0.75, 0.75},
+    {0.75, 0.45, 0.75},
+    {0.75, 0.75, 0.45},
+    {0.80, 0.55, 1.00},
+    {0.55, 1.00, 0.80},
+    {1.00, 0.80, 0.55},
+    {0.80, 1.00, 0.55},
+    {0.55, 0.80, 1.00},
+    {1.00, 0.55, 1.00},
+    {0.40, 1.00, 1.00},
+    {1.00, 0.40, 1.00},
+    {1.00, 1.00, 0.40},
+    {0.40, 0.40, 1.00}
 };
 
 const Vector3d APrimitive::DEFAULT_ROTATE = Vector3d(0.0, 0.0, 0.0);
@@ -418,4 +418,14 @@ Vector3d APrimitive::transform(Vector3d vertex, const MatrixD& mat) const
             vertex.z * mat.getElement(10) +
             mat.getElement(14);
     return result;
+}
+
+unsigned int APrimitive::getMaterialId() const
+{
+    return materialId;
+}
+
+void APrimitive::setMaterialId(unsigned int id)
+{
+    materialId = id;
 }

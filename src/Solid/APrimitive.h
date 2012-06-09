@@ -5,6 +5,7 @@
 
 #include "ASolid.h"
 #include "MatrixD.h"
+#include "Solid/Material.h"
 #include "Vector3d.h"
 #include "Vector3i.h"
 
@@ -74,6 +75,9 @@ public:
     bool getSelected() const;
     void setSelected(const bool value, const bool usePmtColor);
 
+    unsigned int getMaterialId() const;
+    void setMaterialId(unsigned int id);
+
     QString virtual toString() const = 0;
 
 protected:
@@ -127,6 +131,9 @@ protected:
     bool isSelected;
     // different color if is selected primitive or solid
     Vector3d selectColor;
+
+    // material
+    unsigned int materialId;
 };
 
 #endif // APRILPRIMITIVE_H
