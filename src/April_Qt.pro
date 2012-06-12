@@ -46,8 +46,10 @@ HEADERS += \
     FileManager.h \
     ColorDialog.h \
     Material.h \
-    MaterialDialog.h \
-    MatGlWidget.h
+    TextureFile.h \
+    TextGlWidget.h \
+    Texture.h \
+    TextureDialog.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -71,8 +73,10 @@ SOURCES += \
     FileManager.cpp \
     ColorDialog.cpp \
     Material.cpp \
-    MaterialDialog.cpp \
-    MatGlWidget.cpp
+    TextureFile.cpp \
+    TextGlWidget.cpp \
+    Texture.cpp \
+    TextureDialog.cpp
 
 RESOURCES += \
     resource.qrc
@@ -81,13 +85,7 @@ FORMS += \
     ToolWidget.ui \
     ACreateDialog.ui \
     ColorDialog.ui \
-    MaterialDialog.ui
-
-
-
-
-
-
+    TextureDialog.ui
 
 
 

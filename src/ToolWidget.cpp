@@ -25,7 +25,7 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     protectSelectMode(false),
 
     colorDialog(0),
-    matDialog(0)
+    textureDialog(0)
 {
     ui->setupUi(this);
     solidMap = mainWindow->getModelManager()->getSolidMap();
@@ -41,8 +41,8 @@ ToolWidget::~ToolWidget()
     if (colorDialog) {
         delete colorDialog;
     }
-    if (matDialog) {
-        delete matDialog;
+    if (textureDialog) {
+        delete textureDialog;
     }
 }
 
@@ -600,13 +600,13 @@ void ToolWidget::on_colorButton_clicked()
     colorDialog->show();
 }
 
-void ToolWidget::on_matButton_clicked()
+void ToolWidget::on_textButton_clicked()
 {
     if (selectedPrimitive->getType() != APrimitive::PT_NONE) {
-        if (matDialog) {
-            delete matDialog;
+        if (textureDialog) {
+            delete textureDialog;
         }
-        matDialog = new MaterialDialog(selectedPrimitive, this);
-        matDialog->show();
+        textureDialog = new TextureDialog(selectedPrimitive, this);
+        textureDialog->show();
     }
 }

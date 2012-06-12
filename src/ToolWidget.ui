@@ -35,7 +35,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="createTab">
       <attribute name="title">
@@ -45,15 +45,15 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="basicPage">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>162</width>
-            <height>110</height>
+            <width>248</width>
+            <height>361</height>
            </rect>
           </property>
           <attribute name="label">
@@ -447,7 +447,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="matButton">
+           <widget class="QPushButton" name="textButton">
             <property name="text">
              <string/>
             </property>

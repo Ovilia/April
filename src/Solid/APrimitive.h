@@ -6,6 +6,7 @@
 #include "ASolid.h"
 #include "MatrixD.h"
 #include "Material.h"
+#include "Texture.h"
 #include "Vector3d.h"
 #include "Vector3i.h"
 
@@ -79,6 +80,10 @@ public:
     void eraseMaterial();
     Material* getMaterial() const;
 
+    void setTexture(const Texture& texture);
+    void eraseTexture();
+    Texture* getTexture() const;
+
     QString virtual toString() const = 0;
 
 protected:
@@ -135,6 +140,7 @@ protected:
 
     // material
     Material* material;
+    Texture* texture;
 };
 
 #endif // APRILPRIMITIVE_H

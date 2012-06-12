@@ -36,11 +36,6 @@ private:
                           const QString& yLabel = "y",
                           const QString& zLabel = "z");
     static QDomElement solidDom(QDomDocument& doc, ASolid* solid);
-
-//    // get attribute from a line, rememeber to check result before use
-//    static double attributeDouble(const QString& line, bool& isOk);
-//    static int attributeInt(const QString& line, bool& isOk);
-//    static Vector3d attributeVector3d(const QString& line, bool& isOk);
 };
 
 #endif // FILEMANAGER_H

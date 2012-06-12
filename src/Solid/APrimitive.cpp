@@ -44,18 +44,25 @@ const Vector3d APrimitive::SELECTED_SLD_COLOR = Vector3d(0.0, 0.6, 0.6);
 APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     name(name),
     primitiveType(type),
+
     rotate(DEFAULT_ROTATE),
     scale(DEFAULT_SCALE),
     translate(DEFAULT_TRANSLATE),
+
     wireColor(Vector3d(0.3, 0.3, 0.3)),
+
     vertexCount(0),
     vertexArray(0),
     faceCount(0),
     faceArray(0),
+
     oldScale(1.0, 1.0, 1.0),
     oldTrans(0.0, 0.0, 0.0),
+
     isSelected(false),
-    material(0)
+
+    material(0),
+    texture(0)
 {
     // set random color
     srand((unsigned)time(0));
@@ -75,6 +82,9 @@ APrimitive::~APrimitive()
     }
     if (material) {
         delete material;
+    }
+    if (texture) {
+        delete texture;
     }
 }
 
@@ -442,4 +452,24 @@ void APrimitive::eraseMaterial()
 Material* APrimitive::getMaterial() const
 {
     return material;
+}
+
+void APrimitive::setTexture(const Texture& texture)
+{
+    if (this->texture) {
+        delete this->texture;
+    }
+    this->texture = new Texture(texture);
+}
+
+void APrimitive::eraseTexture()
+{
+    if (texture) {
+        delete texture;
+    }
+}
+
+Texture* APrimitive::getTexture() const
+{
+    return texture;
 }
