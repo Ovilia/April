@@ -45,7 +45,9 @@ HEADERS += \
     MatrixD.h \
     FileManager.h \
     ColorDialog.h \
-    Solid/Material.h
+    Material.h \
+    MaterialDialog.h \
+    MatGlWidget.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -68,7 +70,9 @@ SOURCES += \
     MatrixD.cpp \
     FileManager.cpp \
     ColorDialog.cpp \
-    Solid/Material.cpp
+    Material.cpp \
+    MaterialDialog.cpp \
+    MatGlWidget.cpp
 
 RESOURCES += \
     resource.qrc
@@ -76,7 +80,13 @@ RESOURCES += \
 FORMS += \
     ToolWidget.ui \
     ACreateDialog.ui \
-    ColorDialog.ui
+    ColorDialog.ui \
+    MaterialDialog.ui
+
+
+
+
+
 
 
 

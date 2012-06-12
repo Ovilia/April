@@ -5,7 +5,7 @@
 
 #include "ASolid.h"
 #include "MatrixD.h"
-#include "Solid/Material.h"
+#include "Material.h"
 #include "Vector3d.h"
 #include "Vector3i.h"
 
@@ -75,8 +75,9 @@ public:
     bool getSelected() const;
     void setSelected(const bool value, const bool usePmtColor);
 
-    unsigned int getMaterialId() const;
-    void setMaterialId(unsigned int id);
+    void setMaterial(const Material& material);
+    void eraseMaterial();
+    Material* getMaterial() const;
 
     QString virtual toString() const = 0;
 
@@ -133,7 +134,7 @@ protected:
     Vector3d selectColor;
 
     // material
-    unsigned int materialId;
+    Material* material;
 };
 
 #endif // APRILPRIMITIVE_H

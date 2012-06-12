@@ -11,6 +11,7 @@
 #include "Solid/ASolid.h"
 #include "Solid/APrimitive.h"
 #include "MainWindow.h"
+#include "MaterialDialog.h"
 
 class ACreateDialog;
 
@@ -69,6 +70,8 @@ private slots:
 
     void on_colorButton_clicked();
 
+    void on_matButton_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -95,6 +98,7 @@ private:
     void checkUngroupDelete();
 
     class ColorDialog* colorDialog;
+    class MaterialDialog* matDialog;
 };
 
 #endif // TOOLWIDGET_H

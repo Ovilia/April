@@ -54,7 +54,8 @@ APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     faceArray(0),
     oldScale(1.0, 1.0, 1.0),
     oldTrans(0.0, 0.0, 0.0),
-    isSelected(false)
+    isSelected(false),
+    material(0)
 {
     // set random color
     srand((unsigned)time(0));
@@ -71,6 +72,9 @@ APrimitive::~APrimitive()
     }
     if (faceArray) {
         delete []faceArray;
+    }
+    if (material) {
+        delete material;
     }
 }
 
@@ -420,12 +424,22 @@ Vector3d APrimitive::transform(Vector3d vertex, const MatrixD& mat) const
     return result;
 }
 
-unsigned int APrimitive::getMaterialId() const
+void APrimitive::setMaterial(const Material& material)
 {
-    return materialId;
+    if (this->material) {
+        delete this->material;
+    }
+    this->material = new Material(material);
 }
 
-void APrimitive::setMaterialId(unsigned int id)
+void APrimitive::eraseMaterial()
 {
-    materialId = id;
+    if (material) {
+        delete material;
+    }
+}
+
+Material* APrimitive::getMaterial() const
+{
+    return material;
 }

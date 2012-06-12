@@ -13,13 +13,19 @@
 ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolWidget),
+
     mainWindow(mainWindow),
+
     createDialog(0),
     createPrmType(APrimitive::PT_NONE),
+
     selectedSolid(0),
     selectedPrimitive(0),
+
     protectSelectMode(false),
-    colorDialog(0)
+
+    colorDialog(0),
+    matDialog(0)
 {
     ui->setupUi(this);
     solidMap = mainWindow->getModelManager()->getSolidMap();
@@ -34,6 +40,9 @@ ToolWidget::~ToolWidget()
     }
     if (colorDialog) {
         delete colorDialog;
+    }
+    if (matDialog) {
+        delete matDialog;
     }
 }
 
@@ -589,4 +598,15 @@ void ToolWidget::on_colorButton_clicked()
     }
     colorDialog = new ColorDialog(mainWindow, selectedPrimitive, this);
     colorDialog->show();
+}
+
+void ToolWidget::on_matButton_clicked()
+{
+    if (selectedPrimitive->getType() != APrimitive::PT_NONE) {
+        if (matDialog) {
+            delete matDialog;
+        }
+        matDialog = new MaterialDialog(selectedPrimitive, this);
+        matDialog->show();
+    }
 }

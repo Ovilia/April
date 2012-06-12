@@ -35,7 +35,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="createTab">
       <attribute name="title">
@@ -52,8 +52,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>361</height>
+            <width>162</width>
+            <height>110</height>
            </rect>
           </property>
           <attribute name="label">
@@ -281,8 +281,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>361</height>
+            <width>132</width>
+            <height>189</height>
            </rect>
           </property>
           <attribute name="label">
@@ -366,6 +366,14 @@
           </layout>
          </widget>
          <widget class="QWidget" name="lightPage">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>248</width>
+            <height>361</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Light</string>
           </attribute>
@@ -435,6 +443,13 @@
             <property name="icon">
              <iconset resource="resource.qrc">
               <normaloff>:/image/images/color.png</normaloff>:/image/images/color.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="matButton">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
