@@ -16,6 +16,11 @@ public:
 
     void reset(double width, double depth, double height);
 
+    // default vertex position in texture
+    virtual const QPair<double, double>* getDefaultTextVertexPos();
+    // default index of vertex in APrimitive with given vertex in texture
+    virtual const int* getDefaultPmtId();
+
     QString virtual toString() const;
 
 protected:
@@ -26,6 +31,8 @@ protected:
     static const double DEFAULT_WIDTH;
     static const double DEFAULT_DEPTH;
     static const double DEFAULT_HEIGHT;
+
+    static const int DEFAULT_TEXT_VID[];
 };
 
 #endif // ACUBE_H

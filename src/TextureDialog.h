@@ -5,11 +5,13 @@
 
 #include "TextGlWidget.h"
 #include "Texture.h"
-#include "Solid/APrimitive.h"
+#include "TextUvGlWidget.h"
 
 namespace Ui {
     class TextureDialog;
 }
+
+//class TextUvGlWidget;
 
 class TextureDialog : public QDialog
 {
@@ -24,7 +26,8 @@ private slots:
 
 private:
     Ui::TextureDialog *ui;
-    TextGlWidget* glWidget;
+    TextGlWidget* pmtWidget;
+    TextUvGlWidget* uvWidget;
 
     APrimitive* primitive;
     Texture* originText;

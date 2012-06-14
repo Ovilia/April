@@ -95,21 +95,6 @@ void MainWindow::on_actionBest_fit_triggered()
     ui->actionSelect->setChecked(false);
 }
 
-void MainWindow::on_actionRotate_X_triggered()
-{
-    viewManager->getSelectedWidget()->getAglWidget()->rotateX();
-}
-
-void MainWindow::on_actionRotate_Y_triggered()
-{
-    viewManager->getSelectedWidget()->getAglWidget()->rotateY();
-}
-
-void MainWindow::on_actionRotate_Z_triggered()
-{
-    viewManager->getSelectedWidget()->getAglWidget()->rotateZ();
-}
-
 void MainWindow::on_actionSelect_triggered(bool checked)
 {
     if (checked) {

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>TextureDialog</class>
  <widget class="QDialog" name="TextureDialog">
@@ -63,7 +64,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="glLayout"/>
+    <layout class="QHBoxLayout" name="glLayout"/>
    </item>
    <item>
     <widget class="QWidget" name="widget_2" native="true">

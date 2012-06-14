@@ -1,6 +1,7 @@
 #ifndef APRILPRIMITIVE_H
 #define APRILPRIMITIVE_H
 
+#include <QPair>
 #include <QString>
 
 #include "ASolid.h"
@@ -11,6 +12,7 @@
 #include "Vector3i.h"
 
 class ASolid;
+class Texture;
 
 class APrimitive
 {
@@ -84,7 +86,20 @@ public:
     void eraseTexture();
     Texture* getTexture() const;
 
-    QString virtual toString() const = 0;
+    int getVertexCount() const;
+    Vector3d* getVertexArray() const;
+    int getFaceCount() const;
+    Vector3i* getFaceArray() const;
+
+    // texture related
+    // vertex count in texture
+    int getTextVertexCount();
+    // default vertex position in texture
+    virtual const QPair<double, double>* getDefaultTextVertexPos() = 0;
+    // default index of vertex in APrimitive with given vertex in texture
+    virtual const int* getDefaultPmtId() = 0;
+
+    virtual QString toString() const = 0;
 
 protected:
     QString name;
@@ -120,6 +135,11 @@ protected:
     // vertex pair to make triangle faces, not the real face count
     int faceCount;
     Vector3i* faceArray;
+
+    // texture related
+    QPair<double, double>* defaultTextVertexPos;
+    int* defaultPmtId;
+    Vector3i* defaultTextFaceVertex;
 
     // common part of toString
     QString toStringCommon(ASolid* solid) const;

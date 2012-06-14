@@ -39,12 +39,6 @@ private slots:
 
     void on_actionBest_fit_triggered();
 
-    void on_actionRotate_X_triggered();
-
-    void on_actionRotate_Y_triggered();
-
-    void on_actionRotate_Z_triggered();
-
     void on_actionSelect_triggered(bool checked);
 
     void on_actionSolid_triggered(bool checked);

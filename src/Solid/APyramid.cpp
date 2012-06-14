@@ -66,10 +66,62 @@ void APyramid::reset(double sideLength, int sideCount)
     faceArray[1] = Vector3i(0, 2, 3);
     faceArray[2] = Vector3i(1, 2, 3);
     faceArray[3] = Vector3i(0, 1, 3);
+
+    // init parameters
+    if (defaultTextVertexPos) {
+        delete []defaultTextVertexPos;
+        defaultTextVertexPos = 0;
+    }
+    if (defaultPmtId) {
+        delete []defaultPmtId;
+        defaultPmtId = 0;
+    }
+    if (defaultTextFaceVertex) {
+        delete []defaultTextFaceVertex;
+        defaultTextFaceVertex = 0;
+    }
+
+    // texture
+    texture = new Texture((APrimitive*)this);
 }
 
 QString APyramid::toString() const
 {
     return "sideLength=" + QString::number(sideLength) + "\nsideCount=" + \
             QString::number(sideCount) + "\n";
+}
+
+const QPair<double, double>* APyramid::getDefaultTextVertexPos()
+{
+    if (defaultTextVertexPos) {
+        return defaultTextVertexPos;
+    }
+    int cnt = getTextVertexCount();
+    defaultTextVertexPos = new QPair<double, double>[cnt];
+    defaultTextVertexPos[0] = QPair<double, double>(0.5, qSqrt(3) * 0.5);
+    defaultTextVertexPos[1] = defaultTextVertexPos[3] =
+            defaultTextVertexPos[11] =
+            QPair<double, double>(0.25, qSqrt(3) * 0.25);
+    defaultTextVertexPos[2] = defaultTextVertexPos[10] =
+            defaultTextVertexPos[6] =
+            QPair<double, double>(0.75, qSqrt(3) * 0.25);
+    defaultTextVertexPos[4] = QPair<double, double>(0.0, 0.0);
+    defaultTextVertexPos[5] = defaultTextVertexPos[7] =
+            defaultTextVertexPos[9] = QPair<double, double>(0.5, 0.0);
+    defaultTextVertexPos[8] = QPair<double, double>(1.0, 0.0);
+    return defaultTextVertexPos;
+}
+
+const int* APyramid::getDefaultPmtId()
+{
+    if (defaultPmtId) {
+        return defaultPmtId;
+    }
+    int cnt = getTextVertexCount();
+    defaultPmtId = new int[cnt];
+    defaultPmtId[0] = defaultPmtId[4] = defaultPmtId[8] = 0;
+    defaultPmtId[1] = defaultPmtId[3] = defaultPmtId[11] = 2;
+    defaultPmtId[2] = defaultPmtId[10] = defaultPmtId[6] = 1;
+    defaultPmtId[5] = defaultPmtId[7] = defaultPmtId[9] = 3;
+    return defaultPmtId;
 }

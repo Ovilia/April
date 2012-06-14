@@ -56,6 +56,10 @@ APrimitive::APrimitive(PrimitiveType type, const QString& name) :
     faceCount(0),
     faceArray(0),
 
+    defaultTextVertexPos(0),
+    defaultPmtId(0),
+    defaultTextFaceVertex(0),
+
     oldScale(1.0, 1.0, 1.0),
     oldTrans(0.0, 0.0, 0.0),
 
@@ -80,6 +84,17 @@ APrimitive::~APrimitive()
     if (faceArray) {
         delete []faceArray;
     }
+
+    if (defaultTextVertexPos) {
+        delete []defaultTextVertexPos;
+    }
+    if (defaultPmtId) {
+        delete []defaultPmtId;
+    }
+    if (defaultTextFaceVertex) {
+        delete []defaultTextFaceVertex;
+    }
+
     if (material) {
         delete material;
     }
@@ -472,4 +487,29 @@ void APrimitive::eraseTexture()
 Texture* APrimitive::getTexture() const
 {
     return texture;
+}
+
+int APrimitive::getVertexCount() const
+{
+    return vertexCount;
+}
+
+Vector3d* APrimitive::getVertexArray() const
+{
+    return vertexArray;
+}
+
+int APrimitive::getFaceCount() const
+{
+    return faceCount;
+}
+
+Vector3i* APrimitive::getFaceArray() const
+{
+    return faceArray;
+}
+
+int APrimitive::getTextVertexCount()
+{
+    return faceCount * 3;
 }
