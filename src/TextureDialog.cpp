@@ -1,10 +1,14 @@
 #include "TextureDialog.h"
 #include "ui_TextureDialog.h"
 
+#include <QMessageBox>
+
+#include "TextureFile.h"
+
 TextureDialog::TextureDialog(APrimitive* primitive, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TextureDialog),
-    pmtWidget(new TextGlWidget(primitive->getType(), this)),
+    pmtWidget(new TextGlWidget(primitive, this)),
     uvWidget(new TextUvGlWidget(primitive->getTexture(), this)),
 
     primitive(primitive),
@@ -23,8 +27,21 @@ TextureDialog::~TextureDialog()
     delete uvWidget;
 }
 
-void TextureDialog::on_pushButton_clicked()
+void TextureDialog::on_saveButton_clicked()
 {
-    primitive->setTexture(*originText);
-    close();
+    QString saveName = QFileDialog::getSaveFileName(
+                this,
+                tr("Save Texture"),
+                QDateTime::currentDateTime().
+                toString("yyyy_MM_dd_hh_mm_ss").append(".atxt"),
+                tr("April Project Texture (*.atxt)"));
+    if (!saveName.isNull()) {
+        bool isSaved = TextureFile::writeFile(
+                    *uvWidget->getTexture(), saveName);
+        if (!isSaved) {
+            QMessageBox::critical(this, "Save Texture Failed",
+                                  "Failed to save texture");
+        }
+    }
+
 }

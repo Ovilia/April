@@ -11,8 +11,6 @@ namespace Ui {
     class TextureDialog;
 }
 
-//class TextUvGlWidget;
-
 class TextureDialog : public QDialog
 {
     Q_OBJECT
@@ -22,7 +20,7 @@ public:
     ~TextureDialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_saveButton_clicked();
 
 private:
     Ui::TextureDialog *ui;

@@ -2,6 +2,7 @@
 #define TEXTURE_H
 
 #include <QPair>
+#include <QString>
 
 #include "Solid/APrimitive.h"
 #include "Vector3i.h"
@@ -21,6 +22,9 @@ public:
     int getVertexCount() const;
     QPair<double, double>* getVertexArray() const;
 
+    QString getFileName();
+    void setFileName(QString fileName);
+
 private:
     // vertex count in texture
     int textVertexCount;
@@ -28,6 +32,8 @@ private:
     QPair<double, double>* textVertexArray;
     // vertex id in primitive
     int* vertexPmtId;
+
+    QString fileName;
 };
 
 #endif // TEXTURE_H

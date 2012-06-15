@@ -9,7 +9,7 @@
 class TextGlWidget : public QGLWidget
 {
 public:
-    TextGlWidget(APrimitive::PrimitiveType pType, QWidget *parent);
+    TextGlWidget(APrimitive* primitive, QWidget *parent);
     ~TextGlWidget();
 
 protected:

@@ -5,26 +5,25 @@
 #include <QPair>
 #include <QTextStream>
 
-const QString TextureFile::DOC_NAME = "April_Project_Material_Version1.0";
+const QString TextureFile::DOC_NAME = "April_Project_Texture_Version1.0";
 const QString TextureFile::ROOT_NAME = "AprMat";
 
 TextureFile::TextureFile()
 {
 }
 
-Texture TextureFile::readFile(const QString& filename)
+bool TextureFile::readFile(Texture* texture, const QString& filename)
 {
 
 }
 
-void TextureFile::writeFile(const Texture& texture, const QString& filename)
+bool TextureFile::writeFile(const Texture& texture, const QString& filename)
 {
     QDomDocument doc(DOC_NAME);
     QDomElement root = doc.createElement(ROOT_NAME);
     doc.appendChild(root);
 
     int faceCnt = texture.getVertexCount() / 3;
-    int vtxCnt = texture.getVertexCount();
     QPair<double, double>* vtxArr = texture.getVertexArray();
     for (int i = 0; i < faceCnt; ++i) {
         QDomElement faceEle = doc.createElement("face");
@@ -42,4 +41,14 @@ void TextureFile::writeFile(const Texture& texture, const QString& filename)
         }
     }
 
+    // Save to file
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return false;
+    }
+
+    QTextStream stream(&file);
+    stream << doc.toString();
+    file.close();
+    return true;
 }

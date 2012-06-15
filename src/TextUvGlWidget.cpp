@@ -87,3 +87,8 @@ void TextUvGlWidget::mouseReleaseEvent(QMouseEvent *)
     isMousePressed = false;
     setCursor(Qt::ArrowCursor);
 }
+
+Texture* TextUvGlWidget::getTexture()
+{
+    return texture;
+}

@@ -8,8 +8,8 @@
 class TextureFile
 {
 public:
-    static Texture readFile(const QString& filename);
-    static void writeFile(const Texture& texture, const QString& filename);
+    static bool readFile(Texture* texture, const QString& filename);
+    static bool writeFile(const Texture& texture, const QString& filename);
 
 private:
     TextureFile();

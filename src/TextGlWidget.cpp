@@ -10,7 +10,7 @@
 #include "Solid/APyramid.h"
 #include "Solid/ASphere.h"
 
-TextGlWidget::TextGlWidget(APrimitive::PrimitiveType pType, QWidget *parent) :
+TextGlWidget::TextGlWidget(APrimitive* primitive, QWidget *parent) :
     QGLWidget(parent),
 
     orthoLeft(-1.5),
@@ -21,29 +21,52 @@ TextGlWidget::TextGlWidget(APrimitive::PrimitiveType pType, QWidget *parent) :
     arcBall(this->width(), this->height()),
     isMousePressed(false)
 {
-    switch (pType) {
+    switch (primitive->getType()) {
     case APrimitive::PT_CONE:
-        primitive = new ACone();
+    {
+        ACone* cone = (ACone*)primitive;
+        this->primitive = new ACone(cone->getRadius(), cone->getSlices(),
+                                    cone->getHeight());
+    }
         break;
 
     case APrimitive::PT_CUBE:
-        primitive = new ACube();
+    {
+        ACube* cube = (ACube*)primitive;
+        this->primitive = new ACube(cube->getWidth(), cube->getDepth(),
+                                    cube->getHeight());
+    }
         break;
 
     case APrimitive::PT_CYLINDER:
-        primitive = new ACylinder();
+    {
+        ACylinder* cyl = (ACylinder*)primitive;
+        this->primitive = new ACylinder(cyl->getRadius(), cyl->getSlices(),
+                                        cyl->getHeight());
+    }
         break;
 
     case APrimitive::PT_PRISM:
-        primitive = new APrism();
+    {
+        APrism* prism = (APrism*)primitive;
+        this->primitive = new APrism(prism->getLength(),
+                                     prism->getSideLength());
+    }
         break;
 
     case APrimitive::PT_PYRAMID:
-        primitive = new APyramid();
+    {
+        APyramid* pym = (APyramid*)primitive;
+        this->primitive = new APyramid(pym->getSideLength());
+    }
         break;
 
     case APrimitive::PT_SPHERE:
-        primitive = new ASphere();
+    {
+        ASphere* sph = (ASphere*)primitive;
+        this->primitive = new ASphere(sph->getRadius(), sph->getSlices(),
+                                      sph->getStacks());
+    }
         break;
 
     default:
@@ -52,10 +75,10 @@ TextGlWidget::TextGlWidget(APrimitive::PrimitiveType pType, QWidget *parent) :
 
     // set ortho para by primitive bounding box
     if (primitive) {
-        orthoLeft = primitive->getBoundingBoxMin().x - 0.3;
-        orthoRight = primitive->getBoundingBoxMax().x + 0.3;
-        orthoBottom = primitive->getBoundingBoxMin().y - 0.3;
-        orthoTop = primitive->getBoundingBoxMax().y + 0.3;
+        orthoLeft = primitive->getBoundingBoxMin().x - 0.25;
+        orthoRight = primitive->getBoundingBoxMax().x + 0.25;
+        orthoBottom = primitive->getBoundingBoxMin().y - 0.25;
+        orthoTop = primitive->getBoundingBoxMax().y + 0.25;
     }
 }
 
@@ -68,7 +91,7 @@ TextGlWidget::~TextGlWidget()
 
 void TextGlWidget::initializeGL()
 {
-    glClearColor(0.6, 0.6, 0.6, 1.0);
+    glClearColor(0.7, 0.7, 0.7, 1.0);
     glEnable(GL_DEPTH_TEST);
 }
 

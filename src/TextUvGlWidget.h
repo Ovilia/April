@@ -11,6 +11,8 @@ public:
     TextUvGlWidget(Texture* texture, QWidget *parent = 0);
     ~TextUvGlWidget();
 
+    Texture* getTexture();
+
 protected:
     // opengl related
     void initializeGL();

@@ -62,6 +62,7 @@ const Texture& Texture::operator = (const Texture& another)
     for (int i = 0; i < textVertexCount; ++i) {
         textVertexArray[i] = vertex[i];
     }
+    return *this;
 }
 
 int Texture::getVertexCount() const
@@ -72,4 +73,14 @@ int Texture::getVertexCount() const
 QPair<double, double>* Texture::getVertexArray() const
 {
     return textVertexArray;
+}
+
+QString Texture::getFileName()
+{
+    return fileName;
+}
+
+void Texture::setFileName(QString fileName)
+{
+    this->fileName = fileName;
 }
