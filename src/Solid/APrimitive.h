@@ -82,7 +82,7 @@ public:
     void eraseMaterial();
     Material* getMaterial() const;
 
-    void setTexture(const Texture& texture);
+    bool setTexture(const Texture& texture);
     void eraseTexture();
     Texture* getTexture() const;
 

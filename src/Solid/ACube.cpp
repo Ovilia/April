@@ -8,11 +8,6 @@ const double ACube::DEFAULT_WIDTH = 1.0;
 const double ACube::DEFAULT_DEPTH = 1.0;
 const double ACube::DEFAULT_HEIGHT = 1.0;
 
-const int ACube::DEFAULT_TEXT_VID[] = {
-    4, 0, 3, 4, 3, 7, 7, 3, 2, 7, 2, 6, 5, 1, 0, 5, 0, 4,
-    0, 1, 2, 0, 2, 3, 4, 5, 7, 5, 7, 6, 6, 2, 1, 6, 1, 5
-};
-
 ACube::ACube() :
     APrimitive(APrimitive::PT_CUBE),
     width(DEFAULT_WIDTH),
@@ -165,6 +160,21 @@ const QPair<double, double>* ACube::getDefaultTextVertexPos()
 
 const int* ACube::getDefaultPmtId()
 {
-    defaultPmtId = const_cast<int*>(DEFAULT_TEXT_VID);
+    if (defaultPmtId) {
+        return defaultPmtId;
+    }
+    int cnt = getTextVertexCount();
+    defaultPmtId = new int[cnt];
+    defaultPmtId[0] = defaultPmtId[3] = defaultPmtId[17]  = defaultPmtId[24] = 4;
+    defaultPmtId[1] = defaultPmtId[14] = defaultPmtId[16] = defaultPmtId[18]
+            = defaultPmtId[21] = 0;
+    defaultPmtId[2] = defaultPmtId[4] = defaultPmtId[7] = defaultPmtId[23] = 3;
+    defaultPmtId[5] = defaultPmtId[6] = defaultPmtId[9] = defaultPmtId[26]
+            = defaultPmtId[28] = 7;
+    defaultPmtId[8] = defaultPmtId[10] = defaultPmtId[20] = defaultPmtId[22]
+            = defaultPmtId[31] = 2;
+    defaultPmtId[11] = defaultPmtId[29] = defaultPmtId[30] = defaultPmtId[33] = 6;
+    defaultPmtId[12] = defaultPmtId[15] = defaultPmtId[25] = defaultPmtId[27]
+            = defaultPmtId[35] = 5;
     return defaultPmtId;
 }

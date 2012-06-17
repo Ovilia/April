@@ -22,6 +22,7 @@ void TextUvGlWidget::initializeGL()
 {
     glClearColor(0.7, 0.7, 0.7, 1.0);
     glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+    glViewport(0.0, 0.0, this->width(), this->height());
 }
 
 void TextUvGlWidget::paintGL()
@@ -61,11 +62,7 @@ void TextUvGlWidget::paintGL()
 
 void TextUvGlWidget::resizeGL(int width, int height)
 {
-    if (width > height) {
-        glViewport((width - height) / 2.0, 0.0, height, height);
-    } else {
-        glViewport(0.0, (height - width) / 2.0, width, width);
-    }
+    glViewport(0.0, 0.0, width, height);
 }
 
 void TextUvGlWidget::mouseMoveEvent(QMouseEvent *event)

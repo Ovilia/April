@@ -31,8 +31,6 @@ protected:
     static const double DEFAULT_WIDTH;
     static const double DEFAULT_DEPTH;
     static const double DEFAULT_HEIGHT;
-
-    static const int DEFAULT_TEXT_VID[];
 };
 
 #endif // ACUBE_H

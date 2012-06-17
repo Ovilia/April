@@ -22,7 +22,18 @@ public:
     int getVertexCount() const;
     QPair<double, double>* getVertexArray() const;
 
-    QString getFileName();
+    int* getVertexPmtId() const;
+    int getVertexPmtCnt() const;
+
+    void setVertexCount(int count);
+    void setVertexArray(QPair<double, double>* arr);
+    void setVertexArray(int index, QPair<double, double> vertex);
+
+    void setVertexPmtCnt(int count);
+    void setVertexPmtId(int* pmtId);
+    void setVertexPmtId(int index, int pmtId);
+
+    QString getFileName() const;
     void setFileName(QString fileName);
 
 private:
@@ -32,6 +43,8 @@ private:
     QPair<double, double>* textVertexArray;
     // vertex id in primitive
     int* vertexPmtId;
+    // vertex count in primitive
+    int vertexPmtCnt;
 
     QString fileName;
 };

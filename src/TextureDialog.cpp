@@ -43,5 +43,30 @@ void TextureDialog::on_saveButton_clicked()
                                   "Failed to save texture");
         }
     }
+}
 
+void TextureDialog::on_openButton_clicked()
+{
+    QString openName = QFileDialog::getOpenFileName(
+                this,
+                tr("Open Texture"),
+                ".",
+                tr("April Project Texture (*.atxt)"));
+    if (!openName.isNull()) {
+        Texture* texture = new Texture();
+        bool isOpened = TextureFile::readFile(texture, openName);
+        if (!isOpened) {
+            QMessageBox::critical(this, "Open Texture Failed",
+                                  "Failed to open texture");
+        } else {
+            if (!primitive->setTexture(*texture)) {
+                QMessageBox::critical(this, "Open Texture Failed",
+                                      "Texture doesn\'t match with "\
+                                      "current primitive");
+            } else {
+                uvWidget->repaint();
+                pmtWidget->repaint();
+            }
+        }
+    }
 }

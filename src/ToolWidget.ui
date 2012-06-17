@@ -6,34 +6,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>290</width>
+    <width>315</width>
     <height>500</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>290</width>
+    <width>300</width>
     <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>500</height>
+    <width>315</width>
+    <height>538</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Tools</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>12</number>
+   </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>291</width>
+       <height>472</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -52,14 +67,20 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>361</height>
+            <width>261</width>
+            <height>317</height>
            </rect>
           </property>
           <attribute name="label">
            <string>Primitive</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
+           <property name="leftMargin">
+            <number>12</number>
+           </property>
+           <property name="spacing">
+            <number>1</number>
+           </property>
            <item row="0" column="1">
             <widget class="QPushButton" name="sphereButton">
              <property name="sizePolicy">
@@ -281,8 +302,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>132</width>
-            <height>189</height>
+            <width>261</width>
+            <height>317</height>
            </rect>
           </property>
           <attribute name="label">
@@ -324,6 +345,9 @@
            <item>
             <widget class="QWidget" name="widget" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="margin">
+               <number>0</number>
+              </property>
               <item>
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
@@ -370,8 +394,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>361</height>
+            <width>261</width>
+            <height>317</height>
            </rect>
           </property>
           <attribute name="label">
@@ -391,13 +415,6 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Primitive: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="primitiveBox"/>
        </item>
        <item>
@@ -409,10 +426,7 @@
           </size>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
+          <property name="margin">
            <number>0</number>
           </property>
           <item>
@@ -436,6 +450,28 @@
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_5" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item>
            <widget class="QPushButton" name="colorButton">
             <property name="text">
              <string/>
@@ -454,7 +490,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_5">
+           <spacer name="horizontalSpacer_6">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -479,8 +515,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>295</height>
+            <width>246</width>
+            <height>362</height>
            </rect>
           </property>
           <attribute name="label">
@@ -686,8 +722,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>124</width>
-            <height>347</height>
+            <width>154</width>
+            <height>435</height>
            </rect>
           </property>
           <attribute name="label">
@@ -985,22 +1021,12 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>Solid: </string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="solidBox"/>
        </item>
        <item>
         <widget class="QWidget" name="solidBasicWidget" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
+          <property name="margin">
            <number>0</number>
           </property>
           <item>
@@ -1283,6 +1309,9 @@
           <item>
            <widget class="QWidget" name="widget_3" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="margin">
+              <number>0</number>
+             </property>
              <item>
               <spacer name="horizontalSpacer_2">
                <property name="orientation">
@@ -1325,6 +1354,19 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_6">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

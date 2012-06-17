@@ -469,12 +469,18 @@ Material* APrimitive::getMaterial() const
     return material;
 }
 
-void APrimitive::setTexture(const Texture& texture)
+bool APrimitive::setTexture(const Texture& texture)
 {
-    if (this->texture) {
-        delete this->texture;
+    if (texture.getVertexPmtCnt() == vertexCount &&
+            texture.getVertexCount() / 3 == faceCount) {
+        if (this->texture) {
+            delete this->texture;
+        }
+        this->texture = new Texture(texture);
+        return true;
+    } else {
+        return false;
     }
-    this->texture = new Texture(texture);
 }
 
 void APrimitive::eraseTexture()
