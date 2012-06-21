@@ -3,8 +3,6 @@
 #include <QMouseEvent>
 #include <QtOpenGL>
 
-#include <QDebug>
-
 TextUvGlWidget::TextUvGlWidget(Texture* texture, QWidget *parent) :
     QGLWidget(parent),
 
@@ -33,9 +31,6 @@ void TextUvGlWidget::paintGL()
         int cnt = texture->getVertexCount() / 3;
         QPair<double, double>* vertexArr = texture->getVertexArray();
         for (int i = 0; i < cnt; ++i) {
-            qDebug()<<vertexArr[3 * i].first<<vertexArr[3 * i].second;
-            qDebug()<<vertexArr[3 * i + 1].first<<vertexArr[3 * i + 1].second;
-            qDebug()<<vertexArr[3 * i + 2].first<<vertexArr[3 * i + 2].second;
             // triangers
             glColor3d(0.4, 0.1, 0.1);
             glBegin(GL_TRIANGLES);

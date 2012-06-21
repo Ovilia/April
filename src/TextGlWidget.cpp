@@ -161,3 +161,8 @@ void TextGlWidget::mouseReleaseEvent(QMouseEvent *)
     arcBall.mouseRelease();
     setCursor(Qt::ArrowCursor);
 }
+
+APrimitive* TextGlWidget::getPrimitive() const
+{
+    return primitive;
+}

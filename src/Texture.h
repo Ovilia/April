@@ -1,6 +1,8 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include <QImage>
+#include <QtOpenGL>
 #include <QPair>
 #include <QString>
 
@@ -36,6 +38,10 @@ public:
     QString getFileName() const;
     void setFileName(QString fileName);
 
+    QImage* getTextureImage();
+
+    GLuint* getTextureId() const;
+
 private:
     // vertex count in texture
     int textVertexCount;
@@ -47,6 +53,13 @@ private:
     int vertexPmtCnt;
 
     QString fileName;
+    QImage* textureImage;
+    void loadTextureImage();
+
+    // length is faceCnt, which is textVertexCount / 3
+    GLuint* textureId;
+    void generateTexture();
+    void releaseTexture();
 };
 
 #endif // TEXTURE_H

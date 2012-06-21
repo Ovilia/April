@@ -24,6 +24,8 @@ private slots:
 
     void on_openButton_clicked();
 
+    void on_SetImageButton_clicked();
+
 private:
     Ui::TextureDialog *ui;
     TextGlWidget* pmtWidget;

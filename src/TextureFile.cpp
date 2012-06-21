@@ -5,6 +5,8 @@
 #include <QPair>
 #include <QTextStream>
 
+#include <QDebug>
+
 const QString TextureFile::DOC_NAME = "April_Project_Texture_Version1.0";
 const QString TextureFile::ROOT_NAME = "AprMat";
 
@@ -44,15 +46,19 @@ bool TextureFile::readFile(Texture* texture, const QString& filename)
     int index = 0;
     QDomElement faceEle = facesEle.firstChildElement("face");
     while (index < faceCnt) {
-        double x = faceEle.attribute("x").toDouble();
-        double y = faceEle.attribute("y").toDouble();
-        QPair<double, double> pos(x, y);
-        int id = faceEle.attribute("id").toInt();
-        int idInPmt = faceEle.attribute("idInPmt").toInt();
+        QDomElement vEle = faceEle.firstChildElement("vertex");
+        for (int i = 0; i < 3; ++i) {
+            double x = vEle.attribute("x").toDouble();
+            double y = vEle.attribute("y").toDouble();
+            QPair<double, double> pos(x, y);
+            int id = vEle.attribute("id").toInt();
+            int idInPmt = vEle.attribute("idInPmt").toInt();
 
-        texture->setVertexArray(id, pos);
-        texture->setVertexPmtId(id, idInPmt);
+            texture->setVertexArray(id, pos);
+            texture->setVertexPmtId(id, idInPmt);
 
+            vEle = vEle.nextSiblingElement("vertex");
+        }
         faceEle = faceEle.nextSiblingElement("face");
         ++index;
     }

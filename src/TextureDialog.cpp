@@ -3,6 +3,8 @@
 
 #include <QMessageBox>
 
+#include <QDebug>
+
 #include "TextureFile.h"
 
 TextureDialog::TextureDialog(APrimitive* primitive, QWidget *parent) :
@@ -68,5 +70,27 @@ void TextureDialog::on_openButton_clicked()
                 pmtWidget->repaint();
             }
         }
+        delete texture;
+    }
+}
+
+void TextureDialog::on_SetImageButton_clicked()
+{
+    QString openName = QFileDialog::getOpenFileName(
+                this,
+                tr("Open Image"),
+                ".",
+                tr("Image files(*.bmp *.jpeg *.jpg *.png *.gif *.tif);;"\
+                   "All files (*.*)"));
+    if (!openName.isNull()) {
+        // primitive in main view
+        Texture* texture = primitive->getTexture();
+        texture->setFileName(openName);
+        // primitive in texture dialog
+        texture = pmtWidget->getPrimitive()->getTexture();
+        texture->setFileName(openName);
+
+        uvWidget->repaint();
+        pmtWidget->repaint();
     }
 }

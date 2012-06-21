@@ -176,5 +176,6 @@ const int* ACube::getDefaultPmtId()
     defaultPmtId[11] = defaultPmtId[29] = defaultPmtId[30] = defaultPmtId[33] = 6;
     defaultPmtId[12] = defaultPmtId[15] = defaultPmtId[25] = defaultPmtId[27]
             = defaultPmtId[35] = 5;
+    defaultPmtId[13] = defaultPmtId[19] = defaultPmtId[32] = defaultPmtId[34] = 1;
     return defaultPmtId;
 }

@@ -146,20 +146,30 @@ void APrimitive::drawWire() const
 
 void APrimitive::drawAfter() const
 {
+    GLuint* textureId = (texture == 0) ? 0 : texture->getTextureId();
+    QPair<double, double>* position = (texture == 0) ?
+                0 : texture->getVertexArray();
+    bool isDrawText = (texture != 0) && (textureId != 0) && (position != 0);
     glBegin(GL_TRIANGLES);
     for (int face = 0; face < faceCount; ++face) {
-        int vertex = faceArray[face].x;
-        glVertex3d(vertexArray[vertex].x,
-                   vertexArray[vertex].y,
-                   vertexArray[vertex].z);
-        vertex = faceArray[face].y;
-        glVertex3d(vertexArray[vertex].x,
-                   vertexArray[vertex].y,
-                   vertexArray[vertex].z);
-        vertex = faceArray[face].z;
-        glVertex3d(vertexArray[vertex].x,
-                   vertexArray[vertex].y,
-                   vertexArray[vertex].z);
+        for (int i = 0; i < 3; ++i) {
+            int vertex = 0;
+            if (i == 0) {
+                vertex = faceArray[face].x;
+            } else if (i == 1) {
+                vertex = faceArray[face].y;
+            } else if (i == 2) {
+                vertex = faceArray[face].z;
+            }
+            if (isDrawText) {
+                glBindTexture(GL_TEXTURE_2D, textureId[face]);
+                glTexCoord2f(position[3 * face + i].first,
+                             position[3 * face + i].second);
+            }
+            glVertex3d(vertexArray[vertex].x,
+                       vertexArray[vertex].y,
+                       vertexArray[vertex].z);
+        }
     }
     glEnd();
 

@@ -12,6 +12,8 @@ public:
     TextGlWidget(APrimitive* primitive, QWidget *parent);
     ~TextGlWidget();
 
+    APrimitive* getPrimitive() const;
+
 protected:
     // opengl related
     void initializeGL();

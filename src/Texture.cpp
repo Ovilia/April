@@ -11,13 +11,19 @@ Texture::Texture() :
     textVertexCount(0),
     textVertexArray(0),
     vertexPmtId(0),
-    vertexPmtCnt(0)
+    vertexPmtCnt(0),
+    fileName(""),
+    textureImage(0),
+    textureId(0)
 {
 }
 
 Texture::Texture(APrimitive* primitive) :
     textVertexCount(primitive->getFaceCount() * 3),
-    vertexPmtCnt(primitive->getVertexCount())
+    vertexPmtCnt(primitive->getVertexCount()),
+    fileName(""),
+    textureImage(0),
+    textureId(0)
 {
     if (textVertexCount > 0) {
         const QPair<double, double>* defPos =
@@ -35,16 +41,20 @@ Texture::Texture(APrimitive* primitive) :
 
 Texture::Texture(const Texture& another) :
     textVertexCount(another.getVertexCount()),
-    vertexPmtCnt(another.getVertexPmtCnt())
+    vertexPmtCnt(another.getVertexPmtCnt()),
+    textureImage(0)
 {
-    textVertexArray = new QPair<double, double>[textVertexCount];
-    vertexPmtId = new int[textVertexCount];
-    QPair<double, double>* vertex = another.getVertexArray();
-    int* pmtId = another.getVertexPmtId();
-    for (int i = 0; i < textVertexCount; ++i) {
-        textVertexArray[i] = vertex[i];
-        vertexPmtId[i] = pmtId[i];
+    if (textVertexCount > 0) {
+        textVertexArray = new QPair<double, double>[textVertexCount];
+        vertexPmtId = new int[textVertexCount];
+        QPair<double, double>* vertex = another.getVertexArray();
+        int* pmtId = another.getVertexPmtId();
+        for (int i = 0; i < textVertexCount; ++i) {
+            textVertexArray[i] = vertex[i];
+            vertexPmtId[i] = pmtId[i];
+        }
     }
+    setFileName(another.getFileName());
 }
 
 Texture::~Texture()
@@ -54,6 +64,23 @@ Texture::~Texture()
     }
     if (vertexPmtId) {
         delete []vertexPmtId;
+    }
+    if (textureImage) {
+        delete textureImage;
+    }
+    if (textureId) {
+        delete []textureId;
+    }
+    releaseTexture();
+}
+
+void Texture::releaseTexture()
+{
+    if (textureId) {
+        int length = textVertexCount / 3;
+        glDeleteTextures(length, textureId);
+        delete []textureId;
+        textureId = 0;
     }
 }
 
@@ -65,17 +92,50 @@ const Texture& Texture::operator = (const Texture& another)
     if (vertexPmtId) {
         delete []vertexPmtId;
     }
-    textVertexCount = another.getVertexCount();
-    vertexPmtCnt = another.getVertexPmtCnt();
-    textVertexArray = new QPair<double, double>[textVertexCount];
-    vertexPmtId = new int[textVertexCount];
-    QPair<double, double>* vertex = another.getVertexArray();
-    int* pmtId = another.getVertexPmtId();
-    for (int i = 0; i < textVertexCount; ++i) {
-        textVertexArray[i] = vertex[i];
-        vertexPmtId[i] = pmtId[i];
+    if (textureImage) {
+        delete textureImage;
     }
+    if (textureId) {
+        delete []textureId;
+    }
+    releaseTexture();
+
+    if (textVertexCount > 0) {
+        textVertexCount = another.getVertexCount();
+        vertexPmtCnt = another.getVertexPmtCnt();
+        textVertexArray = new QPair<double, double>[textVertexCount];
+        vertexPmtId = new int[textVertexCount];
+        QPair<double, double>* vertex = another.getVertexArray();
+        int* pmtId = another.getVertexPmtId();
+        for (int i = 0; i < textVertexCount; ++i) {
+            textVertexArray[i] = vertex[i];
+            vertexPmtId[i] = pmtId[i];
+        }
+    }
+    setFileName(another.getFileName());
     return *this;
+}
+
+void Texture::generateTexture()
+{
+    if (fileName != "" && textVertexArray != 0) {
+        if (textureId) {
+            delete textureId;
+        }
+        // generate id
+        int length = textVertexCount / 3;
+        textureId = new GLuint[length];
+        glGenTextures(length, textureId);
+
+        // bind texture to image
+        loadTextureImage();
+        for (int i = 0; i < length; ++i) {
+            glBindTexture(GL_TEXTURE_2D, textureId[i]);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                         textureImage->width(), textureImage->height(),
+                         0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage);
+        }
+    }
 }
 
 int Texture::getVertexCount() const
@@ -95,7 +155,30 @@ QString Texture::getFileName() const
 
 void Texture::setFileName(QString fileName)
 {
-    this->fileName = fileName;
+    if (this->fileName != fileName) {
+        this->fileName = fileName;
+    }
+    generateTexture();
+}
+
+QImage* Texture::getTextureImage()
+{
+    if (textureImage == 0) {
+        loadTextureImage();
+    }
+    return textureImage;
+}
+
+void Texture::loadTextureImage()
+{
+    if (textureImage) {
+        delete textureImage;
+    }
+    if (fileName != "") {
+        textureImage = new QImage(fileName);
+    } else {
+        textureImage = 0;
+    }
 }
 
 int* Texture::getVertexPmtId() const
@@ -154,4 +237,9 @@ void Texture::setVertexPmtId(int* pmtId)
 void Texture::setVertexPmtId(int index, int pmtId)
 {
     vertexPmtId[index] = pmtId;
+}
+
+GLuint* Texture::getTextureId() const
+{
+    return textureId;
 }
