@@ -127,22 +127,40 @@ const QPair<double, double>* ACylinder::getDefaultTextVertexPos()
     int cnt = getTextVertexCount();
     defaultTextVertexPos = new QPair<double, double>[cnt];
     for (int i = 0; i < slices; ++i) {
+        double alpha = 2 * i * M_PI / slices;
+        double beta;
+        if (i != slices - 1) {
+            beta = 2 * (i + 1) * M_PI / slices;
+        } else {
+            beta = 0;
+        }
+        // top face
+        defaultTextVertexPos[3 * i] = QPair<double, double>(
+                    0.25 * qCos(alpha) + 0.25, 0.25 * qSin(alpha) + 0.75);
+        defaultTextVertexPos[3 * i + 1] = QPair<double, double>(
+                    0.25 * qCos(beta) + 0.25, 0.25 * qSin(beta) + 0.75);
+        defaultTextVertexPos[3 * i + 2] = QPair<double, double>(
+                    0.25, 0.75);
+        // bottom face
+        defaultTextVertexPos[3 * (i + slices)] = QPair<double, double>(
+                    0.25 * qCos(alpha) + 0.75, 0.25 * qSin(alpha) + 0.75);
+        defaultTextVertexPos[3 * (i + slices) + 1] = QPair<double, double>(
+                    0.25 * qCos(beta) + 0.75, 0.25 * qSin(beta) + 0.75);
+        defaultTextVertexPos[3 * (i + slices) + 2] = QPair<double, double>(
+                    0.75, 0.75);
         // side faces
-        int index = 3 * i;
-        defaultTextVertexPos[index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + i / (slices + 0.5), 0.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    i / (slices + 0.5), 1.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    (i + 1) / (slices + 0.5), 1.0);
-        // bottom faces
-        index = 3 * (i + slices);
-        defaultTextVertexPos[index] = QPair<double, double>(
-                    (i + 1) / (slices + 0.5), 1.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + i / (slices + 0.5), 0.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + (i + 1) / (slices + 0.5), 0.0);
+        defaultTextVertexPos[6 * (i + slices)] =
+                QPair<double, double>((double)i / slices, 0.5);
+        defaultTextVertexPos[6 * (i + slices) + 1] =
+                QPair<double, double>((double)(i + 1) / slices, 0.5);
+        defaultTextVertexPos[6 * (i + slices) + 2] =
+                QPair<double, double>((double)i / slices, 0.0);
+        defaultTextVertexPos[6 * (i + slices) + 3] =
+                QPair<double, double>((double)(i + 1) / slices, 0.5);
+        defaultTextVertexPos[6 * (i + slices) + 4] =
+                QPair<double, double>((double)i / slices, 0.0);
+        defaultTextVertexPos[6 * (i + slices) + 5] =
+                QPair<double, double>((double)(i + 1) / slices, 0.0);
     }
     return defaultTextVertexPos;
 }
@@ -154,26 +172,22 @@ const int* ACylinder::getDefaultPmtId()
     }
     int cnt = getTextVertexCount();
     defaultPmtId = new int[cnt];
-    for (int i = 0; i < slices - 1; ++i) {
-        // side faces
-        int index = 3 * i;
-        defaultPmtId[index] = slices;
-        defaultPmtId[++index] = i;
-        defaultPmtId[++index] = i + 1;
-        // bottom faces
-        index = 3 * (i + slices);
-        defaultPmtId[index] = slices + 1;
-        defaultPmtId[++index] = i;
-        defaultPmtId[++index] = i + 1;
+    for (int i = 0; i < slices; ++i) {
+        // top
+        defaultPmtId[3 * i] = i;
+        defaultPmtId[3 * i + 1] = i + 1;
+        defaultPmtId[3 * i + 2] = 2 * slices;
+        // bottom
+        defaultPmtId[6 * (i + slices)] = i + slices;
+        defaultPmtId[6 * (i + slices) + 1] = i + 1 + slices;
+        defaultPmtId[6 * (i + slices) + 2] = 2 * slices + 1;
+        // side
+        defaultPmtId[6 * (i + slices)] = i;
+        defaultPmtId[6 * (i + slices) + 1] = i + 1;
+        defaultPmtId[6 * (i + slices) + 2] = i + slices;
+        defaultPmtId[6 * (i + slices) + 3] = i + 1;
+        defaultPmtId[6 * (i + slices) + 4] = i + slices;
+        defaultPmtId[6 * (i + slices) + 5] = i + slices + 1;
     }
-    // last slice
-    int index = 3 * slices - 1;
-    defaultPmtId[index] = slices;
-    defaultPmtId[++index] = slices - 1;
-    defaultPmtId[++index] = 0;
-    index = 6 * slices - 1;
-    defaultPmtId[index] = slices + 1;
-    defaultPmtId[++index] = slices - 1;
-    defaultPmtId[++index] = 0;
     return defaultPmtId;
 }

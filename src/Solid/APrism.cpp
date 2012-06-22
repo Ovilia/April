@@ -113,17 +113,24 @@ const QPair<double, double>* APrism::getDefaultTextVertexPos()
     }
     int cnt = getTextVertexCount();
     defaultTextVertexPos = new QPair<double, double>[cnt];
-    defaultTextVertexPos[0] = QPair<double, double>(0.5, qSqrt(3) * 0.5);
-    defaultTextVertexPos[1] = defaultTextVertexPos[3] =
-            defaultTextVertexPos[11] =
-            QPair<double, double>(0.25, qSqrt(3) * 0.25);
-    defaultTextVertexPos[2] = defaultTextVertexPos[10] =
-            defaultTextVertexPos[6] =
-            QPair<double, double>(0.75, qSqrt(3) * 0.25);
-    defaultTextVertexPos[4] = QPair<double, double>(0.0, 0.0);
-    defaultTextVertexPos[5] = defaultTextVertexPos[7] =
-            defaultTextVertexPos[9] = QPair<double, double>(0.5, 0.0);
-    defaultTextVertexPos[8] = QPair<double, double>(1.0, 0.0);
+    defaultTextVertexPos[0] = QPair<double, double>(0.0, 1.0);
+    defaultTextVertexPos[2] = defaultTextVertexPos[5] =
+            defaultTextVertexPos[6] = QPair<double, double>(0.5, 1.0);
+    defaultTextVertexPos[8] = defaultTextVertexPos[11] =
+            QPair<double, double>(1.0, 1.0);
+    defaultTextVertexPos[1] = defaultTextVertexPos[4] =
+            defaultTextVertexPos[12] = QPair<double, double>(0.0, 0.5);
+    defaultTextVertexPos[3] = defaultTextVertexPos[7] =
+            defaultTextVertexPos[10] = defaultTextVertexPos[14] =
+            defaultTextVertexPos[17] = defaultTextVertexPos[18] =
+            QPair<double, double>(0.5, 0.5);
+    defaultTextVertexPos[9] = defaultTextVertexPos[20] =
+            defaultTextVertexPos[23] = QPair<double, double>(1.0, 0.5);
+    defaultTextVertexPos[13] = defaultTextVertexPos[16] =
+            QPair<double, double>(0.0, 0.0);
+    defaultTextVertexPos[15] = defaultTextVertexPos[19] =
+            defaultTextVertexPos[22] = QPair<double, double>(0.5, 0.0);
+    defaultTextVertexPos[21] = QPair<double, double>(1.0, 0.0);
     return defaultTextVertexPos;
 }
 
@@ -134,9 +141,17 @@ const int* APrism::getDefaultPmtId()
     }
     int cnt = getTextVertexCount();
     defaultPmtId = new int[cnt];
-    defaultPmtId[0] = defaultPmtId[4] = defaultPmtId[8] = 0;
-    defaultPmtId[1] = defaultPmtId[3] = defaultPmtId[11] = 2;
-    defaultPmtId[2] = defaultPmtId[10] = defaultPmtId[6] = 1;
-    defaultPmtId[5] = defaultPmtId[7] = defaultPmtId[9] = 3;
+    defaultPmtId[0] = defaultPmtId[15] = defaultPmtId[19] =
+            defaultPmtId[22] = 0;
+    defaultPmtId[1] = defaultPmtId[7] = defaultPmtId[10] =
+            defaultPmtId[18] = 1;
+    defaultPmtId[2] = defaultPmtId[6] = defaultPmtId[14] =
+            defaultPmtId[17] = 2;
+    defaultPmtId[3] = defaultPmtId[13] = defaultPmtId[16] =
+            defaultPmtId[21] = 3;
+    defaultPmtId[4] = defaultPmtId[9] = defaultPmtId[20] =
+            defaultPmtId[23] = 4;
+    defaultPmtId[5] = defaultPmtId[8] = defaultPmtId[11] =
+            defaultPmtId[12] = 5;
     return defaultPmtId;
 }

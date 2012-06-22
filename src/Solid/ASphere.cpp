@@ -153,22 +153,38 @@ const QPair<double, double>* ASphere::getDefaultTextVertexPos()
     int cnt = getTextVertexCount();
     defaultTextVertexPos = new QPair<double, double>[cnt];
     for (int i = 0; i < slices; ++i) {
-        // side faces
-        int index = 3 * i;
-        defaultTextVertexPos[index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + i / (slices + 0.5), 0.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    i / (slices + 0.5), 1.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    (i + 1) / (slices + 0.5), 1.0);
-        // bottom faces
-        index = 3 * (i + slices);
-        defaultTextVertexPos[index] = QPair<double, double>(
-                    (i + 1) / (slices + 0.5), 1.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + i / (slices + 0.5), 0.0);
-        defaultTextVertexPos[++index] = QPair<double, double>(
-                    0.5 / (slices + 0.5) + (i + 1) / (slices + 0.5), 0.0);
+        // top
+        defaultTextVertexPos[3 * i] = QPair<double, double>(
+                    (double)i / slices + 0.5 / slices, 1.0);
+        defaultTextVertexPos[3 * i + 1] = QPair<double, double>(
+                    (double)i / slices, 1.0 - 1.0 / stacks);
+        defaultTextVertexPos[3 * i + 2] = QPair<double, double>(
+                    (double)(i + 1) / slices, 1.0 - 1.0 / stacks);
+        // center
+        for (int j = 1; j < stacks - 1; ++j) {
+            int index = 3 * slices + ((j - 1) * slices + i) * 6;
+            defaultTextVertexPos[index] = QPair<double, double>(
+                        (double)i / slices, 1.0 - (double)j / stacks);
+            defaultTextVertexPos[index + 1] = QPair<double, double>(
+                        (double)(i + 1) / slices, 1.0 - (double)j / stacks);
+            defaultTextVertexPos[index + 2] = QPair<double, double>(
+                        (double)i / slices, 1.0 - (double)(j + 1) / stacks);
+            defaultTextVertexPos[index + 3] = QPair<double, double>(
+                        (double)(i + 1) / slices, 1.0 - (double)j / stacks);
+            defaultTextVertexPos[index + 4] = QPair<double, double>(
+                        (double)i / slices, 1.0 - (double)(j + 1) / stacks);
+            defaultTextVertexPos[index + 5] = QPair<double, double>(
+                        (double)(i + 1) / slices,
+                        1.0 - (double)(j + 1) / stacks);
+        }
+        // bottom
+        int index = 6 * slices * stacks - 9 * slices;
+        defaultTextVertexPos[3 * i + index] = QPair<double, double>(
+                    1.0 * i / slices + 0.5 / slices, 0.0);
+        defaultTextVertexPos[3 * i + 1 + index] = QPair<double, double>(
+                    1.0 * i / slices, 1.0 / stacks);
+        defaultTextVertexPos[3 * i + 2 + index] = QPair<double, double>(
+                    1.0 * (i + 1) / slices, 1.0 / stacks);
     }
     return defaultTextVertexPos;
 }
