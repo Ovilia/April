@@ -178,7 +178,8 @@ bool MainWindow::saveProject()
                 // ask if to retry if failed
                 QMessageBox::StandardButton retry =
                         QMessageBox::warning(this, tr("Failed to save project"),
-                                             tr("Failed to save project. Try again?"),
+                                             tr("Failed to save project. "\
+                                                "Try again?"),
                                              QMessageBox::Yes | QMessageBox::No,
                                              QMessageBox::Yes);
                 if (retry == QMessageBox::Yes) {
@@ -202,7 +203,8 @@ void MainWindow::on_actionOpen_triggered()
         // ask if to save model if model changed
         QMessageBox::StandardButton button =
                 QMessageBox::question(NULL, tr("Save project"),
-                                      tr("Project has been changed. Save project?"),
+                                      tr("Project has been changed. "\
+                                         "Save project?"),
                                       QMessageBox::Yes | QMessageBox::No,
                                       QMessageBox::Yes);
 
@@ -212,6 +214,10 @@ void MainWindow::on_actionOpen_triggered()
     }
     openProject();
     viewManager->repaintAll();
+    ToolWidget* tool = viewManager->getToolWidget();
+    tool->updateModelBox();
+    tool->updateLightBox();
+    tool->updateLightCanOpen();
     ui->actionSolid->setChecked(true);
     ui->actionWire->setChecked(false);
 }
@@ -227,7 +233,8 @@ void MainWindow::on_actionNew_triggered()
         // ask if to save model if model changed
         QMessageBox::StandardButton button =
                 QMessageBox::question(NULL, tr("Save project"),
-                                      tr("Project has been changed. Save project?"),
+                                      tr("Project has been changed. "\
+                                         "Save project?"),
                                       QMessageBox::Yes | QMessageBox::No,
                                       QMessageBox::Yes);
 

@@ -3,6 +3,8 @@
 
 #include <map>
 
+#include <QDebug>
+
 #include <QMessageBox>
 #include <QString>
 
@@ -671,6 +673,16 @@ void ToolWidget::on_litOkButton_clicked()
         pos[2] = ui->litZSpin->value();
         pos[3] = 1.0;
         selectedLighting->setPosition(pos);
+
+        GLfloat dir[4];
+        dir[0] = ui->dirXSpin->value();
+        dir[1] = ui->dirYSpin->value();
+        dir[2] = ui->dirZSpin->value();
+        dir[3] = 1.0;
+        selectedLighting->setDirection(dir);
+
+        GLfloat cutOff = ui->cutOffSpin->value();
+        selectedLighting->setCutOff(cutOff);
     }
     mainWindow->getViewManager()->repaintAll();
 }
@@ -699,6 +711,14 @@ void ToolWidget::on_lightBox_currentIndexChanged(const QString &arg1)
         ui->litXSpin->setValue(pos[0]);
         ui->litYSpin->setValue(pos[1]);
         ui->litZSpin->setValue(pos[2]);
+
+        const GLfloat* dir = selectedLighting->getDirection();
+        ui->dirXSpin->setValue(dir[0]);
+        ui->dirYSpin->setValue(dir[1]);
+        ui->dirZSpin->setValue(dir[2]);
+        qDebug()<<dir[0]<<dir[1]<<dir[2];
+        GLfloat cutOff = selectedLighting->getCutOff();
+        ui->cutOffSpin->setValue(cutOff);
 
         bool isOn = selectedLighting->getIsOn();
         if (isOn) {

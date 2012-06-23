@@ -24,7 +24,7 @@ ModelManager::~ModelManager()
     primitiveMap.clear();
 
     for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
-        if (lighting[i]) {
+        if (lighting[i] != 0) {
             delete lighting[i];
         }
     }
@@ -62,6 +62,19 @@ void ModelManager::initialize()
     isDrawSolid = true;
     isDrawWire = false;
     selectedSolid = 0;
+
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        if (lighting[i]) {
+            delete lighting[i];
+            lighting[i] = 0;
+        }
+    }
+    lightChanged = true;
+
+    ToolWidget* tool = mainWindow->getViewManager()->getToolWidget();
+    tool->updateModelBox();
+    tool->updateLightBox();
+    tool->updateLightCanOpen();
 }
 
 map<QString, ASolid*>* ModelManager::getSolidMap()
@@ -417,4 +430,14 @@ Lighting* ModelManager::getLight(QString name) const
         }
     }
     return 0;
+}
+
+bool ModelManager::openLight(int id)
+{
+    if (id < 0 || id > MAX_LIGHT_COUNT || lighting[id]) {
+        return false;
+    }
+    lighting[id] = new Lighting((GLuint)id);
+    lighting[id]->setIsOn(true);
+    return true;
 }

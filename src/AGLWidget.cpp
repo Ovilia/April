@@ -44,7 +44,6 @@ AGLWidget::AGLWidget(ModelManager* modelManager, QWidget *parent) :
     arrowLength(0.05)
 {
     setMinimumSize(100, 100);
-    resize(600, 800);
     setMouseTracking(true);
 }
 
@@ -120,6 +119,7 @@ void AGLWidget::initializeGL()
 void AGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     // projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -149,8 +149,6 @@ void AGLWidget::paintGL()
         glEnable(GL_LIGHTING);
     }
 
-    drawMainPlain();
-
     if (modelManager->getIsDrawSolid()) {
         modelManager->drawSolid();
     }
@@ -159,6 +157,7 @@ void AGLWidget::paintGL()
     }
 
     glDisable(GL_LIGHTING);
+    drawMainPlain();
     drawAxis();
 
     // pop rotate ortho view
@@ -352,6 +351,9 @@ void AGLWidget::setLighting()
             glLightfv(id, GL_DIFFUSE, light->getDiffuse());
             glLightfv(id, GL_SPECULAR, light->getSpecular());
             glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light->getAmbient());
+
+            glLightf(id, GL_SPOT_CUTOFF, light->getCutOff());
+            glLightfv(id, GL_SPOT_DIRECTION, light->getDirection());
         } else {
             glDisable(id);
         }

@@ -93,6 +93,8 @@ public:
     bool canOpenLight() const;
     // open next light, return if opened successfully
     bool openLight();
+    // open light of given id, return false if is already open
+    bool openLight(int id);
     // close light, return if opened successfully
     bool closeLight(int id);
     Lighting* getLight(int id) const;

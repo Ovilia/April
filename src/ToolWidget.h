@@ -30,6 +30,9 @@ public:
     ~ToolWidget();
 
     void updateModelBox();
+
+    void updateLightBox();
+    void updateLightCanOpen();
     
 private slots:
     void on_cubeButton_clicked();
@@ -100,9 +103,6 @@ private:
     ASolid* selectedSolid;
     APrimitive* selectedPrimitive;
     Lighting* selectedLighting;
-
-    void updateLightBox();
-    void updateLightCanOpen();
 
     // protect from selecting solid when clearing box
     bool protectSelectMode;

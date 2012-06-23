@@ -36,6 +36,7 @@ private:
                           const QString& yLabel = "y",
                           const QString& zLabel = "z");
     static QDomElement solidDom(QDomDocument& doc, ASolid* solid);
+    static void float4(QDomElement& element, const GLfloat* f);
 };
 
 #endif // FILEMANAGER_H
