@@ -112,6 +112,9 @@ void AGLWidget::initializeGL()
 {
     glClearColor(clearColor.x, clearColor.y, clearColor.z, 1.0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+
+    glShadeModel(GL_SMOOTH);
 }
 
 void AGLWidget::paintGL()
@@ -137,6 +140,15 @@ void AGLWidget::paintGL()
     // rotate by mouse dragging
     arcBall.doRotate();
 
+    if (modelManager->getLightChanged()) {
+        setLighting();
+    }
+    if (modelManager->allLightOff()) {
+        glDisable(GL_LIGHTING);
+    } else {
+        glEnable(GL_LIGHTING);
+    }
+
     drawMainPlain();
 
     if (modelManager->getIsDrawSolid()) {
@@ -146,6 +158,7 @@ void AGLWidget::paintGL()
         modelManager->drawWire();
     }
 
+    glDisable(GL_LIGHTING);
     drawAxis();
 
     // pop rotate ortho view
@@ -325,5 +338,22 @@ void AGLWidget::keyPressEvent(QKeyEvent *event)
 
     default:
         break;
+    }
+}
+
+void AGLWidget::setLighting()
+{
+    for (int i = 0; i < ModelManager::MAX_LIGHT_COUNT; ++i) {
+        Lighting* light = modelManager->getLight(i);
+        GLenum id = GL_LIGHT0 + i;
+        if (light && light->getIsOn()) {
+            glEnable(id);
+            glLightfv(id, GL_POSITION, light->getPosition());
+            glLightfv(id, GL_DIFFUSE, light->getDiffuse());
+            glLightfv(id, GL_SPECULAR, light->getSpecular());
+            glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light->getAmbient());
+        } else {
+            glDisable(id);
+        }
     }
 }

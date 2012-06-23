@@ -152,6 +152,9 @@ void APrimitive::drawAfter() const
     bool isDrawText = (texture != 0) && (textureId != 0) && (position != 0);
     glBegin(GL_TRIANGLES);
     for (int face = 0; face < faceCount; ++face) {
+        if (isDrawText) {
+            glBindTexture(GL_TEXTURE_2D, textureId[face]);
+        }
         for (int i = 0; i < 3; ++i) {
             int vertex = 0;
             if (i == 0) {
@@ -162,7 +165,6 @@ void APrimitive::drawAfter() const
                 vertex = faceArray[face].z;
             }
             if (isDrawText) {
-                glBindTexture(GL_TEXTURE_2D, textureId[face]);
                 glTexCoord2f(position[3 * face + i].first,
                              position[3 * face + i].second);
             }

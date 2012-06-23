@@ -7,6 +7,7 @@ using namespace std;
 
 #include <QString>
 
+#include "Lighting.h"
 #include "MainWindow.h"
 
 #include "Solid/APrimitive.h"
@@ -86,6 +87,20 @@ public:
 
     void selectSolid(ASolid* solid);
 
+    // lighting
+    static const int MAX_LIGHT_COUNT = 8;
+    // return if have more light to be opened
+    bool canOpenLight() const;
+    // open next light, return if opened successfully
+    bool openLight();
+    // close light, return if opened successfully
+    bool closeLight(int id);
+    Lighting* getLight(int id) const;
+    Lighting* getLight(QString name) const;
+    bool getLightChanged() const;
+    void setLightUnchanged();
+    bool allLightOff() const;
+
 private:
     MainWindow* mainWindow;
 
@@ -111,6 +126,14 @@ private:
     void setModelChanged(bool changed);
 
     ASolid* selectedSolid;
+
+    // lighting
+    Lighting* lighting[MAX_LIGHT_COUNT];
+
+    static const int NO_MORE_LIGHT = -1;
+    int firstOffLight() const;
+    // used for opengl to set lighting
+    bool lightChanged;
 };
 
 #endif // MODELMANAGER_H

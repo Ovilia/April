@@ -5,15 +5,24 @@
 Vector3d::Vector3d() :
     x(0.0),
     y(0.0),
-    z(0.0)
+    z(0.0),
+    vecArray(0)
 {
 }
 
 Vector3d::Vector3d(double x, double y, double z) :
     x(x),
     y(y),
-    z(z)
+    z(z),
+    vecArray(0)
 {
+}
+
+Vector3d::~Vector3d()
+{
+    if (vecArray) {
+        delete []vecArray;
+    }
 }
 
 bool operator == (const Vector3d& vector1, const Vector3d& vector2)
@@ -73,4 +82,16 @@ void Vector3d::normalize()
         y /= modulus;
         z /= modulus;
     }
+}
+
+double* Vector3d::toArray()
+{
+    if (vecArray) {
+        delete []vecArray;
+    }
+    vecArray = new double[3];
+    vecArray[0] = x;
+    vecArray[1] = y;
+    vecArray[2] = z;
+    return vecArray;
 }

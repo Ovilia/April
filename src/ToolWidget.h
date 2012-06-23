@@ -72,6 +72,16 @@ private slots:
 
     void on_textButton_clicked();
 
+    void on_ambientButton_clicked();
+
+    void on_litOkButton_clicked();
+
+    void on_lightBox_currentIndexChanged(const QString &arg1);
+
+    void on_hideLight_clicked();
+
+    void on_deleteLight_clicked();
+
 private:
     Ui::ToolWidget *ui;
 
@@ -89,6 +99,10 @@ private:
 
     ASolid* selectedSolid;
     APrimitive* selectedPrimitive;
+    Lighting* selectedLighting;
+
+    void updateLightBox();
+    void updateLightCanOpen();
 
     // protect from selecting solid when clearing box
     bool protectSelectMode;

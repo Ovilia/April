@@ -53,7 +53,8 @@ private:
     int vertexPmtCnt;
 
     QString fileName;
-    QImage* textureImage;
+    QImage textureImage;
+    bool imageLoaded;
     void loadTextureImage();
 
     // length is faceCnt, which is textVertexCount / 3

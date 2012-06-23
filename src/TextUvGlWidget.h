@@ -1,6 +1,7 @@
 #ifndef TextUvGlWidget_H
 #define TextUvGlWidget_H
 
+#include <QImage>
 #include <QtOpenGL/qgl.h>
 
 #include "Texture.h"
@@ -12,6 +13,8 @@ public:
     ~TextUvGlWidget();
 
     Texture* getTexture();
+
+    void setImage(QImage* image);
 
 protected:
     // opengl related
@@ -26,6 +29,9 @@ protected:
     bool isMousePressed;
 
     Texture* texture;
+
+    QImage* image;
+    GLuint imageTextId;
 };
 
 #endif // TextUvGlWidget_H

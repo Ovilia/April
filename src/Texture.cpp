@@ -13,7 +13,7 @@ Texture::Texture() :
     vertexPmtId(0),
     vertexPmtCnt(0),
     fileName(""),
-    textureImage(0),
+    imageLoaded(false),
     textureId(0)
 {
 }
@@ -22,7 +22,7 @@ Texture::Texture(APrimitive* primitive) :
     textVertexCount(primitive->getFaceCount() * 3),
     vertexPmtCnt(primitive->getVertexCount()),
     fileName(""),
-    textureImage(0),
+    imageLoaded(false),
     textureId(0)
 {
     if (textVertexCount > 0) {
@@ -42,7 +42,7 @@ Texture::Texture(APrimitive* primitive) :
 Texture::Texture(const Texture& another) :
     textVertexCount(another.getVertexCount()),
     vertexPmtCnt(another.getVertexPmtCnt()),
-    textureImage(0)
+    imageLoaded(false)
 {
     if (textVertexCount > 0) {
         textVertexArray = new QPair<double, double>[textVertexCount];
@@ -65,9 +65,6 @@ Texture::~Texture()
     if (vertexPmtId) {
         delete []vertexPmtId;
     }
-    if (textureImage) {
-        delete textureImage;
-    }
     if (textureId) {
         delete []textureId;
     }
@@ -79,7 +76,6 @@ void Texture::releaseTexture()
     if (textureId) {
         int length = textVertexCount / 3;
         glDeleteTextures(length, textureId);
-        delete []textureId;
         textureId = 0;
     }
 }
@@ -91,9 +87,6 @@ const Texture& Texture::operator = (const Texture& another)
     }
     if (vertexPmtId) {
         delete []vertexPmtId;
-    }
-    if (textureImage) {
-        delete textureImage;
     }
     if (textureId) {
         delete []textureId;
@@ -119,21 +112,24 @@ const Texture& Texture::operator = (const Texture& another)
 void Texture::generateTexture()
 {
     if (fileName != "" && textVertexArray != 0) {
-        if (textureId) {
-            delete textureId;
-        }
+        releaseTexture();
         // generate id
         int length = textVertexCount / 3;
         textureId = new GLuint[length];
         glGenTextures(length, textureId);
 
         // bind texture to image
+        glEnable(GL_BLEND);
         loadTextureImage();
         for (int i = 0; i < length; ++i) {
             glBindTexture(GL_TEXTURE_2D, textureId[i]);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                         textureImage->width(), textureImage->height(),
-                         0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage);
+                         textureImage.width(), textureImage.height(),
+                         0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.bits());
         }
     }
 }
@@ -163,21 +159,18 @@ void Texture::setFileName(QString fileName)
 
 QImage* Texture::getTextureImage()
 {
-    if (textureImage == 0) {
+    if (!imageLoaded) {
         loadTextureImage();
     }
-    return textureImage;
+    return &textureImage;
 }
 
 void Texture::loadTextureImage()
 {
-    if (textureImage) {
-        delete textureImage;
-    }
     if (fileName != "") {
-        textureImage = new QImage(fileName);
-    } else {
-        textureImage = 0;
+        QImage buffer;
+        buffer.load(fileName);
+        textureImage = QGLWidget::convertToGLFormat(buffer);
     }
 }
 

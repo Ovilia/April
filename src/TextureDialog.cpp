@@ -89,6 +89,8 @@ void TextureDialog::on_SetImageButton_clicked()
         // primitive in texture dialog
         texture = pmtWidget->getPrimitive()->getTexture();
         texture->setFileName(openName);
+        // texture in uv widget
+        uvWidget->setImage(texture->getTextureImage());
 
         uvWidget->repaint();
         pmtWidget->repaint();

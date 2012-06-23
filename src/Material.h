@@ -9,6 +9,7 @@ public:
     Material();
     Material(const Material& material);
 
+    static const int COLOR_LENGTH = 4;
     void setAmbient(const GLfloat* newValue);
     void setDiffuse(const GLfloat* newValue);
     void setSpecular(const GLfloat* newValue);
@@ -20,7 +21,6 @@ public:
     GLfloat getShiness() const;
 
 private:
-    static const int COLOR_LENGTH = 4;
     static const GLfloat DEFAULT_AMBIENT[COLOR_LENGTH];
     static const GLfloat DEFAULT_DIFFUSE[COLOR_LENGTH];
     static const GLfloat DEFAULT_SPECULAR[COLOR_LENGTH];

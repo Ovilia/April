@@ -50,7 +50,8 @@ HEADERS += \
     TextGlWidget.h \
     TextUvGlWidget.h \
     Texture.h \
-    TextureDialog.h
+    TextureDialog.h \
+    Lighting.h
 
 SOURCES += \
     ModelManager.cpp \
@@ -78,7 +79,8 @@ SOURCES += \
     TextGlWidget.cpp \
     TextUvGlWidget.cpp \
     Texture.cpp \
-    TextureDialog.cpp
+    TextureDialog.cpp \
+    Lighting.cpp
 
 RESOURCES += \
     resource.qrc

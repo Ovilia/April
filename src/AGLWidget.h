@@ -91,6 +91,8 @@ private:
     double axisLength;
     double arrowLength;
     void drawAxis();
+
+    void setLighting();
 };
 
 #endif // AGLWIDGET_H

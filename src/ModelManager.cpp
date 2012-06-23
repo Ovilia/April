@@ -13,12 +13,21 @@ ModelManager::ModelManager(MainWindow* mainWindow) :
     isDrawWire(false),
     selectedSolid(0)
 {
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        lighting[i] = 0;
+    }
 }
 
 ModelManager::~ModelManager()
 {
     solidMap.clear();
     primitiveMap.clear();
+
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        if (lighting[i]) {
+            delete lighting[i];
+        }
+    }
 }
 
 bool ModelManager::getModelChanged()
@@ -324,4 +333,88 @@ bool ModelManager::deletePmt(APrimitive* primitive)
         }
     }
     return false;
+}
+
+bool ModelManager::canOpenLight() const
+{
+    if (firstOffLight() == NO_MORE_LIGHT) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+int ModelManager::firstOffLight() const
+{
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        if (lighting[i] == 0) {
+            return i;
+        }
+    }
+    // no more light
+    return NO_MORE_LIGHT;
+}
+
+bool ModelManager::openLight()
+{
+    int id = firstOffLight();
+    if (id == NO_MORE_LIGHT) {
+        return false;
+    }
+    lighting[id] = new Lighting((GLuint)id);
+    lighting[id]->setIsOn(true);
+    lightChanged = true;
+    return true;
+}
+
+bool ModelManager::closeLight(int id)
+{
+    if (id >= 0 && id < MAX_LIGHT_COUNT) {
+        if (lighting[id])  {
+            delete lighting[id];
+            lighting[id] = 0;
+            lightChanged = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+Lighting* ModelManager::getLight(int id) const
+{
+    if (id >= 0 && id < MAX_LIGHT_COUNT) {
+        return lighting[id];
+    } else {
+        return 0;
+    }
+}
+
+bool ModelManager::getLightChanged() const
+{
+    return lightChanged;
+}
+
+void ModelManager::setLightUnchanged()
+{
+    lightChanged = false;
+}
+
+bool ModelManager::allLightOff() const
+{
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        if (lighting[i] && lighting[i]->getIsOn()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+Lighting* ModelManager::getLight(QString name) const
+{
+    for (int i = 0; i < MAX_LIGHT_COUNT; ++i) {
+        if (lighting[i] && lighting[i]->getName() == name) {
+            return lighting[i];
+        }
+    }
+    return 0;
 }

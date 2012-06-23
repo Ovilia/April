@@ -21,6 +21,7 @@ ToolWidget::ToolWidget(MainWindow* mainWindow, QWidget *parent) :
 
     selectedSolid(0),
     selectedPrimitive(0),
+    selectedLighting(0),
 
     protectSelectMode(false),
 
@@ -608,5 +609,135 @@ void ToolWidget::on_textButton_clicked()
         }
         textureDialog = new TextureDialog(selectedPrimitive, this);
         textureDialog->show();
+    }
+}
+
+void ToolWidget::on_ambientButton_clicked()
+{
+    ModelManager* model = mainWindow->getModelManager();
+    if (!model->openLight()) {
+        QMessageBox::critical(this, "Error", "Fail to open new light");
+    }
+    mainWindow->getViewManager()->repaintAll();
+    ui->ambientButton->setEnabled(model->canOpenLight());
+
+    updateLightBox();
+    updateLightCanOpen();
+}
+
+void ToolWidget::updateLightBox()
+{
+    ui->lightBox->clear();
+    for (int i = 0; i < ModelManager::MAX_LIGHT_COUNT; ++i) {
+        Lighting* light = mainWindow->getModelManager()->getLight(i);
+        if (light) {
+            ui->lightBox->addItem(light->getName());
+        }
+    }
+    if (ui->lightBox->count() < 1) {
+        ui->lightTab->setEnabled(false);
+    } else {
+        ui->lightTab->setEnabled(true);
+    }
+}
+
+void ToolWidget::on_litOkButton_clicked()
+{
+    if (selectedLighting) {
+        GLfloat amb[4];
+        amb[0] = ui->ligAmbXSpin->value();
+        amb[1] = ui->ligAmbYSpin->value();
+        amb[2] = ui->ligAmbZSpin->value();
+        amb[3] = 1.0;
+        selectedLighting->setAmbient(amb);
+
+        GLfloat dif[4];
+        dif[0] = ui->ligDifXSpin->value();
+        dif[1] = ui->ligDifYSpin->value();
+        dif[2] = ui->ligDifZSpin->value();
+        dif[3] = 1.0;
+        selectedLighting->setDiffuse(dif);
+
+        GLfloat spe[4];
+        spe[0] = ui->ligSpeXSpin->value();
+        spe[1] = ui->ligSpeYSpin->value();
+        spe[2] = ui->ligSpeZSpin->value();
+        spe[3] = 1.0;
+        selectedLighting->setSpecular(spe);
+
+        GLfloat pos[4];
+        pos[0] = ui->litXSpin->value();
+        pos[1] = ui->litYSpin->value();
+        pos[2] = ui->litZSpin->value();
+        pos[3] = 1.0;
+        selectedLighting->setPosition(pos);
+    }
+    mainWindow->getViewManager()->repaintAll();
+}
+
+void ToolWidget::on_lightBox_currentIndexChanged(const QString &arg1)
+{
+    if (ui->lightBox->count() < 1) {
+        selectedLighting = 0;
+        return;
+    }
+    selectedLighting = mainWindow->getModelManager()->getLight(arg1);
+    if (selectedLighting) {
+        GLfloat* amb = selectedLighting->getAmbient();
+        ui->ligAmbXSpin->setValue(amb[0]);
+        ui->ligAmbYSpin->setValue(amb[1]);
+        ui->ligAmbZSpin->setValue(amb[2]);
+        GLfloat* dif = selectedLighting->getDiffuse();
+        ui->ligDifXSpin->setValue(dif[0]);
+        ui->ligDifYSpin->setValue(dif[1]);
+        ui->ligDifZSpin->setValue(dif[2]);
+        GLfloat* spe = selectedLighting->getSpecular();
+        ui->ligSpeXSpin->setValue(spe[0]);
+        ui->ligSpeYSpin->setValue(spe[1]);
+        ui->ligSpeZSpin->setValue(spe[2]);
+        const GLfloat* pos = selectedLighting->getPosition();
+        ui->litXSpin->setValue(pos[0]);
+        ui->litYSpin->setValue(pos[1]);
+        ui->litZSpin->setValue(pos[2]);
+
+        bool isOn = selectedLighting->getIsOn();
+        if (isOn) {
+            ui->hideLight->setText("hide");
+        } else {
+            ui->hideLight->setText("show");
+        }
+    }
+}
+
+void ToolWidget::on_hideLight_clicked()
+{
+    if (selectedLighting) {
+        bool isOn = selectedLighting->getIsOn();
+        selectedLighting->setIsOn(!isOn);
+        if (ui->hideLight->text() == "hide") {
+            ui->hideLight->setText("show");
+        } else {
+            ui->hideLight->setText("hide");
+        }
+        mainWindow->getViewManager()->repaintAll();
+    }
+}
+
+void ToolWidget::on_deleteLight_clicked()
+{
+    if (selectedLighting) {
+        mainWindow->getModelManager()->closeLight(selectedLighting->getId());
+        updateLightBox();
+        mainWindow->getViewManager()->repaintAll();
+        updateLightCanOpen();
+    }
+}
+
+void ToolWidget::updateLightCanOpen()
+{
+    if (mainWindow->getModelManager()->canOpenLight()) {
+        ui->ambientButton->setEnabled(true);
+    } else {
+        ui->ambientButton->setEnabled(false);
     }
 }

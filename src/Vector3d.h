@@ -8,6 +8,7 @@ struct Vector3d
 public:
     Vector3d();
     Vector3d(double x, double y, double z);
+    ~Vector3d();
 
     friend bool operator == (const Vector3d& vector1,
                              const Vector3d& vector2);
@@ -31,6 +32,11 @@ public:
     double x;
     double y;
     double z;
+
+    double* toArray();
+
+private:
+    double* vecArray;
 };
 
 #endif // VECTOR3D_H
