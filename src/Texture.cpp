@@ -65,17 +65,13 @@ Texture::~Texture()
     if (vertexPmtId) {
         delete []vertexPmtId;
     }
-    if (textureId) {
-        delete []textureId;
-    }
     releaseTexture();
 }
 
 void Texture::releaseTexture()
 {
-    if (textureId) {
-        int length = textVertexCount / 3;
-        glDeleteTextures(length, textureId);
+    if (textureId != 0) {
+        glDeleteTextures(1, &textureId);
         textureId = 0;
     }
 }
@@ -87,9 +83,6 @@ const Texture& Texture::operator = (const Texture& another)
     }
     if (vertexPmtId) {
         delete []vertexPmtId;
-    }
-    if (textureId) {
-        delete []textureId;
     }
     releaseTexture();
 
@@ -112,24 +105,22 @@ const Texture& Texture::operator = (const Texture& another)
 void Texture::generateTexture()
 {
     if (fileName != "" && textVertexArray != 0) {
+        // bind texture to image
+        loadTextureImage();
+
         releaseTexture();
         // generate id
-        int length = textVertexCount / 3;
-        textureId = new GLuint[length];
-        glGenTextures(length, textureId);
+        glGenTextures(1, &textureId);
 
-        // bind texture to image
-        glEnable(GL_BLEND);
-        loadTextureImage();
+        int length = textVertexCount / 3;
         for (int i = 0; i < length; ++i) {
-            glBindTexture(GL_TEXTURE_2D, textureId[i]);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glBindTexture(GL_TEXTURE_2D, textureId);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                          textureImage.width(), textureImage.height(),
                          0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.bits());
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         }
     }
 }
@@ -169,8 +160,13 @@ void Texture::loadTextureImage()
 {
     if (fileName != "") {
         QImage buffer;
-        buffer.load(fileName);
+        if (!buffer.load(fileName)) {
+            qWarning("Texture image not loaded porperly");
+        }
         textureImage = QGLWidget::convertToGLFormat(buffer);
+        if (textureImage.isNull()) {
+            qWarning("Texture image not convert porperly");
+        }
     }
 }
 
@@ -232,7 +228,7 @@ void Texture::setVertexPmtId(int index, int pmtId)
     vertexPmtId[index] = pmtId;
 }
 
-GLuint* Texture::getTextureId() const
+GLuint Texture::getTextureId() const
 {
     return textureId;
 }

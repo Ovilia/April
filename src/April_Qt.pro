@@ -90,7 +90,3 @@ FORMS += \
     ACreateDialog.ui \
     ColorDialog.ui \
     TextureDialog.ui
-
-
-
-

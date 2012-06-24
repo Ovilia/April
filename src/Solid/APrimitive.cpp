@@ -10,6 +10,8 @@
 
 #include <QtOpenGL>
 
+#include <QDebug>
+
 const QString APrimitive::PRIMITIVE_TYPE_NAME[PRIMITIVE_TYPE_COUNT] = {
     "none", "cone", "cube", "cylinder", "prism", "pyramid", "sphere"
 };
@@ -116,6 +118,13 @@ void APrimitive::drawBefore() const
     glRotated(rotate.x, 1.0, 0.0, 0.0);
     glTranslated(translate.x, translate.y, translate.z);
     glScaled(scale.x, scale.y, scale.z);
+
+    GLfloat dif[4];
+    dif[0] = color.x;
+    dif[1] = color.y;
+    dif[2] = color.z;
+    dif[3] = 1.0;
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
 }
 
 void APrimitive::drawSolid() const
@@ -146,15 +155,16 @@ void APrimitive::drawWire() const
 
 void APrimitive::drawAfter() const
 {
-    GLuint* textureId = (texture == 0) ? 0 : texture->getTextureId();
+    GLuint textureId = (texture == 0) ? 0 : texture->getTextureId();
     QPair<double, double>* position = (texture == 0) ?
                 0 : texture->getVertexArray();
     bool isDrawText = (texture != 0) && (textureId != 0) && (position != 0);
+    if (isDrawText) {
+        glBindTexture(GL_TEXTURE_2D, textureId);
+    }
+
     glBegin(GL_TRIANGLES);
     for (int face = 0; face < faceCount; ++face) {
-        if (isDrawText) {
-            glBindTexture(GL_TEXTURE_2D, textureId[face]);
-        }
         for (int i = 0; i < 3; ++i) {
             int vertex = 0;
             if (i == 0) {
@@ -167,6 +177,8 @@ void APrimitive::drawAfter() const
             if (isDrawText) {
                 glTexCoord2f(position[3 * face + i].first,
                              position[3 * face + i].second);
+                qDebug()<<"pos"<<3 * face + i<<position[3 * face + i].first<<
+                          position[3 * face + i].second;
             }
             glVertex3d(vertexArray[vertex].x,
                        vertexArray[vertex].y,
@@ -177,6 +189,9 @@ void APrimitive::drawAfter() const
 
     // draw vertex if is selected
     if (isSelected) {
+        bool lightEnabled = glIsEnabled(GL_LIGHTING);
+        glDisable(GL_LIGHTING);
+
         glPointSize(7.0f);
         glColor3d(selectColor.x, selectColor.y, selectColor.z);
         glBegin(GL_POINTS);
@@ -184,7 +199,11 @@ void APrimitive::drawAfter() const
             glVertex3d(vertexArray[i].x, vertexArray[i].y, vertexArray[i].z);
         }
         glEnd();
+
         glPointSize(1.0f);
+        if (lightEnabled) {
+            glEnable(GL_LIGHTING);
+        }
     }
 
     glPopMatrix();

@@ -40,7 +40,7 @@ public:
 
     QImage* getTextureImage();
 
-    GLuint* getTextureId() const;
+    GLuint getTextureId() const;
 
 private:
     // vertex count in texture
@@ -58,7 +58,7 @@ private:
     void loadTextureImage();
 
     // length is faceCnt, which is textVertexCount / 3
-    GLuint* textureId;
+    GLuint textureId;
     void generateTexture();
     void releaseTexture();
 };
