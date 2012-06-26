@@ -3,20 +3,23 @@
 
 #include <QDialog>
 
-#include "TextGlWidget.h"
 #include "Texture.h"
 #include "TextUvGlWidget.h"
+#include "ViewManager.h"
 
 namespace Ui {
     class TextureDialog;
 }
+
+class ViewManager;
 
 class TextureDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit TextureDialog(APrimitive* primitive, QWidget *parent = 0);
+    explicit TextureDialog(ViewManager* viewManager,
+                           APrimitive* primitive, QWidget *parent = 0);
     ~TextureDialog();
 
 private slots:
@@ -28,8 +31,8 @@ private slots:
 
 private:
     Ui::TextureDialog *ui;
-    TextGlWidget* pmtWidget;
     TextUvGlWidget* uvWidget;
+    ViewManager* viewManager;
 
     APrimitive* primitive;
     Texture* originText;

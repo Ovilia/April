@@ -161,6 +161,7 @@ void APrimitive::drawAfter() const
     bool isDrawText = (texture != 0) && (textureId != 0) && (position != 0);
     if (isDrawText) {
         glBindTexture(GL_TEXTURE_2D, textureId);
+        glColor3d(1.0, 1.0, 1.0);
     }
 
     glBegin(GL_TRIANGLES);
@@ -177,8 +178,6 @@ void APrimitive::drawAfter() const
             if (isDrawText) {
                 glTexCoord2f(position[3 * face + i].first,
                              position[3 * face + i].second);
-                qDebug()<<"pos"<<3 * face + i<<position[3 * face + i].first<<
-                          position[3 * face + i].second;
             }
             glVertex3d(vertexArray[vertex].x,
                        vertexArray[vertex].y,

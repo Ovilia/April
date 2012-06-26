@@ -111,7 +111,6 @@ void AGLWidget::initializeGL()
 {
     glClearColor(clearColor.x, clearColor.y, clearColor.z, 1.0);
     glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
 
     glShadeModel(GL_SMOOTH);
 }

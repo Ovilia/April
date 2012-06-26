@@ -7,17 +7,17 @@
 
 #include "TextureFile.h"
 
-TextureDialog::TextureDialog(APrimitive* primitive, QWidget *parent) :
+TextureDialog::TextureDialog(ViewManager *viewManager,
+                             APrimitive *primitive, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TextureDialog),
-    pmtWidget(new TextGlWidget(primitive, this)),
     uvWidget(new TextUvGlWidget(primitive->getTexture(), this)),
+    viewManager(viewManager),
 
     primitive(primitive),
     originText(primitive->getTexture())
 {
     ui->setupUi(this);
-    ui->glLayout->addWidget(pmtWidget);
     ui->glLayout->addWidget(uvWidget);
 }
 
@@ -25,7 +25,6 @@ TextureDialog::~TextureDialog()
 {
     delete ui;
 
-    delete pmtWidget;
     delete uvWidget;
 }
 
@@ -65,9 +64,6 @@ void TextureDialog::on_openButton_clicked()
                 QMessageBox::critical(this, "Open Texture Failed",
                                       "Texture doesn\'t match with "\
                                       "current primitive");
-            } else {
-                uvWidget->repaint();
-                pmtWidget->repaint();
             }
         }
         delete texture;
@@ -86,13 +82,8 @@ void TextureDialog::on_SetImageButton_clicked()
         // primitive in main view
         Texture* texture = primitive->getTexture();
         texture->setFileName(openName);
-        // primitive in texture dialog
-        texture = pmtWidget->getPrimitive()->getTexture();
-        texture->setFileName(openName);
-        // texture in uv widget
-        uvWidget->setImage(texture->getTextureImage());
-
+        viewManager->repaintAll();
+        uvWidget->textChanged();
         uvWidget->repaint();
-        pmtWidget->repaint();
     }
 }

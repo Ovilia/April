@@ -609,7 +609,8 @@ void ToolWidget::on_textButton_clicked()
         if (textureDialog) {
             delete textureDialog;
         }
-        textureDialog = new TextureDialog(selectedPrimitive, this);
+        textureDialog = new TextureDialog(mainWindow->getViewManager(),
+                                          selectedPrimitive, this);
         textureDialog->show();
     }
 }

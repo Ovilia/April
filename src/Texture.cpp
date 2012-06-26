@@ -112,16 +112,18 @@ void Texture::generateTexture()
         // generate id
         glGenTextures(1, &textureId);
 
-        int length = textVertexCount / 3;
-        for (int i = 0; i < length; ++i) {
-            glBindTexture(GL_TEXTURE_2D, textureId);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                         textureImage.width(), textureImage.height(),
-                         0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.bits());
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        }
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        glTexImage2D(GL_TEXTURE_2D, 0, 4,//GL_RGBA,
+                     textureImage.width(), textureImage.height(),
+                     0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.bits());
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
     }
 }
 
@@ -161,12 +163,16 @@ void Texture::loadTextureImage()
     if (fileName != "") {
         QImage buffer;
         if (!buffer.load(fileName)) {
+            QImage dummy(128, 128, QImage::Format_RGB32);
+            dummy.fill(0);
+            buffer = dummy;
             qWarning("Texture image not loaded porperly");
         }
         textureImage = QGLWidget::convertToGLFormat(buffer);
         if (textureImage.isNull()) {
             qWarning("Texture image not convert porperly");
         }
+        imageLoaded = true;
     }
 }
 

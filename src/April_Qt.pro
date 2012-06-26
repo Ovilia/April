@@ -47,7 +47,6 @@ HEADERS += \
     ColorDialog.h \
     Material.h \
     TextureFile.h \
-    TextGlWidget.h \
     TextUvGlWidget.h \
     Texture.h \
     TextureDialog.h \
@@ -76,7 +75,6 @@ SOURCES += \
     ColorDialog.cpp \
     Material.cpp \
     TextureFile.cpp \
-    TextGlWidget.cpp \
     TextUvGlWidget.cpp \
     Texture.cpp \
     TextureDialog.cpp \
