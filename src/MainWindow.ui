@@ -84,6 +84,8 @@
     <addaction name="actionRotate"/>
     <addaction name="actionBest_fit"/>
     <addaction name="actionSelect"/>
+    <addaction name="action4_Views"/>
+    <addaction name="action1_View"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -296,6 +298,16 @@
    </property>
    <property name="text">
     <string>Light</string>
+   </property>
+  </action>
+  <action name="action4_Views">
+   <property name="text">
+    <string>4 Views</string>
+   </property>
+  </action>
+  <action name="action1_View">
+   <property name="text">
+    <string>1 View</string>
    </property>
   </action>
  </widget>

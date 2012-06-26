@@ -17,6 +17,12 @@ public:
 
     AGLWidget* getAglWidget();
 
+    void viewFront();
+    void viewLeft();
+    void viewTop();
+
+    void closeEvent(QCloseEvent *closeEvent);
+
 private:
     AGLWidget* aglWidget;
 

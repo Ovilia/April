@@ -11,7 +11,7 @@ TextureDialog::TextureDialog(ViewManager *viewManager,
                              APrimitive *primitive, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TextureDialog),
-    uvWidget(new TextUvGlWidget(primitive->getTexture(), this)),
+    uvWidget(new TextUvGlWidget(viewManager, primitive->getTexture(), this)),
     viewManager(viewManager),
 
     primitive(primitive),
@@ -86,4 +86,9 @@ void TextureDialog::on_SetImageButton_clicked()
         uvWidget->textChanged();
         uvWidget->repaint();
     }
+}
+
+void TextureDialog::on_checkBox_clicked(bool checked)
+{
+    uvWidget->setFillVisible(checked);
 }

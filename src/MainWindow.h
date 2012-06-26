@@ -51,6 +51,10 @@ private slots:
 
     void on_actionNew_triggered();
 
+    void on_action1_View_triggered();
+
+    void on_action4_Views_triggered();
+
 private:
     Ui::MainWindow *ui;
 

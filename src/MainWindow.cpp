@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     viewManager->setViewMode(StateEnum::VM_MOVE);
 
+    QSize size = ui->centerLayout->sizeHint();
+    int x = size.width();
+    int y = size.height();
+    viewManager->show4Views(x, y);
+
     // TODO: this is the buttons not implemented
     ui->actionBest_fit->setVisible(false);
     ui->actionSelect->setVisible(false);
@@ -244,4 +249,20 @@ void MainWindow::on_actionNew_triggered()
     }
     modelManager->initialize();
     viewManager->repaintAll();
+}
+
+void MainWindow::on_action1_View_triggered()
+{
+    QSize size = ui->centerLayout->sizeHint();
+    int x = size.width();
+    int y = size.height();
+    viewManager->show1View(x, y);
+}
+
+void MainWindow::on_action4_Views_triggered()
+{
+    QSize size = ui->centerLayout->sizeHint();
+    int x = size.width();
+    int y = size.height();
+    viewManager->show4Views(x, y);
 }

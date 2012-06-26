@@ -28,6 +28,10 @@ public:
     void rotateY();
     void rotateZ();
 
+    void viewFront();
+    void viewLeft();
+    void viewTop();
+
 protected:
     // opengl related
     void initializeGL();

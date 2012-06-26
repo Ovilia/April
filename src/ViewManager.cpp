@@ -45,6 +45,38 @@ void ViewManager::showWidget(const int count)
     }
 }
 
+void ViewManager::show4Views(int width, int height)
+{
+    showWidget(4);
+    for (int i = 0; i < 4; ++i) {
+        viewWidget[i]->resize(width / 2, height / 2);
+    }
+
+    int x = toolWidget->width() + 25;
+    int y = 0;
+    width -= x;
+    height -= y;
+    viewWidget[0]->move(x, y);
+    viewWidget[1]->move(x + width / 2 + 180, y);
+    viewWidget[2]->move(x, y + height / 2);
+    viewWidget[3]->move(x + width / 2 + 180, y + height / 2);
+
+    viewWidget[1]->viewFront();
+    viewWidget[2]->viewLeft();
+    viewWidget[3]->viewTop();
+}
+
+void ViewManager::show1View(int width, int height)
+{
+    showWidget(1);
+    int x = toolWidget->width() + 25;
+    int y = 0;
+    width -= x;
+    height -= y;
+    viewWidget[0]->move(x, y);
+    viewWidget[0]->resize(width + 200, height - 25);
+}
+
 ViewWidget* ViewManager::getSelectedWidget()
 {
     // TODO: get selected index, remember not to use activeSubWindow

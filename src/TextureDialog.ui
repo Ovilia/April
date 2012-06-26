@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>217</height>
+    <width>439</width>
+    <height>243</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,6 +75,16 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="glLayout"/>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="text">
+      <string>Fill Triangles</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

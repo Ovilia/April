@@ -62,6 +62,27 @@ StateEnum::ViewMode AGLWidget::getViewMode()
     return viewMode;
 }
 
+void AGLWidget::viewFront()
+{
+    orthoXRotate = 0.0;
+    orthoYRotate = 0.0;
+    orthoZRotate = 0.0;
+}
+
+void AGLWidget::viewLeft()
+{
+    orthoXRotate = 90.0;
+    orthoYRotate = 0.0;
+    orthoZRotate = 0.0;
+}
+
+void AGLWidget::viewTop()
+{
+    orthoXRotate = 0.0;
+    orthoYRotate = 90.0;
+    orthoZRotate = 0.0;
+}
+
 void AGLWidget::zoomIn()
 {
     orthoLeft *= zoomInRatio;
@@ -148,6 +169,7 @@ void AGLWidget::paintGL()
         glEnable(GL_LIGHTING);
     }
 
+    glEnable(GL_TEXTURE_2D);
     if (modelManager->getIsDrawSolid()) {
         modelManager->drawSolid();
     }
@@ -156,6 +178,7 @@ void AGLWidget::paintGL()
     }
 
     glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
     drawMainPlain();
     drawAxis();
 

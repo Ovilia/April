@@ -12,6 +12,7 @@ namespace Ui {
 }
 
 class ViewManager;
+class TextUvGlWidget;
 
 class TextureDialog : public QDialog
 {
@@ -28,6 +29,8 @@ private slots:
     void on_openButton_clicked();
 
     void on_SetImageButton_clicked();
+
+    void on_checkBox_clicked(bool checked);
 
 private:
     Ui::TextureDialog *ui;
