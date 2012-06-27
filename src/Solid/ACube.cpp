@@ -129,31 +129,33 @@ const QPair<double, double>* ACube::getDefaultTextVertexPos()
     defaultTextVertexPos = new QPair<double, double>[cnt];
     defaultTextVertexPos[2] = defaultTextVertexPos[4] =
             QPair<double, double>(0.0, 1.0);
-    defaultTextVertexPos[5] = defaultTextVertexPos[8] =
-            defaultTextVertexPos[10] = QPair<double, double>(0.0, 1.0 / 3.0);
+    defaultTextVertexPos[5] = defaultTextVertexPos[9] =
+            defaultTextVertexPos[6]
+            = QPair<double, double>(0.0, 1.0 / 3.0);
     defaultTextVertexPos[0] = defaultTextVertexPos[3] =
-            defaultTextVertexPos[13] = defaultTextVertexPos[29] =
-            defaultTextVertexPos[34] = defaultTextVertexPos[32] =
+            defaultTextVertexPos[14] = defaultTextVertexPos[29] =
+            defaultTextVertexPos[31] = defaultTextVertexPos[33] =
             QPair<double, double>(2.0 / 3.0, 1.0 / 3.0);
-    defaultTextVertexPos[7] = defaultTextVertexPos[16] =
-            defaultTextVertexPos[14] =
+    defaultTextVertexPos[8] = defaultTextVertexPos[17] =
+            defaultTextVertexPos[13] =
             QPair<double, double>(1.0 / 3.0, 1.0 / 3.0);
-    defaultTextVertexPos[11] = QPair<double, double>(0.0, 0.0);
-    defaultTextVertexPos[9] = defaultTextVertexPos[6] =
-            defaultTextVertexPos[17] = QPair<double, double>(1.0 / 3.0, 0.0);
+    defaultTextVertexPos[10] = QPair<double, double>(0.0, 0.0);
+    defaultTextVertexPos[7] = defaultTextVertexPos[11] =
+            defaultTextVertexPos[16] = QPair<double, double>(1.0 / 3.0, 0.0);
     defaultTextVertexPos[12] = defaultTextVertexPos[15] =
-            defaultTextVertexPos[35] = QPair<double, double>(2.0 / 3.0, 0.0);
-    defaultTextVertexPos[23] = defaultTextVertexPos[26] =
-            defaultTextVertexPos[28] =
+            defaultTextVertexPos[34] = QPair<double, double>(2.0 / 3.0, 0.0);
+    defaultTextVertexPos[26] =
+            defaultTextVertexPos[28] = defaultTextVertexPos[21] =
             QPair<double, double>(2.0 / 3.0, 2.0 / 3.0);
-    defaultTextVertexPos[18] = defaultTextVertexPos[21] =
+    defaultTextVertexPos[18] = defaultTextVertexPos[22] =
             defaultTextVertexPos[25] = QPair<double, double>(1.0, 2.0 / 3.0);
     defaultTextVertexPos[24] = defaultTextVertexPos[27] =
-            defaultTextVertexPos[31] = QPair<double, double>(1.0, 1.0 / 3.0);
-    defaultTextVertexPos[30] = defaultTextVertexPos[33] =
+            defaultTextVertexPos[30] =
+            QPair<double, double>(1.0, 1.0 / 3.0);
+    defaultTextVertexPos[32] = defaultTextVertexPos[35] =
             QPair<double, double>(1.0, 0.0);
     defaultTextVertexPos[1] = defaultTextVertexPos[20] =
-            defaultTextVertexPos[22] = QPair<double, double>(2.0 / 3.0, 1.0);
+            defaultTextVertexPos[23] = QPair<double, double>(2.0 / 3.0, 1.0);
     defaultTextVertexPos[19] = QPair<double, double>(1.0, 1.0);
     return defaultTextVertexPos;
 }

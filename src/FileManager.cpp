@@ -1,6 +1,7 @@
 #include "FileManager.h"
 
 #include <QFile>
+#include <QMessageBox>
 #include <QTextStream>
 
 #include "Solid/APrimitive.h"
@@ -9,7 +10,7 @@ FileManager::FileManager()
 {
 }
 
-const QString FileManager::DOC_NAME = "April_Project_Model_Version1.2";
+const QString FileManager::DOC_NAME = "April_Project_Model_Version1.3";
 const QString FileManager::ROOT_NAME = "AprModel";
 
 bool FileManager::readFile(const QString fileName,
@@ -201,6 +202,21 @@ bool FileManager::insertSolid(QDomNode sNode, ModelManager &modelManager)
             pmt->setTranslate(translate);
         }
 
+        // texture
+        QDomElement tEle = pEle.firstChildElement("texture");
+        QString fileName = tEle.attribute("fileName", "");
+        if (!tEle.isNull() && fileName != "") {
+            Texture* text = pmt->getTexture();
+            text->setFileName(fileName);
+
+            QString uvName = tEle.attribute("uvFileName", "");
+            if (uvName != "") {
+                if (!text->setUvFileName(uvName, true)) {
+                    return false;
+                }
+            }
+        }
+
     } else {
         // binary operation
         ASolid::BoolOperation operation = ASolid::BO_PRIMITIVE;
@@ -383,6 +399,21 @@ QDomElement FileManager::solidDom(QDomDocument& doc, ASolid* solid)
                           pmt->getType()]);
         // primitive attributes
         pmtDom(doc, pEle, pmt);
+
+        // texture
+        if (pmt->getTexture()->getFileName() != "") {
+            QDomElement tEle = doc.createElement("texture");
+            tEle.setAttribute("fileName", pmt->getTexture()->getFileName());
+
+            // uv file name
+            QString uvName = pmt->getTexture()->getUvFileName();
+            if (uvName != "") {
+                tEle.setAttribute("uvFileName", uvName);
+            }
+
+            pEle.appendChild(tEle);
+        }
+
         element.appendChild(pEle);
 
         return element;

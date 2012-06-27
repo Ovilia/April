@@ -49,7 +49,6 @@ void ModelManager::setModelChanged()
 void ModelManager::setModelChanged(bool changed)
 {
     modelChanged = changed;
-    mainWindow->setSaveEnabled(changed);
 }
 
 void ModelManager::initialize()

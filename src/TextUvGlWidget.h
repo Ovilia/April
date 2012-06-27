@@ -24,6 +24,8 @@ public:
 
     void setFillVisible(bool visible);
 
+    QImage *getUvImage();
+
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseMoveEvent(QMouseEvent *ev);

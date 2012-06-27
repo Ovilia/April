@@ -6,6 +6,7 @@
 #include "Solid/APrism.h"
 #include "Solid/APyramid.h"
 #include "Solid/ASphere.h"
+#include "TextureFile.h"
 
 Texture::Texture() :
     textVertexCount(0),
@@ -14,7 +15,8 @@ Texture::Texture() :
     vertexPmtCnt(0),
     fileName(""),
     imageLoaded(false),
-    textureId(0)
+    textureId(0),
+    uvFileName("")
 {
 }
 
@@ -23,7 +25,8 @@ Texture::Texture(APrimitive* primitive) :
     vertexPmtCnt(primitive->getVertexCount()),
     fileName(""),
     imageLoaded(false),
-    textureId(0)
+    textureId(0),
+    uvFileName("")
 {
     if (textVertexCount > 0) {
         const QPair<double, double>* defPos =
@@ -42,7 +45,8 @@ Texture::Texture(APrimitive* primitive) :
 Texture::Texture(const Texture& another) :
     textVertexCount(another.getVertexCount()),
     vertexPmtCnt(another.getVertexPmtCnt()),
-    imageLoaded(false)
+    imageLoaded(false),
+    uvFileName(another.getUvFileName())
 {
     if (textVertexCount > 0) {
         textVertexArray = new QPair<double, double>[textVertexCount];
@@ -66,6 +70,21 @@ Texture::~Texture()
         delete []vertexPmtId;
     }
     releaseTexture();
+}
+
+QString Texture::getUvFileName() const
+{
+    return uvFileName;
+}
+
+bool Texture::setUvFileName(const QString& name, bool readFile)
+{
+    uvFileName = name;
+    if (readFile) {
+        return TextureFile::readFile(this, name);
+    } else {
+        return true;
+    }
 }
 
 void Texture::releaseTexture()
@@ -120,10 +139,6 @@ void Texture::generateTexture()
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
     }
 }
 

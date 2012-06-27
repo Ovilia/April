@@ -20,11 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     viewManager->setViewMode(StateEnum::VM_MOVE);
 
-    QSize size = ui->centerLayout->sizeHint();
-    int x = size.width();
-    int y = size.height();
-    viewManager->show4Views(x, y);
-
     // TODO: this is the buttons not implemented
     ui->actionBest_fit->setVisible(false);
     ui->actionSelect->setVisible(false);
@@ -133,11 +128,6 @@ void MainWindow::on_actionWire_triggered(bool checked)
     modelManager->setDrawSolid(ui->actionSolid->isChecked());
     modelManager->setDrawWire(checked);
     viewManager->repaintAll();
-}
-
-void MainWindow::setSaveEnabled(bool enabled)
-{
-    ui->actionSave->setEnabled(enabled);
 }
 
 bool MainWindow::openProject()

@@ -42,6 +42,9 @@ public:
 
     GLuint getTextureId() const;
 
+    QString getUvFileName() const;
+    bool setUvFileName(const QString &name, bool readFile = false);
+
 private:
     // vertex count in texture
     int textVertexCount;
@@ -61,6 +64,8 @@ private:
     GLuint textureId;
     void generateTexture();
     void releaseTexture();
+
+    QString uvFileName;
 };
 
 #endif // TEXTURE_H

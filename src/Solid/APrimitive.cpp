@@ -177,7 +177,7 @@ void APrimitive::drawAfter() const
             }
             if (isDrawText) {
                 glTexCoord2f(position[3 * face + i].first,
-                             position[3 * face + i].second);
+                             1.0 - position[3 * face + i].second);
             }
             glVertex3d(vertexArray[vertex].x,
                        vertexArray[vertex].y,
@@ -190,6 +190,7 @@ void APrimitive::drawAfter() const
     if (isSelected) {
         bool lightEnabled = glIsEnabled(GL_LIGHTING);
         glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
 
         glPointSize(7.0f);
         glColor3d(selectColor.x, selectColor.y, selectColor.z);

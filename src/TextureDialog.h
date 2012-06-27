@@ -32,6 +32,8 @@ private slots:
 
     void on_checkBox_clicked(bool checked);
 
+    void on_saveUvButton_clicked();
+
 private:
     Ui::TextureDialog *ui;
     TextUvGlWidget* uvWidget;

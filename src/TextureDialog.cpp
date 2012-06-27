@@ -33,8 +33,7 @@ void TextureDialog::on_saveButton_clicked()
     QString saveName = QFileDialog::getSaveFileName(
                 this,
                 tr("Save Texture"),
-                QDateTime::currentDateTime().
-                toString("yyyy_MM_dd_hh_mm_ss").append(".atxt"),
+                APrimitive::PRIMITIVE_TYPE_NAME[primitive->getType()] + ".atxt",
                 tr("April Project Texture (*.atxt)"));
     if (!saveName.isNull()) {
         bool isSaved = TextureFile::writeFile(
@@ -42,6 +41,8 @@ void TextureDialog::on_saveButton_clicked()
         if (!isSaved) {
             QMessageBox::critical(this, "Save Texture Failed",
                                   "Failed to save texture");
+        } else {
+            uvWidget->getTexture()->setUvFileName(saveName);
         }
     }
 }
@@ -64,6 +65,8 @@ void TextureDialog::on_openButton_clicked()
                 QMessageBox::critical(this, "Open Texture Failed",
                                       "Texture doesn\'t match with "\
                                       "current primitive");
+            } else {
+                primitive->getTexture()->setUvFileName(openName);
             }
         }
         delete texture;
@@ -91,4 +94,23 @@ void TextureDialog::on_SetImageButton_clicked()
 void TextureDialog::on_checkBox_clicked(bool checked)
 {
     uvWidget->setFillVisible(checked);
+}
+
+void TextureDialog::on_saveUvButton_clicked()
+{
+    QString saveName = QFileDialog::getSaveFileName(
+                this,
+                tr("Save Texture UV"),
+                APrimitive::PRIMITIVE_TYPE_NAME[primitive->getType()] + ".png",
+                tr("Image files(*.bmp *.jpeg *.jpg *.png *.gif *.tif);;"\
+                   "All files (*.*)"));
+    if (!saveName.isNull()) {
+        QImage* image = uvWidget->getUvImage();
+        if (image != 0) {
+            image->save(saveName);
+        } else {
+            QMessageBox::critical(this, "Error",
+                                  "Error in saving texture uv");
+        }
+    }
 }

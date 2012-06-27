@@ -50,7 +50,7 @@ void TextUvGlWidget::paintEvent(QPaintEvent *)
 
     if (texture) {
         if (fillVisible) {
-            painter.setBrush(QBrush("#cc9966"));
+            painter.setBrush(QBrush("#ccffcc"));
         } else {
             painter.setBrush(QBrush(Qt::transparent));
         }
@@ -96,6 +96,35 @@ void TextUvGlWidget::paintEvent(QPaintEvent *)
     }
 
     setPixmap(QPixmap::fromImage(image));
+}
+
+QImage* TextUvGlWidget::getUvImage()
+{
+    QPainter painter(&image);
+    painter.drawImage(0, 0, image);
+
+    if (texture) {
+        painter.setBrush(QBrush("#ccffcc"));
+        painter.setPen(Qt::red);
+        int cnt = texture->getVertexCount();
+        QPair<double, double>* vertexArr = texture->getVertexArray();
+
+        QPoint* points = new QPoint[cnt];
+        for (int i = 0; i < cnt; ++i) {
+            points[i].setX(vertexArr[i].first * image.width());
+            points[i].setY(vertexArr[i].second * image.height());
+        }
+        int faceCnt = cnt / 3;
+        for (int i = 0; i < faceCnt; ++i) {
+            painter.drawPolygon(points + 3 * i, 3);
+        }
+        delete[] points;
+    }
+    if (image.isNull()) {
+        return 0;
+    } else {
+        return &image;
+    }
 }
 
 void TextUvGlWidget::mousePressEvent(QMouseEvent *ev)
